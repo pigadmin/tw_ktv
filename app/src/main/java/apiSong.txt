@@ -1,0 +1,451 @@
+------------------------------------
+获取歌曲大类
+localhost:8080/ktv/api/song/getSongType?mac=123456&STBtype=2
+参数：mac   机顶盒mac码
+     STBtype  apk类型  1直播  2ktv
+     page 第几页    不填默认1
+     limit 页码量   不填默认10，最大限度100
+
+返回格式：{
+     	"code": 0,
+     	"data": {
+     		"totalCount": 2,
+     		"pageSize": 10,
+     		"totalPage": 1,
+     		"currPage": 1,
+     		"list": [{
+     			"id": 6,
+     			"name": "台湾",
+     			"path": "songType/1528874407415.jpg",
+     			"ngPath": "http://192.168.2.3/songType/1528874407415.jpg"
+     		}, {
+     			"id": 3,
+     			"name": "大中华",
+     			"path": "songType/1528852586480.jpg",
+     			"ngPath": "http://192.168.2.3/songType/1528852586480.jpg"
+     		}]
+     	}
+     }
+-------------------------------------
+获取歌星分类
+localhost:8080/ktv/api/song/getsongSingerType?mac=123456&STBtype=2&songtypeid=3
+参数 ：mac   机顶盒mac码
+      STBtype  apk类型  1直播  2ktv
+      songtypeid 歌曲大类
+      zhuyin   注音  //按注音搜素
+      pinyin   拼音  //按拼音搜素
+      japanese 日文   // 日文搜素
+      vietnam  越南    //越南搜素
+      page 第几页    不填默认1
+      limit 页码量   不填默认10，最大限度100
+返回格式：{
+     	"code": 0,
+     	"data": {
+     		"totalCount": 1,
+     		"pageSize": 10,
+     		"totalPage": 1,
+     		"currPage": 1,
+     		"list": [{
+     			"id": 4,
+     			"singertypeid": 2,
+     			"name": "谢娜",
+     			"sex": 2,
+     			"namePinyin": "xn",
+     			"nameJapanese": null,
+     			"nameZhuyin": null,
+     			"nameVietnam": null,
+     			"iconPath": "songSinger/1528852673344.jpg"
+     			"ngPath": "http://192.168.2.3/songSinger/1528852673344.jpg"
+     		}]
+     	}
+     }
+-------------------------------------
+获取歌星
+localhost:8080/ktv/api/song/getsongSinger?mac=123456&STBtype=2&singertypeid=2
+参数： mac   机顶盒mac码
+      STBtype  apk类型  1直播  2ktv
+      zhuyin   注音  //按注音搜素
+      pinyin   拼音  //按拼音搜素
+      japanese 日文   // 日文搜素
+      vietnam  越南    //越南搜素
+      singertypeid  歌星分类id
+      page 第几页    不填默认1
+      limit 页码量   不填默认10，最大限度100
+
+返回格式：
+{
+	"code": 0,
+	"data": {
+		"totalCount": 1,
+		"pageSize": 10,
+		"totalPage": 1,
+		"currPage": 1,
+		"list": [{
+			"id": 4,
+			"singertypeid": 2,
+			"name": "谢娜",
+			"sex": 2,
+			"nameen": "xn",
+			"namejapanese": null,
+			"namezhuyin": null,
+			"nameVietnam": null,
+			"iconPath": "songSinger/1528852673344.jpg",
+			"singerTypeName": "大陆女歌星",
+			"ngPath": "http://192.168.2.3/songSinger/1528852673344.jpg"
+		}]
+	}
+}
+-------------------------------------
+获取歌曲
+localhost:8080/ktv/api/song/getsong?mac=123456&STBtype=2&singerId=2
+参数： mac   机顶盒mac码
+      STBtype  apk类型  1直播  2ktv
+      singerId  歌星分类id
+      page 第几页    不填默认1
+      limit 页码量   不填默认10，最大限度100
+
+返回格式：
+{
+	"code": 0,
+	"data": {
+		"totalCount": 2,
+		"pageSize": 10,
+		"totalPage": 1,
+		"currPage": 1,
+		"list": [{
+			"id": 1,
+			"songnumber": "123456",
+			"singerid": 3,
+			"name": "234",
+			"nameVietnam": null,
+			"namejapanese": "321",
+			"namezhuyin": "321",
+			"namepinyin": "321",
+			"path": "http://192.168.2.3/song/1528270245388.mp3",
+			"lanId": 1,
+			"label": null,
+			"singerName": "张杰",
+			"lanName": "中文",
+			"fileName": null
+		}, {
+			"id": 2,
+			"songnumber": "123314",
+			"singerid": 3,
+			"name": "夜空中最亮的星",
+			"nameVietnam": "越南文",
+			"namejapanese": "日文",
+			"namezhuyin": "注音",
+			"namepinyin": "英文",
+			"path": "http://192.168.2.3/songSinger/1528264574395.mp3",
+			"lanId": 1,
+			"label": null,
+			"singerName": "张杰",
+			"lanName": "中文",
+			"fileName": null
+		}]
+	}
+}
+
+------------------------------------
+获取歌曲列表(根据歌星搜索歌曲，根据歌名搜索，编号搜索，输入法支持注音，拼音，日文，越南)
+http://192.168.2.11:8080/ktv/api/song?mac=wz&STBtype=2&vietnam=a
+参数：
+     STBtype  apk类型  1直播  2ktv
+     zhuyin   注音
+     pinyin   拼音
+     japanese 日文
+     vietnam  越南
+     singerId  歌手id
+     songnumber 歌曲编号
+     page 第几页    不填默认1
+     limit 页码量   不填默认10，最大限度100
+返回格式：
+{
+    "code": 0,
+    "data": {
+        "totalCount": 1,
+        "pageSize": 10,
+        "totalPage": 1,
+        "currPage": 1,
+        "list": [
+            {
+                "id": 1,
+                "songnumber": "1",
+                "singerid": 1,
+                "name": "笨小孩",
+                "nameVietnam": "benxiaohai",
+                "namejapanese": "benxiaohai", //日语
+                "namezhuyin": "bah",    //注音
+                "namepinyin": "benxiaohai",  //英文
+                "path": "http://192.168.2.11:8088song/1528881586624.mp3",
+                "lanId": 3,
+                "label": "小孩",
+                "singerName": "刘德华",
+                "lanName": "越南",
+                "fileName": null
+            }
+        ]
+    }
+}
+
+
+
+
+------------------------------------
+获取排行榜分类
+http://192.168.2.11:8080/ktv/api/song/rangking?mac=wz&STBtype=2
+参数：
+     mac  直播分类id
+     STBtype  apk类型  1直播  2ktv
+返回格式：
+{
+    "code": 0,
+    "data": [
+        {
+            "id": 1,
+            "name": "ee",
+            "icon": "http://192.168.2.11:8088/tmp/songRank/1528869940278.jpg",
+            "postion": 1,
+            "ngPath": null
+        }
+    ]
+}
+
+
+------------------------------------
+根据排行榜获取歌曲
+http://192.168.2.11:8080/ktv/api/song/getRangeSong?mac=wz&STBtype=2
+参数：
+     rangId  排行榜id
+     mac
+     STBtype  apk类型  1直播  2ktv
+     page 第几页    不填默认1
+     limit 页码量   不填默认10，最大限度100
+
+返回格式：
+{
+    "code": 0,
+    "data": [
+        {
+            "id": 1,
+            "name": "ee",
+            "icon": "http://192.168.2.11:8088/tmp/songRank/1528869940278.jpg",
+            "postion": 1,
+            "ngPath": null
+        }
+    ]
+}
+
+
+
+------------------------------------
+获取歌手列表
+http://192.168.2.11:8080/ktv/api/song/singer?mac=wz&STBtype=2&pinyin=liu
+
+参数：
+     STBtype  apk类型  1直播  2ktv
+     zhuyin   注音
+     pinyin   拼音
+     japanese 日文
+     vietnam  越南
+     singertypeid  歌手类型id
+     page 第几页    不填默认1
+     limit 页码量   不填默认10，最大限度100
+
+返回数据格式：
+
+{
+    "code": 0,
+    "data": [
+        {
+            "id": 1,
+            "singertypeid": 1,
+            "name": "刘德华",
+            "sex": 1,
+            "nameen": "liudehua",     //英文
+            "namejapanese": "liudehua",
+            "namezhuyin": "liudehua",
+            "nameVietnam": "liudehua",
+            "iconPath": "http://192.168.2.11:8088sheng.modules.sys.entity.SongSingerEntity@351410f3",
+            "singerTypeName": "歌星类型1",
+            "ngPath": null
+        }
+    ]
+}
+
+------------------------------------
+添加收藏
+
+http://localhost:8080/ktv/api/song/collect/add?mac=wz&STBtype=2&sid=1
+
+参数：
+   sid : 歌曲id
+
+返回数据格式：
+
+
+{
+    "code": 0
+}
+------------------------------------
+删除收藏
+
+http://localhost:8080/ktv/api/song/collect/del?mac=wz&STBtype=2&sid=1
+
+参数：
+   sid : 歌曲id
+
+返回数据格式：
+
+
+{
+    "code": 0
+}
+------------------------------------
+添加记录
+
+http://localhost:8080/ktv/api/song/record/add?mac=wz&STBtype=2&sid=1
+
+参数：
+   sid : 歌曲id
+
+返回数据格式：
+
+{
+    "code": 0
+}
+
+------------------------------------
+获取收藏列表
+
+http://localhost:8080/ktv/api/song/record/add?mac=wz&STBtype=2&sid=1
+
+参数：
+   sid : 歌曲id
+
+返回数据格式：
+
+{
+    "code": 0
+}
+
+------------------------------------
+获取收藏列表
+http://localhost:8080/ktv/api/song/collect?mac=wz&STBtype=2
+{
+    "code": 0,
+    "data": {
+        "totalCount": 1,
+        "pageSize": 10,
+        "totalPage": 1,
+        "currPage": 1,
+        "list": [
+            {
+                "id": 1,
+                "sid": 1,
+                "did": 5,
+                "type": 1,
+                "createTime": "2018-06-26 16:02:53",  //收藏好时间
+                "song": {
+                    "id": 1,
+                    "songnumber": "1",
+                    "singerid": 1,
+                    "name": "笨小孩",
+                    "nameVietnam": "benxiaohai",
+                    "namejapanese": "benxiaohai",
+                    "namezhuyin": "bah",
+                    "namepinyin": "benxiaohai",
+                    "path": "http://192.168.2.11:8088//song/1528881586624.mp3",
+                    "lanId": 3,
+                    "label": "小孩",
+                    "singerName": null,
+                    "lanName": null,
+                    "fileName": null
+                }
+            }
+        ]
+    }
+}
+------------------------------------
+获取播放记录列表
+http://localhost:8080/ktv/api/song/record?mac=wz&STBtype=2
+{
+    "code": 0,
+    "data": {
+        "totalCount": 1,
+        "pageSize": 10,
+        "totalPage": 1,
+        "currPage": 1,
+        "list": [
+            {
+                "id": 1,
+                "sid": 1,
+                "did": 5,
+                "type": 1,
+                "createTime": "2018-06-26 16:02:53",  //记录时间时间
+                "song": {
+                    "id": 1,
+                    "songnumber": "1",
+                    "singerid": 1,
+                    "name": "笨小孩",
+                    "nameVietnam": "benxiaohai",
+                    "namejapanese": "benxiaohai",
+                    "namezhuyin": "bah",
+                    "namepinyin": "benxiaohai",
+                    "path": "http://192.168.2.11:8088//song/1528881586624.mp3",
+                    "lanId": 3,
+                    "label": "小孩",
+                    "singerName": null,
+                    "lanName": null,
+                    "fileName": null
+                }
+            }
+        ]
+    }
+}
+
+
+
+------------------------------------
+socketIO
+端口：8000
+
+注册：
+register
+参数：String mac
+      int type  apk类型  1直播  2ktv
+
+
+提醒续费：
+发送数据：
+warning  String类型（直接显示出来，并且给个确认键让用户确认）
+
+
+跑马灯：rollTitles
+返回数据类型
+List<RollTitlesEntity> rollTitles
+
+
+删除：del_sub
+返回数据：id
+
+更新：update_sub
+返回数据：Subtitle subtitle
+
+
+
+广告：adList
+返回数据类型
+ List<AdGroupEntity> adGroupEntities
+
+ 新增：add_ad
+ 返回数据：AdGroupEntity adGroupEntity
+
+修改：update_ad
+返回数据：AdGroupEntity adGroupEntity
+
+删除：delete_ad
+返回：adId
+
+
+

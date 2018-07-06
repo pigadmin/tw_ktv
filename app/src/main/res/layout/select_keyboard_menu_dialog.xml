@@ -1,0 +1,81 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:gravity="center"
+        android:layout_marginLeft="10dp"
+        android:text="選擇輸入法:"
+        android:textColor="@color/white"
+        android:textSize="14sp" />
+
+    <RadioButton
+        android:id="@+id/rdb1_top_menu"
+        android:layout_width="45dp"
+        android:layout_height="25dp"
+        android:background="@drawable/selected_btn_textcolor_luck28"
+        android:button="@null"
+        android:checked="true"
+        android:gravity="center"
+        android:text="注音"
+        android:textColor="@color/white"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:textSize="14sp" />
+
+    <RadioButton
+        android:id="@+id/rdb2_top_menu"
+        android:layout_width="45dp"
+        android:layout_height="25dp"
+        android:background="@drawable/selected_btn_textcolor_luck28"
+        android:button="@null"
+        android:gravity="center"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:text="拼音"
+        android:textColor="@color/white"
+        android:textSize="14sp" />
+
+    <RadioButton
+        android:id="@+id/rdb3_top_menu"
+        android:layout_width="45dp"
+        android:layout_height="25dp"
+        android:background="@drawable/selected_btn_textcolor_luck28"
+        android:button="@null"
+        android:gravity="center"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:text="数字"
+        android:textColor="@color/white"
+        android:textSize="14sp" />
+
+    <RadioButton
+        android:id="@+id/rdb4_top_menu"
+        android:layout_width="45dp"
+        android:layout_height="25dp"
+        android:background="@drawable/selected_btn_textcolor_luck28"
+        android:button="@null"
+        android:gravity="center"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:text="越南"
+        android:textColor="@color/white"
+        android:textSize="14sp" />
+
+    <RadioButton
+        android:id="@+id/rdb5_top_menu"
+        android:layout_width="45dp"
+        android:layout_height="25dp"
+        android:background="@drawable/selected_btn_textcolor_luck28"
+        android:button="@null"
+        android:gravity="center"
+        android:text="日文"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:textColor="@color/white"
+        android:textSize="14sp" />
+</LinearLayout>

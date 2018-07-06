@@ -1,0 +1,25 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <SeekBar
+        android:id="@+id/volue_progress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:maxHeight="5dp"
+        android:minHeight="5dp"
+        android:progressDrawable="@drawable/seekbar_bg"
+        android:thumb="@mipmap/bottom_thumb" />
+
+    <TextView
+        android:id="@+id/volue_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="当前音量"
+        android:textColor="@color/white"
+        android:textSize="24sp" />
+</LinearLayout>

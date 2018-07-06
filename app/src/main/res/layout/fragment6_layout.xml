@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="horizontal"
+    android:gravity="center"
+    android:layout_marginBottom="50dp"
+    android:layout_gravity="center"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/setup1_tvw"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:focusableInTouchMode="true"
+        android:elevation="10dp"
+        android:outlineProvider="bounds"
+        android:background="@drawable/sz_icon1"
+        android:focusable="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/setup2_tvw"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:background="@drawable/sz_icon2"
+        android:layout_marginLeft="50dp"
+        android:focusableInTouchMode="true"
+        android:elevation="10dp"
+        android:outlineProvider="bounds"
+        android:focusable="true"
+        android:layout_marginRight="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/setup3_tvw"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:background="@drawable/sz_icon3"
+        android:focusableInTouchMode="true"
+        android:outlineProvider="bounds"
+        android:elevation="10dp"
+        android:focusable="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</LinearLayout>

@@ -1,0 +1,90 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:descendantFocusability="afterDescendants"
+    android:orientation="horizontal">
+
+
+    <RadioGroup
+        android:id="@+id/radiogroup"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:descendantFocusability="afterDescendants"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/rdb1_top_menu"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_weight="1"
+            android:background="@drawable/selected_btn_textcolor_luck28"
+            android:button="@null"
+            android:gravity="center"
+            android:text="搜索"
+            android:textColor="@color/white"
+            android:textSize="30sp" />
+
+        <RadioButton
+            android:id="@+id/rdb2_top_menu"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_weight="1"
+            android:background="@drawable/selected_btn_textcolor_luck28"
+            android:checked="true"
+            android:button="@null"
+            android:gravity="center"
+            android:text="點歌台"
+            android:textColor="@color/white"
+            android:textSize="30sp" />
+
+        <RadioButton
+            android:id="@+id/rdb3_top_menu"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_weight="1"
+            android:background="@drawable/selected_btn_textcolor_luck28"
+            android:button="@null"
+            android:gravity="center"
+            android:text="已點歌曲"
+            android:textColor="@color/white"
+            android:textSize="30sp" />
+
+        <RadioButton
+            android:id="@+id/rdb4_top_menu"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_weight="1"
+            android:background="@drawable/selected_btn_textcolor_luck28"
+            android:button="@null"
+            android:gravity="center"
+            android:text="排行榜"
+            android:textColor="@color/white"
+            android:textSize="30sp" />
+
+        <RadioButton
+            android:id="@+id/rdb5_top_menu"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_weight="1"
+            android:background="@drawable/selected_btn_textcolor_luck28"
+            android:button="@null"
+            android:gravity="center"
+            android:text="隔空對唱"
+            android:textColor="@color/white"
+            android:textSize="30sp" />
+
+        <RadioButton
+            android:id="@+id/rdb6_top_menu"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_weight="1"
+            android:background="@drawable/selected_btn_textcolor_luck28"
+            android:button="@null"
+            android:gravity="center"
+            android:text="設置"
+            android:textColor="@color/white"
+            android:textSize="30sp" />
+    </RadioGroup>
+
+
+</LinearLayout>

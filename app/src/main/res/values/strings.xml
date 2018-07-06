@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">KTV</string>
+
+
+    <string name="duet_tips">此功能尚未開通，敬請期待！</string>
+
+    <string name="play_all">點唱全部</string>
+    <string name="wd">未點</string>
+    <string name="yd">已點</string>
+
+
+    <string name="play_now"> 正在播放：</string>
+    <string name="play_next">下一曲：</string>
+    <string name="play_num"> 播放列表：</string>
+    <string name="none"> 沒有了</string>
+
+    <string name="replay">重唱</string>
+    <string name="dgt">點歌臺</string>
+    <string name="pause">暂停</string>
+    <string name="play">播放</string>
+    <string name="next">切歌</string>
+    <string name="yc">播原唱</string>
+    <string name="bc">播伴唱</string>
+    <string name="tyt">調音臺</string>
+
+
+    <string name="ad_tips">按任意鍵跳過</string>
+    <string name="ok">OK</string>
+    <string name="disconnect">連接服務器失敗</string>
+    <string name="serverdown">服務器維護中...</string>
+</resources>

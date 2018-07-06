@@ -1,0 +1,383 @@
+package com.ktv.ui.play;
+
+import android.app.FragmentManager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.media.MediaPlayer;
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.RadioButton;
+import android.widget.RelativeLayout;
+import android.widget.SeekBar;
+import android.widget.TextView;
+import android.widget.VideoView;
+
+import com.ktv.R;
+import com.ktv.app.App;
+import com.ktv.bean.MusicPlayBean;
+import com.ktv.event.DataMessage;
+import com.ktv.net.Req;
+import com.ktv.tools.FULL;
+import com.ktv.tools.Logger;
+import com.ktv.tools.LtoDate;
+import com.ktv.tools.ToastUtils;
+import com.ktv.ui.BaseActivity;
+import com.ktv.ui.fragments.subFragments.MusicSubFragment;
+import com.ktv.views.MyDialogFragment;
+
+import org.xutils.DbManager;
+import org.xutils.x;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class PlayerActivity extends BaseActivity implements MediaPlayer.OnPreparedListener, MediaPlayer.OnCompletionListener, MediaPlayer.OnErrorListener,
+        SeekBar.OnSeekBarChangeListener, View.OnClickListener {
+    private String tag = "PlayerActivity";
+    private final int hide = 1;
+    private final int updateprogress = 2;
+
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case hide:
+                    if (tips.isShown()) {
+                        tips.setVisibility(View.GONE);
+                    }
+                    break;
+                case updateprogress:
+                    try {
+                        current_progress.setText(LtoDate.ms(player.getCurrentPosition()));
+                        music_progress.setProgress(player.getCurrentPosition());
+
+                        handler.sendEmptyMessageDelayed(updateprogress, 1000);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    break;
+            }
+        }
+    };
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_player);
+        find();
+        init();
+    }
+
+    public void onEvent(DataMessage event) {
+
+    }
+
+    private List<MusicPlayBean> musicPlayBeans = new ArrayList<>();
+
+    private void init() {
+        try {
+            if (!musicPlayBeans.isEmpty()) {
+                musicPlayBeans.clear();
+            }
+
+            List<MusicPlayBean> playBeans = mDb.selector(MusicPlayBean.class).orderBy("localTime", true).findAll();//数据库查询
+            if (playBeans != null && !playBeans.isEmpty()) {
+                Logger.d(tag, "list长度" + playBeans.size());
+                musicPlayBeans.addAll(playBeans);
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        play();
+                    }
+                });
+            } else {
+                ToastUtils.showLongToast(this, " 播放列表空了。");
+            }
+        } catch (Exception e) {
+            Logger.i(tag, "DB查询异常.." + e.getMessage());
+        }
+    }
+
+
+    private VideoView player;
+    private TextView play_info;
+    private RelativeLayout tips;
+    private DbManager mDb;
+    private SeekBar music_progress;
+    private TextView current_progress, total_progress;
+    private RadioButton btn_yd, btn_replay, btn_dgt, btn_pause, btn_next, btn_yc, btn_tyt;
+
+    private void find() {
+        player = findViewById(R.id.player);
+        FULL.star(player);
+        play_info = findViewById(R.id.play_info);
+        player.setOnPreparedListener(this);
+        player.setOnCompletionListener(this);
+        player.setOnErrorListener(this);
+
+
+        tips = findViewById(R.id.tips);
+
+
+        music_progress = findViewById(R.id.music_progress);
+
+        music_progress.setOnSeekBarChangeListener(this);
+
+        current_progress = findViewById(R.id.current_progress);
+        total_progress = findViewById(R.id.total_progress);
+        btn_yd = findViewById(R.id.btn_yd);
+        btn_yd.setOnClickListener(this);
+        btn_replay = findViewById(R.id.btn_replay);
+        btn_replay.setOnClickListener(this);
+        btn_dgt = findViewById(R.id.btn_dgt);
+        btn_dgt.setOnClickListener(this);
+        btn_pause = findViewById(R.id.btn_pause);
+        btn_pause.setOnClickListener(this);
+        btn_next = findViewById(R.id.btn_next);
+        btn_next.setOnClickListener(this);
+        btn_yc = findViewById(R.id.btn_yc);
+        btn_yc.setOnClickListener(this);
+        btn_tyt = findViewById(R.id.btn_tyt);
+        btn_tyt.setOnClickListener(this);
+
+
+        DbManager.DaoConfig daoConfig = new DbManager.DaoConfig();
+        mDb = x.getDb(daoConfig);
+        show();
+    }
+
+    private MusicPlayBean current;
+    private MusicPlayBean next;
+
+    //    String testurl = "http://mx.djkk.com/mix/2018/2018-3/2018-3-13/201831311131.m4a";
+//    private String testurl = "http://183.60.197.29/20/x/h/k/k/xhkkasvwnohcmcnivchcmpnugztujq/hc.yinyuetai.com/7C110164442D4B67745E9D3E77F66929.mp4";
+
+    private void play() {//播放、重唱
+        try {
+            if (!musicPlayBeans.isEmpty()) {
+                current = musicPlayBeans.get(0);
+                if (musicPlayBeans.size() > 1) {
+                    next = musicPlayBeans.get(1);
+                }
+                String info = getString(R.string.play_now) + current.name + "\n"
+                        + getString(R.string.play_next) + (musicPlayBeans.size() > 1 ? next.name : getString(R.string.none)) + "\n"
+                        + getString(R.string.play_num) + musicPlayBeans.size();
+
+                play_info.setText(info);
+                Log.d(tag, info);
+                String url = current.path;
+//                String url = testurl;
+                Log.d(tag, url);
+                String testurl = "http://183.60.197.29/20/x/h/k/k/xhkkasvwnohcmcnivchcmpnugztujq/hc.yinyuetai.com/7C110164442D4B67745E9D3E77F66929.mp4";
+                player.setVideoURI(Uri.parse(testurl));
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    MediaPlayer mediaPlayer;
+
+    @Override
+    public void onPrepared(MediaPlayer mp) {
+        mediaPlayer = mp;
+        mp.start();
+        total_progress.setText(LtoDate.ms(mediaPlayer.getDuration()));
+        music_progress.setMax(mediaPlayer.getDuration());
+        handler.sendEmptyMessage(updateprogress);
+
+        record();
+    }
+
+    private void record() {
+        String url = App.headurl + "song/record/add?mac=" + App.mac + "&STBtype=2&sid=" + Integer.parseInt(current.id);
+        Req.get(tag, url);
+
+    }
+
+
+    @Override
+
+    public void onCompletion(MediaPlayer mp) {
+        next();
+    }
+
+    private void next() {//下一首、切歌
+        try {
+            if (!musicPlayBeans.isEmpty()) {
+                mDb.delete(current);
+                musicPlayBeans.remove(0);
+                play();
+            } else {
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public boolean onError(MediaPlayer mp, int what, int extra) {
+        return true;
+    }
+
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_ENTER || keyCode == KeyEvent.KEYCODE_DPAD_CENTER) {
+            show();
+        }
+        if (tips.isShown()) {
+            handler.removeMessages(hide);
+            handler.sendEmptyMessageDelayed(hide, 10 * 1000);
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+//    @Override
+//    public void onBackPressed() {
+//        //        super.onBackPressed();
+//        if (getFragmentManager().getBackStackEntryCount() > 1) {
+//            getFragmentManager().popBackStack();
+//        } else {
+//            exit();
+//        }
+//    }
+
+    private void show() {
+        if (!tips.isShown()) {
+            btn_yd.requestFocus();
+            tips.setVisibility(View.VISIBLE);
+            handler.removeMessages(hide);
+            handler.sendEmptyMessageDelayed(hide, 10 * 1000);
+        }
+    }
+
+
+    @Override
+    protected void onStop() {
+        player.stopPlayback();
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        player = null;
+    }
+
+
+    int ybc = 1;
+
+    @Override
+    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+    }
+
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {
+    }
+
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {
+        handler.removeMessages(updateprogress);
+        mediaPlayer.seekTo(seekBar.getProgress());
+        handler.sendEmptyMessage(updateprogress);
+    }
+
+    private MediaPlayer.TrackInfo[] trackInfo;
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btn_yd:
+                showDialogFragment(true);
+                break;
+            case R.id.btn_replay:
+                play();
+                break;
+            case R.id.btn_dgt:
+                showDialogFragment(false);
+                break;
+            case R.id.btn_pause:
+                if (btn_pause.getText().toString().equals(getString(R.string.pause))) {
+                    player.pause();
+                    btn_pause.setText(getString(R.string.play));
+                } else if (btn_pause.getText().toString().equals(getString(R.string.play))) {
+                    player.start();
+                    btn_pause.setText(getString(R.string.pause));
+                }
+
+                break;
+            case R.id.btn_next:
+                next();
+                break;
+            case R.id.btn_yc:
+
+
+                try {
+                    trackInfo = mediaPlayer.getTrackInfo();
+                    Log.d(tag, trackInfo.length + "---ybc");
+                    for (int i = 0; i < trackInfo.length; i++) {
+                        Log.d(tag, trackInfo[i].getTrackType() + "---ybc");
+                    }
+                    //測試
+                    if (btn_yc.getText().toString().equals(getString(R.string.yc))) {
+                        btn_yc.setText(getString(R.string.bc));
+                    } else if (btn_yc.getText().toString().equals(getString(R.string.bc))) {
+                        btn_yc.setText(getString(R.string.yc));
+                    }
+                    //測試  後期下移到下列判斷
+                    if (trackInfo.length > 2) {
+                        mediaPlayer.selectTrack(ybc == 1 ? 2 : 1);
+                        mediaPlayer.seekTo(mediaPlayer.getCurrentPosition());
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+
+                break;
+            case R.id.btn_tyt:
+//                showtyt();
+
+                break;
+
+
+        }
+    }
+
+    private PopupWindow popupWindow;
+
+    private void showtyt() {
+        if (popupWindow != null) {
+            popupWindow.dismiss();
+        }
+        View contentView = LayoutInflater.from(this).inflate(R.layout.pop_tyt, null);
+
+        popupWindow = new PopupWindow(contentView, 320, 180, true);
+        popupWindow.setOutsideTouchable(false);
+        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.GRAY));
+        popupWindow.showAtLocation(getWindow().getDecorView(), Gravity.CENTER, 0, 0);
+    }
+
+    private void showDialogFragment(boolean PoDisplay) {
+        FragmentManager fm = getFragmentManager();
+
+        MyDialogFragment dialogFragment = new MyDialogFragment();
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("PoDisplay", PoDisplay);
+        dialogFragment.setArguments(bundle);
+        dialogFragment.show(fm, tag);
+    }
+}

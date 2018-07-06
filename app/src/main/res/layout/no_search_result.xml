@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:gravity="center"
+        android:layout_marginLeft="80dp"
+        android:layout_marginRight="80dp">
+
+        <TextView
+            android:id="@+id/no_found_text_tvw"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:layout_marginTop="8dp"
+            android:textSize="26sp" />
+
+        <TextView
+            android:id="@+id/play_imme_tvw"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/add_all"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:visibility="invisible"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:text="@string/play_all"
+            android:textSize="26sp" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/no_found_tvw"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="25sp" />
+
+</RelativeLayout>
