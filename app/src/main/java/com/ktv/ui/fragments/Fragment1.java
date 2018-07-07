@@ -121,10 +121,10 @@ public class Fragment1 extends BaseFr implements View.OnFocusChangeListener {
         mUltinomialSerach.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (TextUtils.isEmpty(mSerchLanguageEdt.getText().toString().trim())){
-                    ToastUtils.showShortToast(mContext,"请先填写关键字");
-                    return;
-                }
+//                if (TextUtils.isEmpty(mSerchLanguageEdt.getText().toString().trim())){
+//                    ToastUtils.showShortToast(mContext,"请先填写关键字");
+//                    return;
+//                }
                 toClass(isMusicState);
             }
         });

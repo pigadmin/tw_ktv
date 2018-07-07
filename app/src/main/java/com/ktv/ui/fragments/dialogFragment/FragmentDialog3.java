@@ -97,7 +97,6 @@ public class FragmentDialog3 extends BaseFr {
         mSerachText=view.findViewById(R.id.no_found_text_tvw);
         mNofoundText=view.findViewById(R.id.no_found_tvw);
         mPlayImme=view.findViewById(R.id.play_imme_tvw);
-        mPlayImme.setVisibility(View.VISIBLE);
 
         listView=view.findViewById(R.id.listview);
         listView.setItemsCanFocus(true);//设置item项的子控件能够获得焦点（默认为false，即默认item项的子空间是不能获得焦点的）

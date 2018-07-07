@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 import com.google.gson.reflect.TypeToken;
 import com.ktv.R;
-import com.ktv.adapters.RankListAdapter;
+import com.ktv.adapters.RankListDialogAdapter;
 import com.ktv.adapters.base.RecyclerAdapter;
 import com.ktv.app.App;
 import com.ktv.bean.AJson;
@@ -80,7 +80,7 @@ public class RankListDialog extends BaseFr implements RecyclerAdapter.OnItemClic
         return view;
     }
 
-    private RankListAdapter playAdater;
+    private RankListDialogAdapter playAdater;
 
     private void init() {
         number.setText("/" + list.size() + "首");
@@ -117,7 +117,7 @@ public class RankListDialog extends BaseFr implements RecyclerAdapter.OnItemClic
 //            layoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
 //            grids.setLayoutManager(layoutManager);
 
-            playAdater = new RankListAdapter(activity, R.layout.music_play_item_dialog, list, mDb);
+            playAdater = new RankListDialogAdapter(activity, R.layout.music_play_item_dialog, list, mDb);
             lists.setAdapter(playAdater);
             lists.setOnItemSelectedListener(this);
 
@@ -192,11 +192,10 @@ public class RankListDialog extends BaseFr implements RecyclerAdapter.OnItemClic
                     } catch (Exception e) {
                         ToastUtils.showShortToast(activity, "部分重複歌曲未被添加");
                     }
-
                 }
-                ToastUtils.showShortToast(activity, "歌曲添加成功，馬上爲您播放。");
-                Intent intent = new Intent(activity, PlayerActivity.class);
-                activity.startActivity(intent);
+                ToastUtils.showShortToast(activity, "歌曲添加成功");
+//                Intent intent = new Intent(activity, PlayerActivity.class);
+//                activity.startActivity(intent);
                 break;
         }
     }
