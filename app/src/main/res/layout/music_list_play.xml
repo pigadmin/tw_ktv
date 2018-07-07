@@ -4,15 +4,15 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal">
 
-    <com.ktv.ui.diy.CommonListView
+    <ListView
         android:id="@+id/listview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="80dp"
         android:layout_marginRight="80dp"
+        android:clickable="true"
         android:dividerHeight="2dp"
         android:focusable="true"
-        android:clickable="true"
         android:focusableInTouchMode="true"
         android:listSelector="@mipmap/list1_select"
         android:scrollbars="none" />

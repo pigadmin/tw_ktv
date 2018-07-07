@@ -1,8 +1,10 @@
 package com.ktv.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.ktv.R;
@@ -20,19 +22,22 @@ import java.util.List;
  */
 public class Fragment3Adater extends BAdapter<MusicPlayBean> {
 
-    private static final String TAG="Fragment3Adater";
+    private static final String TAG = "Fragment3Adater";
 
     Context mContext;
     public DbManager mDb;
 
     public List<MusicPlayBean> list;
+    public ListView listView;
 
-    public Fragment3Adater(Context context, int layoutId, List<MusicPlayBean> list, DbManager mDb) {
+    public Fragment3Adater(ListView listView, Context context, int layoutId, List<MusicPlayBean> list, DbManager mDb) {
         super(context, layoutId, list);
         this.mContext = context;
-        this.list=list;
+        this.list = list;
         this.mDb = mDb;
+        this.listView = listView;
     }
+
 
     @Override
     public void onInitView(View convertView, final int position) {
@@ -41,14 +46,16 @@ public class Fragment3Adater extends BAdapter<MusicPlayBean> {
         TextView playType = get(convertView, R.id.playType);// 标识HD or 演唱会
         TextView pointText = get(convertView, R.id.pointText);//未点
         final TextView play = get(convertView, R.id.play);//置顶
+        play.setTag(position);
         final TextView addPlay = get(convertView, R.id.addPlay);//删除
+        addPlay.setTag(position);
 
-        final MusicPlayBean playBean= getItem(position);
+        final MusicPlayBean playBean = getItem(position);
 
         singertitle.setText(playBean.singerName);
         singername.setText(playBean.name);
 
-        if (TextUtils.isEmpty(playBean.label)){
+        if (TextUtils.isEmpty(playBean.label)) {
             playType.setVisibility(View.GONE);
         } else {
             playType.setVisibility(View.VISIBLE);
@@ -69,9 +76,9 @@ public class Fragment3Adater extends BAdapter<MusicPlayBean> {
                     playBean.localTime= SyncServerdate.getLocalTime();
                     mDb.update(playBean);
                     notifyDataSetChanged();
-
-                } catch (Exception e){
-                    Logger.i(TAG,"置顶异常e.."+e.getMessage());
+                    listView.setSelection((int) v.getTag());
+                } catch (Exception e) {
+                    Logger.i(TAG, "置顶异常e.." + e.getMessage());
                 }
             }
         });
@@ -81,13 +88,13 @@ public class Fragment3Adater extends BAdapter<MusicPlayBean> {
             @Override
             public void onClick(View v) {
                 try {
-                    ToastUtils.showShortToast(mContext,"删除成功");
+                    ToastUtils.showShortToast(mContext, "删除成功");
                     mDb.delete(playBean);//先删除DB数据
                     getAllData().remove(playBean);//再删本地列表
                     notifyDataSetChanged();
-
-                } catch (Exception e){
-                    Logger.i(TAG,"删除异常e.."+e.getMessage());
+                    listView.setSelection((int) v.getTag());
+                } catch (Exception e) {
+                    Logger.i(TAG, "删除异常e.." + e.getMessage());
                 }
             }
         });

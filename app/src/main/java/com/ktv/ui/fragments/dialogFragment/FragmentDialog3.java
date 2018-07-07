@@ -32,7 +32,7 @@ import java.util.List;
  */
 public class FragmentDialog3 extends BaseFr {
 
-    private static final String TAG="FragmentDialog3";
+    private static final String TAG = "FragmentDialog3";
 
     private View view;
     private Context mContext;
@@ -44,18 +44,18 @@ public class FragmentDialog3 extends BaseFr {
     private Fragment3Adater playAdater;
     private List<MusicPlayBean> musicPlayBeans;
 
-    public static final int Search_Music_Success=100;//查找歌曲歌曲成功
-    public static final int Search_Music_Failure=200;//查找歌曲失败
+    public static final int Search_Music_Success = 100;//查找歌曲歌曲成功
+    public static final int Search_Music_Failure = 200;//查找歌曲失败
 
     public DbManager mDb;
 
     private TextView mPlayImme;//立即播放
 
-    public Handler handler=new Handler(){
+    public Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            switch (msg.what){
+            switch (msg.what) {
                 case Search_Music_Success:
                     mNofoundText.setVisibility(View.GONE);
 //                    playAdater.notifyDataSetChanged();
@@ -73,7 +73,7 @@ public class FragmentDialog3 extends BaseFr {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_dialog3, container, false);
-        mContext=getActivity();
+        mContext = getActivity();
         initView();
         initLiter();
         return view;
@@ -88,32 +88,32 @@ public class FragmentDialog3 extends BaseFr {
     /**
      * 初始化View
      */
-    private void initView(){
+    private void initView() {
         DbManager.DaoConfig daoConfig = new DbManager.DaoConfig();
         mDb = x.getDb(daoConfig);
 
-        musicPlayBeans=new ArrayList<>();
+        musicPlayBeans = new ArrayList<>();
 
-        mSerachText=view.findViewById(R.id.no_found_text_tvw);
-        mNofoundText=view.findViewById(R.id.no_found_tvw);
-        mPlayImme=view.findViewById(R.id.play_imme_tvw);
+        mSerachText = view.findViewById(R.id.no_found_text_tvw);
+        mNofoundText = view.findViewById(R.id.no_found_tvw);
+        mPlayImme = view.findViewById(R.id.play_imme_tvw);
 
-        listView=view.findViewById(R.id.listview);
+        listView = view.findViewById(R.id.listview);
         listView.setItemsCanFocus(true);//设置item项的子控件能够获得焦点（默认为false，即默认item项的子空间是不能获得焦点的）
 
-        playAdater=new Fragment3Adater(getActivity(),R.layout.fragment3_item_dialog, musicPlayBeans,mDb);
+        playAdater = new Fragment3Adater(listView, getActivity(), R.layout.fragment3_item_dialog, musicPlayBeans, mDb);
         listView.setAdapter(playAdater);
     }
 
     /**
      * item事件
      */
-    private void initLiter(){
+    private void initLiter() {
         mPlayImme.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ToastUtils.showShortToast(mContext,"立即播放");
-                Intent intent=new Intent(mContext, PlayerActivity.class);
+                ToastUtils.showShortToast(mContext, "立即播放");
+                Intent intent = new Intent(mContext, PlayerActivity.class);
                 mContext.startActivity(intent);
             }
         });
@@ -129,19 +129,19 @@ public class FragmentDialog3 extends BaseFr {
     /**
      * 查询DB
      */
-    private void isMusicStateList(){
+    private void isMusicStateList() {
         try {
             musicPlayBeans.clear();
-            List<MusicPlayBean> playBeans = mDb.selector(MusicPlayBean.class).orderBy("localTime",true).findAll();//数据库查询
-            if (playBeans !=null&&!playBeans.isEmpty()){
-                Logger.d(TAG,"list长度1..."+playBeans.size());
+            List<MusicPlayBean> playBeans = mDb.selector(MusicPlayBean.class).orderBy("localTime", true).findAll();//数据库查询
+            if (playBeans != null && !playBeans.isEmpty()) {
+                Logger.d(TAG, "list长度1..." + playBeans.size());
                 musicPlayBeans.addAll(playBeans);
                 handler.sendEmptyMessage(Search_Music_Success);
             } else {
                 handler.sendEmptyMessage(Search_Music_Failure);
             }
-        } catch (Exception e){
-            Logger.i(TAG,"DB查询异常.."+e.getMessage());
+        } catch (Exception e) {
+            Logger.i(TAG, "DB查询异常.." + e.getMessage());
         }
     }
 }
