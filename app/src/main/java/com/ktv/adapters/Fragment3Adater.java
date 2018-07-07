@@ -68,9 +68,7 @@ public class Fragment3Adater extends BAdapter<MusicPlayBean> {
                     playBean.isAdd=true;
                     playBean.localTime= SyncServerdate.getLocalTime();
                     mDb.update(playBean);
-
-//                    notifyDataSetChanged();
-
+                    notifyDataSetChanged();
 
                 } catch (Exception e){
                     Logger.i(TAG,"置顶异常e.."+e.getMessage());
@@ -86,7 +84,8 @@ public class Fragment3Adater extends BAdapter<MusicPlayBean> {
                     ToastUtils.showShortToast(mContext,"删除成功");
                     mDb.delete(playBean);//先删除DB数据
                     getAllData().remove(playBean);//再删本地列表
-//                    notifyDataSetChanged();
+                    notifyDataSetChanged();
+
                 } catch (Exception e){
                     Logger.i(TAG,"删除异常e.."+e.getMessage());
                 }

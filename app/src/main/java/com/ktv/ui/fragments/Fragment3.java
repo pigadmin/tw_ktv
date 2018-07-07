@@ -60,19 +60,14 @@ public class Fragment3 extends BaseFr {
             switch (msg.what) {
                 case Search_Music_Success:
                     mNofoundText.setVisibility(View.GONE);
-//                    playAdater.notifyDataSetChanged();
+                    playAdater.notifyDataSetChanged();
                     mSerachText.setText("按【菜单】键编辑本地歌曲");
-
 
                     break;
                 case Search_Music_Failure:
                     mNofoundText.setText("还未添加歌曲,请先点歌!");
                     mSerachText.setText("按【菜单】键编辑本地歌曲");
                     playAdater.notifyDataSetChanged();
-//                    listView.requestFocus();
-//                    listView.requestFocusFromTouch();
-                    System.out.println("rrrrrrrrrrrrrrrrrrrrrrrrrrrrr1");
-//                    listView.requestFocus();
                     break;
             }
         }
@@ -102,6 +97,7 @@ public class Fragment3 extends BaseFr {
             Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.a_scale);
             mPlayImme.startAnimation(animation);
         }
+        Logger.i(TAG,"当前焦点..."+getActivity().getCurrentFocus());
     }
 
     @Override
