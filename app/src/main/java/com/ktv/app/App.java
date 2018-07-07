@@ -65,7 +65,8 @@ public class App extends Application {
 
     private boolean fstart;
     //        private static String ip = "192.168.2.9";
-    private static String ip = "192.168.2.25";
+//    private static String ip = "192.168.2.25";
+    private static String ip = "192.168.2.4";
 //    private static String ip = "192.168.2.11";
 //    private static String ip = "192.168.2.7";
     public static String version;
@@ -130,7 +131,7 @@ public class App extends Application {
             while ((line = bReader.readLine()) != null) {
                 mac = line.trim();
             }
-//            mac = "00:15:18:17:84:24";
+            mac = "00:15:18:17:84:24";
             Log.d("mac", "---mac---\n" + mac);
         } catch (Exception e) {
             e.printStackTrace();
