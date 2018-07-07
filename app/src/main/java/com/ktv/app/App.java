@@ -218,7 +218,7 @@ public class App extends Application {
 
     public static int limit=30;//用于歌曲列表 页码量
 
-    public static int Srclimit=3;//用于带 图片显示的列表 页码量
+    public static int Srclimit=90;//用于带 图片显示的列表 页码量
 
     private AdList adLists;
 
