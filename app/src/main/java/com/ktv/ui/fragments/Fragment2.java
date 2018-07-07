@@ -58,11 +58,13 @@ public class Fragment2 extends BaseFr {
     private FragmentManager manager;
     private FragmentTransaction ft;
 
+    private int mLimit = App.getLimitMax();//页码量
+    private int mPage = 1;//第几页
+
 
     public Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            Context mContext;
             super.handleMessage(msg);
             switch (msg.what) {
                 case Search_Music_Success:
@@ -146,6 +148,15 @@ public class Fragment2 extends BaseFr {
                 toClass(largeBean.id, largeBean.name);
             }
         });
+
+        playAdater.setOnItemSelectedListener(new RecyclerAdapter.OnItemSelectedListener() {
+            @Override
+            public void onFocusChange(View view, int position) {
+                Logger.i(TAG,"position...................."+position);
+            }
+        });
+
+
     }
 
     public void onEvent(DataMessage event) {
@@ -181,8 +192,8 @@ public class Fragment2 extends BaseFr {
     private void getMusicServer() {
         weakHashMap.put("mac", App.mac);
         weakHashMap.put("STBtype", "2");
-        weakHashMap.put("page", "1");//第几页    不填默认1
-        weakHashMap.put("limit", "100");//页码量   不填默认10，最大限度100
+        weakHashMap.put("page", mPage+"");//第几页    不填默认1
+        weakHashMap.put("limit", mLimit+"");//页码量   不填默认10，最大限度100
         String url = App.getRqstUrl(App.headurl + "song/getSongType", weakHashMap);
 
         Logger.i(TAG, "url.." + url);
