@@ -67,7 +67,7 @@ public class App extends Application {
     private boolean fstart;
     //        private static String ip = "192.168.2.9";
     private static String ip = "192.168.2.25";
-    //    private static String ip = "192.168.2.4";
+//    private static String ip = "192.168.2.4";
 //    private static String ip = "192.168.2.11";
 //    private static String ip = "192.168.2.7";
     public static String version;
@@ -216,16 +216,9 @@ public class App extends Application {
 
     private ArrayList<ListItem> playlist = new ArrayList<>();
 
-    /**
-     * 列表页码量
-     *
-     * @return
-     */
-    public static int getLimitMax() {
-        return 90;
-    }
+    public static int limit=30;//用于歌曲列表 页码量
 
-    public static int limit = 30;
+    public static int Srclimit=3;//用于带 图片显示的列表 页码量
 
     private AdList adLists;
 

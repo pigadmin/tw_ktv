@@ -54,7 +54,7 @@ public class SingerTypeFragment extends BaseFr {
 
     private RecyclerView mRecyclerView;
     private SingerTypeAdapter playAdater;
-    private List<SingerNumBean.SingerBean> mItemList = new ArrayList<>();
+    private List<SingerNumBean.SingerBean> mItemList;
 
     private WeakHashMap<String, String> weakHashMap = new WeakHashMap<>();
 
@@ -82,6 +82,9 @@ public class SingerTypeFragment extends BaseFr {
     private String[] arrays = null;
 
     private CustomAdater mAdater;
+
+    private int mLimit = App.Srclimit;//页码量
+    private int mPage = 1;//第几页
 
     public Handler handler = new Handler() {
         @Override
@@ -126,6 +129,7 @@ public class SingerTypeFragment extends BaseFr {
         mSingerName = getArguments().getString("singerName");
 
         Logger.i(TAG, "mSingerId..." + mSingerId + "...mSingerName..." + mSingerName);
+        mPage=1;
         getMusicServer(mSingerId);
     }
 
@@ -133,7 +137,7 @@ public class SingerTypeFragment extends BaseFr {
      * 初始化View
      */
     private void initView() {
-        mItemList = new ArrayList<>();
+        mItemList=new ArrayList<>();
 
         mNoText = view.findViewById(R.id.no_tvw);
 
@@ -175,6 +179,18 @@ public class SingerTypeFragment extends BaseFr {
             @Override
             public void onClick(View v) {
                 showInputPown();
+            }
+        });
+
+        playAdater.setOnItemSelectedListener(new RecyclerAdapter.OnItemSelectedListener() {
+            @Override
+            public void onFocusChange(View view, int position) {
+                Logger.i(TAG,"position...."+position);
+                int index = position+1;
+                if (mPage*mLimit==index){
+                    mPage++;
+                    getMusicServer(mSingerId);
+                }
             }
         });
     }
@@ -397,7 +413,6 @@ public class SingerTypeFragment extends BaseFr {
         if (event.gettag().equals(TAG)) {
             if (!TextUtils.isEmpty(event.getData())) {
                 try {
-                    mItemList.clear();
                     AJson aJsons = GsonJsonUtils.parseJson2Obj(event.getData(), AJson.class);
                     String s = GsonJsonUtils.parseObj2Json(aJsons.getData());
                     SingerNumBean numBean = GsonJsonUtils.parseJson2Obj(s, SingerNumBean.class);
@@ -413,6 +428,9 @@ public class SingerTypeFragment extends BaseFr {
         if (playBeans != null && !playBeans.isEmpty()) {
             Logger.d(TAG, "list长度1..." + playBeans.size());
             mItemList.addAll(playBeans);
+        }
+
+        if (mItemList != null && !mItemList.isEmpty()) {
             handler.sendEmptyMessage(Search_Music_Success);
         } else {
             handler.sendEmptyMessage(Search_Music_Failure);
@@ -431,8 +449,8 @@ public class SingerTypeFragment extends BaseFr {
         weakHashMap.put("pinyin", null);
         weakHashMap.put("japanese", null);
         weakHashMap.put("vietnam", null);
-        weakHashMap.put("page", "1");//第几页    不填默认1
-        weakHashMap.put("limit", "100");//页码量   不填默认10，最大限度100
+        weakHashMap.put("page", mPage+"");//第几页    不填默认1
+        weakHashMap.put("limit", mLimit+"");//页码量   不填默认10，最大限度100
         String url = App.getRqstUrl(App.headurl + "song/getsongSingerType", weakHashMap);
 
         Logger.i(TAG, "url.." + url);
@@ -471,7 +489,6 @@ public class SingerTypeFragment extends BaseFr {
         Logger.i(TAG, "url.." + url);
         Req.get(TAG, url);
     }
-
 
     /**
      * 切换到 歌星界面
