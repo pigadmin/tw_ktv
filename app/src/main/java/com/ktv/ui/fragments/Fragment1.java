@@ -4,7 +4,6 @@ package com.ktv.ui.fragments;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -122,6 +121,10 @@ public class Fragment1 extends BaseFr implements View.OnFocusChangeListener {
         mUltinomialSerach.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (TextUtils.isEmpty(mSerchLanguageEdt.getText().toString().trim())){
+                    ToastUtils.showShortToast(mContext,"请先填写关键字");
+                    return;
+                }
                 toClass(isMusicState);
             }
         });
