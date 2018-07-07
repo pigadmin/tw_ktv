@@ -34,7 +34,4 @@ public class UpdateTime {
     public String getYmdhmse() {
         return yMdHmsE.format(new Date(time));
     }
-
-//    .....................
-
 }
