@@ -309,9 +309,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void setFailResult() {
-        mInfo1.setText(mSeach.getText().toString().trim());
-        mInfo2.setText("未搜索到相關歌曲");
-        mInfo3.setText(null);
+        if (!mllt.isShown()) {
+            mllt.setVisibility(View.VISIBLE);
+        }
+        mInfo1.setText("未搜索到編號");
+        mInfo2.setText(mSeach.getText().toString().trim());
+        mInfo3.setText("相關歌曲");
     }
 
     @Override

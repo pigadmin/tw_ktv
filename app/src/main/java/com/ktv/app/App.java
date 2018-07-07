@@ -222,7 +222,7 @@ public class App extends Application {
      * @return
      */
     public static int getLimitMax() {
-        return 90;
+        return 30;
     }
 
     private AdList adLists;

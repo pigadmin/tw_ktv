@@ -91,8 +91,9 @@ public class PlayerActivity extends BaseActivity implements MediaPlayer.OnPrepar
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+            System.out.println("更新歌曲更新歌曲更新歌曲更新歌曲更新歌曲更新歌曲更新歌曲");
             if (intent.getAction().equals(App.UpdateMusic)) {
-                init(false, false);
+                init(false, true);
             }
         }
     };
@@ -105,14 +106,10 @@ public class PlayerActivity extends BaseActivity implements MediaPlayer.OnPrepar
 
     private void init(final boolean isplay, boolean isshow) {
         try {
-            if (!musicPlayBeans.isEmpty()) {
-                musicPlayBeans.clear();
-            }
 
-            List<MusicPlayBean> playBeans = mDb.selector(MusicPlayBean.class).orderBy("localTime", true).findAll();//数据库查询
-            if (playBeans != null && !playBeans.isEmpty()) {
-                Logger.d(tag, "list长度" + playBeans.size());
-                musicPlayBeans.addAll(playBeans);
+            musicPlayBeans = mDb.selector(MusicPlayBean.class).orderBy("localTime", true).findAll();//数据库查询
+            if (!musicPlayBeans.isEmpty()) {
+                Logger.d(tag, "list长度" + musicPlayBeans.size());
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
@@ -123,7 +120,7 @@ public class PlayerActivity extends BaseActivity implements MediaPlayer.OnPrepar
                     }
                 });
             } else {
-                ToastUtils.showLongToast(this, " 播放列表空了。");
+//                ToastUtils.showLongToast(this, " 播放列表空了。");
                 Tips.show(PlayerActivity.this,
                         getString(R.string.tip_title),
                         getString(R.string.playlist_none));
@@ -251,7 +248,7 @@ public class PlayerActivity extends BaseActivity implements MediaPlayer.OnPrepar
                 if (musicPlayBeans.isEmpty()) {
                     Tips.show(PlayerActivity.this,
                             getString(R.string.tip_title),
-                            getString(R.string.playlist_none));
+                            getString(R.string.playlist_last));
                 } else {
                     play();
                 }
