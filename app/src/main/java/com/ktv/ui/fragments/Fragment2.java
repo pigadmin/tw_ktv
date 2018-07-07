@@ -44,7 +44,7 @@ public class Fragment2 extends BaseFr {
 
     private RecyclerView mRecyclerView;
     private Fragment2Adapter playAdater;
-    private List<SongNumBean.SongLargeBean> mItemList=new ArrayList<>();
+    private List<SongNumBean.SongLargeBean> mItemList;
 
     private WeakHashMap<String, String> weakHashMap = new WeakHashMap<>();
 
@@ -58,7 +58,7 @@ public class Fragment2 extends BaseFr {
     private FragmentManager manager;
     private FragmentTransaction ft;
 
-    private int mLimit = App.limit;//页码量
+    private int mLimit = App.Srclimit;//页码量
     private int mPage = 1;//第几页
 
 
@@ -83,6 +83,7 @@ public class Fragment2 extends BaseFr {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment2, container, false);
         mContext = getActivity();
+        mPage=1;
         getMusicServer();
         initView();
         initLiter();
