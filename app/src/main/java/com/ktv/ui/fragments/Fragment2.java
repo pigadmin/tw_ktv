@@ -152,11 +152,14 @@ public class Fragment2 extends BaseFr {
         playAdater.setOnItemSelectedListener(new RecyclerAdapter.OnItemSelectedListener() {
             @Override
             public void onFocusChange(View view, int position) {
-                Logger.i(TAG,"position...................."+position);
+                Logger.i(TAG,"position...."+position);
+                int index = position+1;
+                if (mPage*mLimit==index){
+                    mPage++;
+                    getMusicServer();
+                }
             }
         });
-
-
     }
 
     public void onEvent(DataMessage event) {
@@ -164,7 +167,6 @@ public class Fragment2 extends BaseFr {
         if (event.gettag().equals(TAG)) {
             if (!TextUtils.isEmpty(event.getData())) {
                 try {
-                    mItemList.clear();
                     AJson aJsons = GsonJsonUtils.parseJson2Obj(event.getData(), AJson.class);
                     String s = GsonJsonUtils.parseObj2Json(aJsons.getData());
                     SongNumBean numBean = GsonJsonUtils.parseJson2Obj(s, SongNumBean.class);
@@ -180,6 +182,9 @@ public class Fragment2 extends BaseFr {
         if (playBeans != null && !playBeans.isEmpty()) {
             Logger.d(TAG, "list长度1..." + playBeans.size());
             mItemList.addAll(playBeans);
+        }
+
+        if (mItemList != null && !mItemList.isEmpty()) {
             handler.sendEmptyMessage(Search_Music_Success);
         } else {
             handler.sendEmptyMessage(Search_Music_Failure);

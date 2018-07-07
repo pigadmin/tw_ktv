@@ -1,15 +1,12 @@
 package com.ktv.adapters.base;
 
 import android.content.Context;
-import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.AdapterView;
 
 import com.ktv.R;
 
@@ -75,6 +72,11 @@ public abstract class RecyclerAdapter<T> extends RecyclerView.Adapter<ViewHolder
     public void onFocusChange(View v, boolean hasFocus) {
 
         if (hasFocus){
+
+            if (onItemSelectedListener != null) {
+                onItemSelectedListener.onFocusChange(v, (int) v.getTag());
+            }
+
             v.setScaleX(1.17f);
             v.setScaleY(1.17f);
 //            ViewCompat.animate(v).scaleX(1.17f).scaleY(1.17f).start();
@@ -88,11 +90,6 @@ public abstract class RecyclerAdapter<T> extends RecyclerView.Adapter<ViewHolder
 //            parent.invalidate();
             v.setScaleX(1.0f);
             v.setScaleY(1.0f);
-        }
-
-
-        if (onItemSelectedListener != null) {
-            onItemSelectedListener.onFocusChange(v, (int) v.getTag());
         }
     }
 
