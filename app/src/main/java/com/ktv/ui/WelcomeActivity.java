@@ -13,8 +13,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.view.KeyEvent;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -25,12 +23,16 @@ import com.ktv.R;
 import com.ktv.app.App;
 import com.ktv.bean.AJson;
 import com.ktv.bean.ErrorMsg;
+import com.ktv.bean.MusicPlayBean;
 import com.ktv.bean.WelcomeAd;
 import com.ktv.event.DataMessage;
-import com.ktv.event.ErrorMessage;
 import com.ktv.net.Req;
 import com.ktv.tools.FULL;
+import com.ktv.tools.Logger;
 import com.squareup.picasso.Picasso;
+
+import org.xutils.DbManager;
+import org.xutils.x;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,10 +40,21 @@ import java.util.List;
 public class WelcomeActivity extends BaseActivity implements MediaPlayer.OnErrorListener, MediaPlayer.OnPreparedListener, MediaPlayer.OnCompletionListener {
     String TAG = "WelcomeActivity";
 
+    public DbManager mDb;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
+
+        DbManager.DaoConfig daoConfig = new DbManager.DaoConfig();
+        mDb = x.getDb(daoConfig);
+
+        try {
+            mDb.delete(MusicPlayBean.class);
+        } catch (Exception e){
+            Logger.i(TAG,"清理缓存异常"+e.getMessage());
+        }
 
         find();
         IntentFilter intentFilter = new IntentFilter();
