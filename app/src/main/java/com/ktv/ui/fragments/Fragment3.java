@@ -64,6 +64,11 @@ public class Fragment3 extends BaseFr {
                     playAdater.notifyDataSetChanged();
                     mSerachText.setText("按【菜单】键编辑本地歌曲");
 
+//                    if (!listView.isSelected()) {
+//                        listView.setSelection(0);
+//                        listView.setItemsCanFocus(true);
+//                    }
+
                     break;
                 case Search_Music_Failure:
                     mNofoundText.setText("还未添加歌曲,请先点歌!");
@@ -93,10 +98,10 @@ public class Fragment3 extends BaseFr {
         if (v != null) {
             v.requestFocus();
         } else {
-            System.out.println("rrrrrrrrrrrrrrrrrrrrrrrrrrrrr2");
-            mPlayImme.requestFocus();
-            Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.a_scale);
-            mPlayImme.startAnimation(animation);
+//            mPlayImme.requestFocus();
+//            Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.a_scale);
+//            mPlayImme.startAnimation(animation);
+
         }
         Logger.i(TAG, "当前焦点..." + getActivity().getCurrentFocus());
     }
@@ -124,10 +129,21 @@ public class Fragment3 extends BaseFr {
         listView = view.findViewById(R.id.listview);
         listView.setItemsCanFocus(true);//设置item项的子控件能够获得焦点（默认为false，即默认item项的子空间是不能获得焦点的）
 
-        playAdater = new Fragment3Adater(listView,getActivity(), R.layout.fragment3_item, musicPlayBeans, mDb);
+
+        playAdater = new Fragment3Adater(listView, getActivity(), R.layout.fragment3_item, musicPlayBeans, mDb);
         listView.setAdapter(playAdater);
 
+        listView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                playAdater.updateUI(i);
+            }
 
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
     }
 
     /**

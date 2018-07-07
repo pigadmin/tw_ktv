@@ -108,11 +108,17 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         intentFilter.addAction(App.DeleteAdList);
         registerReceiver(receiver, intentFilter);
 
-        ltor = AnimationUtils.loadAnimation(this, R.anim.x_ltor);
+        ad_alpha = AnimationUtils.loadAnimation(this, R.anim.ad_alpha);
+        ad_rotate = AnimationUtils.loadAnimation(this, R.anim.ad_rotate);
+        ad_scale = AnimationUtils.loadAnimation(this, R.anim.ad_scale);
+        ad_translate = AnimationUtils.loadAnimation(this, R.anim.ad_translate);
         startService(new Intent(this, MyService.class));
     }
 
-    private Animation ltor;
+    private Animation ad_alpha;
+    private Animation ad_rotate;
+    private Animation ad_scale;
+    private Animation ad_translate;
     private AdList adLists;
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {
@@ -143,28 +149,18 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 case 0:
                     hidead();
                     if (currentad < adEntities.size()) {
-
                         switch (adEntities.get(currentad).getAppearWay()) {
                             case 1:
-//                                ObjectAnimator anim2 = ObjectAnimator.ofFloat(ad_left, "alpha", 1.0f, 0.8f, 0.6f, 0.4f, 0.2f, 0.0f);
-//                                anim2.setRepeatCount(-1);
-//                                anim2.setRepeatMode(ObjectAnimator.REVERSE);
-//                                anim2.setDuration(2000);
-//                                anim2.start();
-                                Picasso.with(MainActivity.this).load(adEntities.get(currentad).getNgPath()).into(ad_right);
-                                ad_right.startAnimation(ltor);
+                                startAnim(ad_alpha);
                                 break;
                             case 2:
-                                Picasso.with(MainActivity.this).load(adEntities.get(currentad).getNgPath()).into(ad_left);
-                                ad_left.startAnimation(ltor);
+                                startAnim(ad_translate);
                                 break;
                             case 3:
-                                Picasso.with(MainActivity.this).load(adEntities.get(currentad).getNgPath()).into(ad_top);
-                                ad_top.startAnimation(ltor);
+                                startAnim(ad_scale);
                                 break;
                             case 4:
-                                Picasso.with(MainActivity.this).load(adEntities.get(currentad).getNgPath()).into(ad_bottom);
-                                ad_bottom.startAnimation(ltor);
+                                startAnim(ad_rotate);
                                 break;
                         }
                         adhandler.sendEmptyMessageDelayed(0, adEntities.get(currentad).getPlaytime() * 1000);
@@ -173,7 +169,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                         currentad = 0;
                         adhandler.sendEmptyMessage(0);
                     }
-
                     break;
                 case 1:
                     hidead();
@@ -181,6 +176,23 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             }
         }
     };
+
+    private void startAnim(Animation animation) {
+        String[] weizhi = adLists.getPosition().split(",");
+        ImageView ad_image = null;
+        if (weizhi[currentad].equals("2")) {
+            ad_image = ad_top;
+        } else if (weizhi[currentad].equals("3")) {
+            ad_image = ad_bottom;
+        } else if (weizhi[currentad].equals("4")) {
+            ad_image = ad_left;
+        } else if (weizhi[currentad].equals("5")) {
+            ad_image = ad_right;
+        }
+        ad_image.startAnimation(animation);
+        Picasso.with(MainActivity.this).load(adEntities.get(currentad).getNgPath()).into(ad_image);
+    }
+
 
     private void hidead() {
         ad_left.setImageResource(R.color.transparent);
