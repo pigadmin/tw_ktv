@@ -28,4 +28,7 @@
     <string name="ok">OK</string>
     <string name="disconnect">連接服務器失敗</string>
     <string name="serverdown">服務器維護中...</string>
+
+    <string name="tip_title">溫馨提醒</string>
+    <string name="playlist_none">您的播放列表已經空了，請前往點歌臺選歌</string>
 </resources>

@@ -1,6 +1,10 @@
 package com.ktv.ui.play;
 
 import android.app.FragmentManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
@@ -12,6 +16,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -31,6 +36,7 @@ import com.ktv.tools.Logger;
 import com.ktv.tools.LtoDate;
 import com.ktv.tools.ToastUtils;
 import com.ktv.ui.BaseActivity;
+import com.ktv.ui.diy.Tips;
 import com.ktv.ui.fragments.subFragments.MusicSubFragment;
 import com.ktv.views.MyDialogFragment;
 
@@ -75,8 +81,21 @@ public class PlayerActivity extends BaseActivity implements MediaPlayer.OnPrepar
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player);
         find();
-        init();
+        init(true, true);
+
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(App.UpdateMusic);
+        registerReceiver(receiver, intentFilter);
     }
+
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals(App.UpdateMusic)) {
+                init(false, false);
+            }
+        }
+    };
 
     public void onEvent(DataMessage event) {
 
@@ -84,7 +103,7 @@ public class PlayerActivity extends BaseActivity implements MediaPlayer.OnPrepar
 
     private List<MusicPlayBean> musicPlayBeans = new ArrayList<>();
 
-    private void init() {
+    private void init(final boolean isplay, boolean isshow) {
         try {
             if (!musicPlayBeans.isEmpty()) {
                 musicPlayBeans.clear();
@@ -97,14 +116,24 @@ public class PlayerActivity extends BaseActivity implements MediaPlayer.OnPrepar
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        play();
+                        if (isplay) {
+                            play();
+                        }
+
                     }
                 });
             } else {
                 ToastUtils.showLongToast(this, " 播放列表空了。");
+                Tips.show(PlayerActivity.this,
+                        getString(R.string.tip_title),
+                        getString(R.string.playlist_none));
             }
         } catch (Exception e) {
             Logger.i(tag, "DB查询异常.." + e.getMessage());
+        }
+
+        if (isshow) {
+            show();
         }
     }
 
@@ -153,7 +182,7 @@ public class PlayerActivity extends BaseActivity implements MediaPlayer.OnPrepar
 
         DbManager.DaoConfig daoConfig = new DbManager.DaoConfig();
         mDb = x.getDb(daoConfig);
-        show();
+
     }
 
     private MusicPlayBean current;
@@ -186,7 +215,7 @@ public class PlayerActivity extends BaseActivity implements MediaPlayer.OnPrepar
         }
     }
 
-    MediaPlayer mediaPlayer;
+    private MediaPlayer mediaPlayer;
 
     @Override
     public void onPrepared(MediaPlayer mp) {
@@ -209,6 +238,8 @@ public class PlayerActivity extends BaseActivity implements MediaPlayer.OnPrepar
     @Override
 
     public void onCompletion(MediaPlayer mp) {
+
+
         next();
     }
 
@@ -217,10 +248,19 @@ public class PlayerActivity extends BaseActivity implements MediaPlayer.OnPrepar
             if (!musicPlayBeans.isEmpty()) {
                 mDb.delete(current);
                 musicPlayBeans.remove(0);
-                play();
+                if (musicPlayBeans.isEmpty()) {
+                    Tips.show(PlayerActivity.this,
+                            getString(R.string.tip_title),
+                            getString(R.string.playlist_none));
+                } else {
+                    play();
+                }
             } else {
-
+                Tips.show(PlayerActivity.this,
+                        getString(R.string.tip_title),
+                        getString(R.string.playlist_none));
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -244,7 +284,19 @@ public class PlayerActivity extends BaseActivity implements MediaPlayer.OnPrepar
         return super.onKeyDown(keyCode, event);
     }
 
-//    @Override
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            show();
+            if (tips.isShown()) {
+                handler.removeMessages(hide);
+                handler.sendEmptyMessageDelayed(hide, 10 * 1000);
+            }
+        }
+        return super.onTouchEvent(event);
+    }
+
+    //    @Override
 //    public void onBackPressed() {
 //        //        super.onBackPressed();
 //        if (getFragmentManager().getBackStackEntryCount() > 1) {
@@ -274,6 +326,7 @@ public class PlayerActivity extends BaseActivity implements MediaPlayer.OnPrepar
     protected void onDestroy() {
         super.onDestroy();
         player = null;
+        unregisterReceiver(receiver);
     }
 
 
@@ -368,15 +421,20 @@ public class PlayerActivity extends BaseActivity implements MediaPlayer.OnPrepar
         popupWindow.setOutsideTouchable(false);
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.GRAY));
         popupWindow.showAtLocation(getWindow().getDecorView(), Gravity.CENTER, 0, 0);
+
+
     }
 
     private void showDialogFragment(boolean PoDisplay) {
         FragmentManager fm = getFragmentManager();
-
         MyDialogFragment dialogFragment = new MyDialogFragment();
         Bundle bundle = new Bundle();
         bundle.putBoolean("PoDisplay", PoDisplay);
         dialogFragment.setArguments(bundle);
         dialogFragment.show(fm, tag);
+
+
     }
+
+
 }

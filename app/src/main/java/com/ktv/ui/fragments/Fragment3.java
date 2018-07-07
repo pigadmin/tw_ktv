@@ -88,7 +88,7 @@ public class Fragment3 extends BaseFr {
     @Override
     public void onResume() {
         super.onResume();
-
+        isMusicStateList();
         if (v != null) {
             v.requestFocus();
         } else {
@@ -126,7 +126,7 @@ public class Fragment3 extends BaseFr {
         playAdater = new Fragment3Adater(getActivity(), R.layout.fragment3_item, musicPlayBeans, mDb);
         listView.setAdapter(playAdater);
 
-        isMusicStateList();
+
     }
 
     /**

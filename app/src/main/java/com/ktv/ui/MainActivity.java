@@ -1,11 +1,9 @@
 package com.ktv.ui;
 
-import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.drawable.BitmapDrawable;
@@ -18,7 +16,6 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -56,6 +53,7 @@ import com.ktv.ui.fragments.Fragment4;
 import com.ktv.ui.fragments.Fragment5;
 import com.ktv.ui.fragments.Fragment6;
 import com.ktv.ui.play.PlayerActivity;
+import com.ktv.views.MyDialogFragment;
 import com.squareup.picasso.Picasso;
 
 import org.xutils.DbManager;
@@ -509,25 +507,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         transaction.commit();
 
 
-    }
-
-    private void warn(String title) {
-        new AlertDialog.Builder(this).setTitle(title)
-                .setIcon(android.R.drawable.ic_dialog_info)
-                .setPositiveButton("確定", new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-
-                    }
-                })
-                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }).show();
     }
 
 

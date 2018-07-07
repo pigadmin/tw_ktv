@@ -59,6 +59,7 @@ public class Fragment4 extends BaseFr implements RecyclerAdapter.OnItemClickList
         } else {
             grids.requestFocus();
         }
+
     }
 
     @Override

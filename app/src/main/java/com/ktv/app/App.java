@@ -38,6 +38,7 @@ public class App extends Application {
     public static final String InitAdList = "InitAdList";
     public static final String UpdateAdList = "UpdateAdList";
     public static final String DeleteAdList = "DeleteAdList";
+    public static final String UpdateMusic = "UpdateMusic";
     public xDBUtils DBUtils;
 
     public static Gson gson;
