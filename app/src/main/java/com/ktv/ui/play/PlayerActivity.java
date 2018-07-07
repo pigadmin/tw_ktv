@@ -201,7 +201,7 @@ public class PlayerActivity extends BaseActivity implements MediaPlayer.OnPrepar
     }
 
     private void record() {
-        String url = App.headurl + "song/record/add?mac=" + App.mac + "&STBtype=2&sid=" + Integer.parseInt(current.id);
+        String url = App.headurl + "song/record/add?mac=" + App.mac + "&STBtype=2&sid=" + Integer.valueOf(current.id);
         Req.get(tag, url);
 
     }

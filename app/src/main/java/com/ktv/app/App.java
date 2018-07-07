@@ -131,7 +131,7 @@ public class App extends Application {
             while ((line = bReader.readLine()) != null) {
                 mac = line.trim();
             }
-            mac = "00:15:18:17:84:24";
+//            mac = "00:15:18:17:84:24";
             Log.d("mac", "---mac---\n" + mac);
         } catch (Exception e) {
             e.printStackTrace();

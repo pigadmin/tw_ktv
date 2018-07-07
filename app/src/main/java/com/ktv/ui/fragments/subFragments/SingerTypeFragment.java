@@ -54,7 +54,7 @@ public class SingerTypeFragment extends BaseFr {
 
     private RecyclerView mRecyclerView;
     private SingerTypeAdapter playAdater;
-    private List<SingerNumBean.SingerBean> mItemList;
+    private List<SingerNumBean.SingerBean> mItemList = new ArrayList<>();
 
     private WeakHashMap<String, String> weakHashMap = new WeakHashMap<>();
 
@@ -396,11 +396,15 @@ public class SingerTypeFragment extends BaseFr {
         Logger.d(TAG, "data.." + event.getData());
         if (event.gettag().equals(TAG)) {
             if (!TextUtils.isEmpty(event.getData())) {
-                mItemList.clear();
-                AJson aJsons = GsonJsonUtils.parseJson2Obj(event.getData(), AJson.class);
-                String s = GsonJsonUtils.parseObj2Json(aJsons.getData());
-                SingerNumBean numBean = GsonJsonUtils.parseJson2Obj(s, SingerNumBean.class);
-                isMusicStateList(numBean.list);
+                try {
+                    mItemList.clear();
+                    AJson aJsons = GsonJsonUtils.parseJson2Obj(event.getData(), AJson.class);
+                    String s = GsonJsonUtils.parseObj2Json(aJsons.getData());
+                    SingerNumBean numBean = GsonJsonUtils.parseJson2Obj(s, SingerNumBean.class);
+                    isMusicStateList(numBean.list);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
     }

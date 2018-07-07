@@ -44,7 +44,7 @@ public class Fragment2 extends BaseFr {
 
     private RecyclerView mRecyclerView;
     private Fragment2Adapter playAdater;
-    private List<SongNumBean.SongLargeBean> mItemList;
+    private List<SongNumBean.SongLargeBean> mItemList=new ArrayList<>();
 
     private WeakHashMap<String, String> weakHashMap = new WeakHashMap<>();
 
@@ -152,11 +152,15 @@ public class Fragment2 extends BaseFr {
         Logger.d(TAG, "data.." + event.getData());
         if (event.gettag().equals(TAG)) {
             if (!TextUtils.isEmpty(event.getData())) {
-                mItemList.clear();
-                AJson aJsons = GsonJsonUtils.parseJson2Obj(event.getData(), AJson.class);
-                String s = GsonJsonUtils.parseObj2Json(aJsons.getData());
-                SongNumBean numBean = GsonJsonUtils.parseJson2Obj(s, SongNumBean.class);
-                isMusicStateList(numBean.list);
+                try {
+                    mItemList.clear();
+                    AJson aJsons = GsonJsonUtils.parseJson2Obj(event.getData(), AJson.class);
+                    String s = GsonJsonUtils.parseObj2Json(aJsons.getData());
+                    SongNumBean numBean = GsonJsonUtils.parseJson2Obj(s, SongNumBean.class);
+                    isMusicStateList(numBean.list);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
