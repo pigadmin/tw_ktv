@@ -99,7 +99,7 @@ public class RankListDialog extends BaseFr implements RecyclerAdapter.OnItemClic
     private ListView lists;
     private Button rank_add;
     private int page = 1;
-    private int limit = App.getLimitMax();
+    private int limit = App.limit;
 
 
     private void find() {

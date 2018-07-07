@@ -58,7 +58,7 @@ public class MusicFragmentDialog extends BaseFr {
     private int mIndex;
     private String mSearchContent;
 
-    private int mLimit = App.getLimitMax();//页码量
+    private int mLimit = App.limit;//页码量
     private int mPage = 1;//第几页
 
     public DbManager mDb;

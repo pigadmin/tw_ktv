@@ -295,7 +295,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private MusicPlayBean bianhao;
 
     private void setSuccessResult() {
-        System.out.println("------------");
         bianhao = musicPlayBeans.get(0);
         if (bianhao != null) {
             if (!mllt.isShown()) {
@@ -304,7 +303,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             mInfo1.setText(bianhao.songnumber);
             mInfo2.setText(bianhao.singerName);
             mInfo3.setText(bianhao.name);
-
         }
     }
 
@@ -380,12 +378,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 }
                 try {
                     mDb.save(bianhao);
+                    ToastUtils.showShortToast(mContext, "歌曲已添加至已點歌曲");
                 } catch (Exception e) {
                     e.printStackTrace();
-                    ToastUtils.showShortToast(mContext, "歌曲已添加");
+                    ToastUtils.showShortToast(mContext, "添加失敗，請勿重複添加");
                 }
-                Intent intent = new Intent(mContext, PlayerActivity.class);
-                mContext.startActivity(intent);
+//                Intent intent = new Intent(mContext, PlayerActivity.class);
+//                mContext.startActivity(intent);
             }
         });
     }
@@ -397,7 +396,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         weakHashMap.put("mac", App.mac);
         weakHashMap.put("STBtype", "2");
         weakHashMap.put("page", "1");//第几页    不填默认1
-        weakHashMap.put("limit", "100");//页码量   不填默认10，最大限度100
+        weakHashMap.put("limit", App.limit + "");//页码量   不填默认10，最大限度100
         weakHashMap.put("singerId", null);//歌手id
         weakHashMap.put("songnumber", text);//歌曲编号
         weakHashMap.put("zhuyin", null);//拼音
@@ -479,8 +478,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);//动画效果(打开)
-
-        System.out.println(fragmentManager.getBackStackEntryCount() + "----------------------");
         for (int i = 0; i < getFragmentManager().getBackStackEntryCount() - 1; i++) {
             getFragmentManager().popBackStack();
         }

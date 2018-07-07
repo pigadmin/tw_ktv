@@ -58,7 +58,7 @@ public class Fragment2 extends BaseFr {
     private FragmentManager manager;
     private FragmentTransaction ft;
 
-    private int mLimit = App.getLimitMax();//页码量
+    private int mLimit = App.limit;//页码量
     private int mPage = 1;//第几页
 
 

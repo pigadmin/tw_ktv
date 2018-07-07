@@ -96,7 +96,7 @@ public class RankList extends BaseFr implements RecyclerAdapter.OnItemClickListe
     private ListView lists;
     private Button rank_add;
     private int page = 1;
-    private int limit = App.getLimitMax();
+    private int limit = App.limit;
 
 
     private void find() {

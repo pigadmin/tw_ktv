@@ -21,6 +21,7 @@ import com.ktv.bean.MusicPlayBean;
 import com.ktv.tools.Logger;
 import com.ktv.tools.ToastUtils;
 import com.ktv.ui.BaseFr;
+import com.ktv.ui.diy.Tips;
 import com.ktv.ui.play.PlayerActivity;
 
 import org.xutils.DbManager;
@@ -97,7 +98,7 @@ public class Fragment3 extends BaseFr {
             Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.a_scale);
             mPlayImme.startAnimation(animation);
         }
-        Logger.i(TAG,"当前焦点..."+getActivity().getCurrentFocus());
+        Logger.i(TAG, "当前焦点..." + getActivity().getCurrentFocus());
     }
 
     @Override
@@ -136,9 +137,17 @@ public class Fragment3 extends BaseFr {
         mPlayImme.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ToastUtils.showShortToast(mContext, "立即播放");
+                if (musicPlayBeans.isEmpty()) {
+                    Tips.show(getActivity(),
+                            getString(R.string.tip_title),
+                            getString(R.string.playlist_none));
+                    return;
+                }
+//                    ToastUtils.showShortToast(mContext, "立即播放");
                 Intent intent = new Intent(mContext, PlayerActivity.class);
                 mContext.startActivity(intent);
+
+
             }
         });
 

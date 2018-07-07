@@ -67,7 +67,7 @@ public class App extends Application {
     private boolean fstart;
     //        private static String ip = "192.168.2.9";
     private static String ip = "192.168.2.25";
-//    private static String ip = "192.168.2.4";
+    //    private static String ip = "192.168.2.4";
 //    private static String ip = "192.168.2.11";
 //    private static String ip = "192.168.2.7";
     public static String version;
@@ -222,8 +222,10 @@ public class App extends Application {
      * @return
      */
     public static int getLimitMax() {
-        return 30;
+        return 90;
     }
+
+    public static int limit = 30;
 
     private AdList adLists;
 

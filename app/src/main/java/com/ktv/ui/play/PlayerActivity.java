@@ -81,7 +81,7 @@ public class PlayerActivity extends BaseActivity implements MediaPlayer.OnPrepar
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player);
         find();
-        init(true, true);
+        init();
 
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(App.UpdateMusic);
@@ -91,9 +91,8 @@ public class PlayerActivity extends BaseActivity implements MediaPlayer.OnPrepar
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            System.out.println("更新歌曲更新歌曲更新歌曲更新歌曲更新歌曲更新歌曲更新歌曲");
             if (intent.getAction().equals(App.UpdateMusic)) {
-                init(false, true);
+                init();
             }
         }
     };
@@ -104,33 +103,29 @@ public class PlayerActivity extends BaseActivity implements MediaPlayer.OnPrepar
 
     private List<MusicPlayBean> musicPlayBeans = new ArrayList<>();
 
-    private void init(final boolean isplay, boolean isshow) {
+    private void init() {
         try {
-
             musicPlayBeans = mDb.selector(MusicPlayBean.class).orderBy("localTime", true).findAll();//数据库查询
-            if (!musicPlayBeans.isEmpty()) {
-                Logger.d(tag, "list长度" + musicPlayBeans.size());
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (isplay) {
-                            play();
-                        }
-
-                    }
-                });
-            } else {
-//                ToastUtils.showLongToast(this, " 播放列表空了。");
-                Tips.show(PlayerActivity.this,
-                        getString(R.string.tip_title),
-                        getString(R.string.playlist_none));
+            if (musicPlayBeans.isEmpty()) {
+//                Tips.show(PlayerActivity.this,
+//                        getString(R.string.tip_title),
+//                        getString(R.string.playlist_none));
+                return;
             }
+            Logger.d(tag, "list长度" + musicPlayBeans.size());
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    if (!player.isPlaying()) {
+                        play();
+                    } else {
+                        updateinfo();
+                    }
+
+                }
+            });
         } catch (Exception e) {
             Logger.i(tag, "DB查询异常.." + e.getMessage());
-        }
-
-        if (isshow) {
-            show();
         }
     }
 
@@ -185,23 +180,28 @@ public class PlayerActivity extends BaseActivity implements MediaPlayer.OnPrepar
     private MusicPlayBean current;
     private MusicPlayBean next;
 
+    private void updateinfo() {
+        current = musicPlayBeans.get(0);
+        if (musicPlayBeans.size() > 1) {
+            next = musicPlayBeans.get(1);
+        }
+        String info = getString(R.string.play_now) + current.name + "\n"
+                + getString(R.string.play_next) + (musicPlayBeans.size() > 1 ? next.name : getString(R.string.none)) + "\n"
+                + getString(R.string.play_num) + musicPlayBeans.size();
+
+        play_info.setText(info);
+        Log.d(tag, info);
+    }
+
+
     //    String testurl = "http://mx.djkk.com/mix/2018/2018-3/2018-3-13/201831311131.m4a";
 //    private String testurl = "http://183.60.197.29/20/x/h/k/k/xhkkasvwnohcmcnivchcmpnugztujq/hc.yinyuetai.com/7C110164442D4B67745E9D3E77F66929.mp4";
 
     private void play() {//播放、重唱
         try {
             if (!musicPlayBeans.isEmpty()) {
-                current = musicPlayBeans.get(0);
-                if (musicPlayBeans.size() > 1) {
-                    next = musicPlayBeans.get(1);
-                }
-                String info = getString(R.string.play_now) + current.name + "\n"
-                        + getString(R.string.play_next) + (musicPlayBeans.size() > 1 ? next.name : getString(R.string.none)) + "\n"
-                        + getString(R.string.play_num) + musicPlayBeans.size();
-
-                play_info.setText(info);
-                Log.d(tag, info);
-                String url = current.path;
+                updateinfo();
+                String url = musicPlayBeans.get(0).path;
 //                String url = testurl;
                 Log.d(tag, url);
                 player.setVideoURI(Uri.parse(url));
@@ -246,9 +246,10 @@ public class PlayerActivity extends BaseActivity implements MediaPlayer.OnPrepar
                 mDb.delete(current);
                 musicPlayBeans.remove(0);
                 if (musicPlayBeans.isEmpty()) {
-                    Tips.show(PlayerActivity.this,
-                            getString(R.string.tip_title),
-                            getString(R.string.playlist_last));
+//                    Tips.show(PlayerActivity.this,
+////                            getString(R.string.tip_title),
+////                            getString(R.string.playlist_last));
+                    player.stopPlayback();
                 } else {
                     play();
                 }
