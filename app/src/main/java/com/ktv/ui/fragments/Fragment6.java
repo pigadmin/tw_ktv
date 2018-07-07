@@ -2,9 +2,15 @@ package com.ktv.ui.fragments;
 
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.RelativeSizeSpan;
+import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +27,8 @@ import com.ktv.ui.BaseFr;
 
 import org.xutils.DbManager;
 import org.xutils.x;
+
+import java.util.List;
 
 /**
  * 设置
@@ -82,13 +90,6 @@ public class Fragment6 extends BaseFr {
         mSetup3=view.findViewById(R.id.setup3_tvw);
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        mSetup1.requestFocus();
-    }
-
-
     private void initLiter(){
         mSetup1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,13 +108,28 @@ public class Fragment6 extends BaseFr {
         mSetup3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDiaog();
+                selectData();
             }
         });
     }
 
-    private void showDiaog(){
-        final BtmDialog dialog = new BtmDialog(mContext,"是否清空缓存歌曲?");
+    private void selectData(){
+        try {
+            List<MusicPlayBean> playBeans = mDb.selector(MusicPlayBean.class).orderBy("localTime", true).findAll();//数据库查询
+            if (playBeans != null && !playBeans.isEmpty()) {
+                showDiaog(playBeans);
+            } else {
+                ToastUtils.showShortToast(mContext,"当前没有缓存歌曲,无须清理");
+            }
+        } catch (Exception e) {
+            Logger.i(TAG, "DB查询异常.." + e.getMessage());
+        }
+    }
+
+    private void showDiaog(List<MusicPlayBean> playBeans){
+        String text="当前缓存 "+playBeans.size()+" 首歌曲,是否清空缓存歌曲?";
+        final BtmDialog dialog = new BtmDialog(mContext,text);
+        setPan(dialog.mTitle,text,playBeans);
         AlertDialogHelper.BtmDialogDerive1(dialog, true, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -133,5 +149,31 @@ public class Fragment6 extends BaseFr {
                 dialog.dismiss();
             }
         });
+    }
+
+    private void setPan(TextView textView,String text,List<MusicPlayBean> playBeans){
+        int start;
+        int end;
+
+        if (playBeans.size() >= 10){
+            start=5;
+            end=7;
+        } else if (playBeans.size() >=100 ){
+            start=5;
+            end=8;
+        } else {
+            start=5;
+            end=6;
+        }
+
+        SpannableString spannableString = new SpannableString(text);
+        RelativeSizeSpan sizeSpan03 = new RelativeSizeSpan(1.6f);
+        StyleSpan styleSpan_I  = new StyleSpan(Typeface.ITALIC);
+        ForegroundColorSpan colorSpan = new ForegroundColorSpan(getResources().getColor(R.color.viewfinder_laser));
+        spannableString.setSpan(colorSpan, start, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+        spannableString.setSpan(sizeSpan03, start, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+        spannableString.setSpan(styleSpan_I, start, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+
+        textView.setText(spannableString);
     }
 }

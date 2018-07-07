@@ -66,7 +66,7 @@ public class App extends Application {
     private boolean fstart;
     //        private static String ip = "192.168.2.9";
     private static String ip = "192.168.2.25";
-    //    private static String ip = "192.168.2.4";
+//    private static String ip = "192.168.2.4";
 //    private static String ip = "192.168.2.11";
 //    private static String ip = "192.168.2.7";
     public static String version;
@@ -96,8 +96,8 @@ public class App extends Application {
     private void getip() {
         String tmp = config.getString("ip", "");
         if (!tmp.equals("")) {
-//            headurl = "http://" + tmp + ":8109/ktv/api/";
-            headurl = "http://" + tmp + ":8080/ktv/api/";
+            headurl = "http://" + tmp + ":8109/ktv/api/";
+//            headurl = "http://" + tmp + ":8080/ktv/api/";
             Log.d("host", "---headurl---\n" + headurl);
             socketurl = "http://" + tmp + ":8000/tv";
             Log.d("host", "---headurl---\n" + socketurl);
@@ -185,7 +185,6 @@ public class App extends Application {
                         .append(params.get(key));
             }
         }
-        Log.e("rrrrrrrrrrr", builder.toString());
         return builder.toString();
     }
 
