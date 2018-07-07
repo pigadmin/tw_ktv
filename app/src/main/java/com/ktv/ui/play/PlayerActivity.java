@@ -178,8 +178,7 @@ public class PlayerActivity extends BaseActivity implements MediaPlayer.OnPrepar
                 String url = current.path;
 //                String url = testurl;
                 Log.d(tag, url);
-                String testurl = "http://183.60.197.29/20/x/h/k/k/xhkkasvwnohcmcnivchcmpnugztujq/hc.yinyuetai.com/7C110164442D4B67745E9D3E77F66929.mp4";
-                player.setVideoURI(Uri.parse(testurl));
+                player.setVideoURI(Uri.parse(url));
 
             }
         } catch (Exception e) {
@@ -197,7 +196,7 @@ public class PlayerActivity extends BaseActivity implements MediaPlayer.OnPrepar
         music_progress.setMax(mediaPlayer.getDuration());
         handler.sendEmptyMessage(updateprogress);
 
-        record();
+//        record();
     }
 
     private void record() {

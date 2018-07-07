@@ -33,6 +33,7 @@ public class BaseActivity extends Activity {
         super.onCreate(savedInstanceState);
     }
 
+
     public void onEvent(ErrorMessage event) {
         System.out.println("00000000000000000000000");
     }
