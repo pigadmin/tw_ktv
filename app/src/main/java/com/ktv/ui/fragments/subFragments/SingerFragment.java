@@ -59,6 +59,9 @@ public class SingerFragment extends BaseFr {
     private int mIndex;
     private String mSearchContent;
 
+    private int mLimit = App.Srclimit;//页码量
+    private int mPage = 1;//第几页
+
     public Handler handler=new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -111,8 +114,8 @@ public class SingerFragment extends BaseFr {
     private void getSingerServer(int mIndex,String searchContent){
         weakHashMap.put("mac", App.mac);
         weakHashMap.put("STBtype","2");
-        weakHashMap.put("page","1");//第几页    不填默认1
-        weakHashMap.put("limit","100");//页码量   不填默认10，最大限度100
+        weakHashMap.put("page",mPage+"");//第几页    不填默认1
+        weakHashMap.put("limit",mLimit+"");//页码量   不填默认10，最大限度100
         weakHashMap.put("singertypeid",null);//歌手类型id
         switch (mIndex){
             case 1:
@@ -179,6 +182,22 @@ public class SingerFragment extends BaseFr {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 SingerNumBean.SingerBean singerBean=  mSingerBeans.get(position);
                 toClass(singerBean.id,singerBean.name);
+            }
+        });
+
+        listView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                int index = position+1;
+                if (mPage*mLimit==index){
+                    mPage++;
+                    getSingerServer(mIndex,mSearchContent);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
             }
         });
     }
