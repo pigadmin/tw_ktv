@@ -69,7 +69,8 @@ public class MusicListFragment extends BaseFr {
             switch (msg.what){
                 case Search_Music_Success:
                     mNofoundText.setVisibility(View.GONE);
-//                    playAdater.notifyDataSetChanged();
+                    playAdater.notifyDataSetChanged();
+                    listView.requestFocusFromTouch();
                     mSerachText.setText("搜索到 "+mSingerName+" 的歌曲"+musicPlayBeans.size()+"首");
                     break;
                 case Search_Music_Failure:
@@ -125,7 +126,7 @@ public class MusicListFragment extends BaseFr {
         listView=view.findViewById(R.id.listview);
         listView.setItemsCanFocus(true);//设置item项的子控件能够获得焦点（默认为false，即默认item项的子空间是不能获得焦点的）
 
-        playAdater=new MusicPlayAdater(getActivity(),R.layout.music_play_item, musicPlayBeans,mDb);
+        playAdater=new MusicPlayAdater(listView,getActivity(),R.layout.music_play_item, musicPlayBeans,mDb);
         listView.setAdapter(playAdater);
     }
 
@@ -177,21 +178,13 @@ public class MusicListFragment extends BaseFr {
         }
     }
 
-    private View v = null;
-
     @Override
     public void onResume() {
         super.onResume();
-        if (v != null) {
-            v.requestFocus();
-        } else {
-            listView.requestFocus();
-        }
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        v = getActivity().getCurrentFocus();
     }
 }

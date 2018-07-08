@@ -1,8 +1,6 @@
 package com.ktv.adapters;
 
-import android.app.Activity;
 import android.content.Context;
-import android.os.Handler;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ListView;
@@ -39,14 +37,6 @@ public class Fragment3Adater extends BAdapter<MusicPlayBean> {
         this.listView = listView;
     }
 
-    int posi;
-
-    public void updateUI(int posi) {
-        this.posi = posi;
-        notifyDataSetChanged();
-        listView.requestFocus();
-    }
-
     @Override
     public void onInitView(View convertView, final int position) {
         TextView singertitle = get(convertView, R.id.singername);//歌手名称
@@ -54,16 +44,7 @@ public class Fragment3Adater extends BAdapter<MusicPlayBean> {
         TextView playType = get(convertView, R.id.playType);// 标识HD or 演唱会
         TextView pointText = get(convertView, R.id.pointText);//未点
         final TextView play = get(convertView, R.id.play);//置顶
-        play.setTag(position);
         final TextView addPlay = get(convertView, R.id.addPlay);//删除
-        addPlay.setTag(position);
-        if (position == posi) {
-            play.setVisibility(View.VISIBLE);
-            addPlay.setVisibility(View.VISIBLE);
-        } else {
-            play.setVisibility(View.INVISIBLE);
-            addPlay.setVisibility(View.INVISIBLE);
-        }
 
         final MusicPlayBean playBean = getItem(position);
 
@@ -91,13 +72,7 @@ public class Fragment3Adater extends BAdapter<MusicPlayBean> {
                     playBean.localTime = SyncServerdate.getLocalTime();
                     mDb.update(playBean);
                     notifyDataSetChanged();
-//                    handler.post(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            listView.requestFocus();
-////                            listView.setSelection((int) v.getTag());
-//                        }
-//                    });
+                    listView.requestFocusFromTouch();
                 } catch (Exception e) {
                     Logger.i(TAG, "置顶异常e.." + e.getMessage());
                 }
@@ -113,21 +88,11 @@ public class Fragment3Adater extends BAdapter<MusicPlayBean> {
                     mDb.delete(playBean);//先删除DB数据
                     getAllData().remove(playBean);//再删本地列表
                     notifyDataSetChanged();
-//                    handler.post(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            listView.requestFocus();
-////                            System.out.println((int) v.getTag());
-////                            listView.setSelection((int) v.getTag());
-//                        }
-//                    });
-
+                    listView.requestFocusFromTouch();
                 } catch (Exception e) {
                     Logger.i(TAG, "删除异常e.." + e.getMessage());
                 }
             }
         });
     }
-
-    Handler handler = new Handler();
 }

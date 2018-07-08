@@ -84,8 +84,8 @@ public class RankList extends BaseFr implements RecyclerAdapter.OnItemClickListe
 
         if (page == 1) {
             playAdater.notifyDataSetChanged();
+            lists.requestFocusFromTouch();
         }
-
     }
 
     private RecyclerView grids;

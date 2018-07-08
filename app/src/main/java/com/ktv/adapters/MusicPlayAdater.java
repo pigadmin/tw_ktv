@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.ktv.R;
@@ -28,10 +29,13 @@ public class MusicPlayAdater extends BAdapter<MusicPlayBean> {
 
     private DbManager mDb;
 
-    public MusicPlayAdater(Context context, int layoutId, List<MusicPlayBean> list, DbManager mDb) {
+    private ListView listView;
+
+    public MusicPlayAdater(ListView listView,Context context, int layoutId, List<MusicPlayBean> list, DbManager mDb) {
         super(context, layoutId, list);
         this.mContext = context;
         this.mDb = mDb;
+        this.listView = listView;
     }
 
     @Override

@@ -67,6 +67,7 @@ public class SingerFragment extends BaseFr {
                 case Search_Song_Success:
                     mNofoundText.setVisibility(View.GONE);
                     singerPlayAdater.notifyDataSetChanged();
+                    listView.requestFocusFromTouch();
                     mSerachText.setText("搜索到歌手 "+mSingerBeans.size()+" 名");
                     break;
                 case Search_Song_Failure:
@@ -144,22 +145,15 @@ public class SingerFragment extends BaseFr {
         singerPlayAdater=new SingerPlayAdater(getActivity(),R.layout.singer_play_item, mSingerBeans);
         listView.setAdapter(singerPlayAdater);
     }
-    private View v = null;
 
     @Override
     public void onResume() {
         super.onResume();
-        if (v != null) {
-            v.requestFocus();
-        } else {
-            listView.requestFocus();
-        }
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        v = getActivity().getCurrentFocus();
     }
     /**
      * 切换到 MusicSubFragment

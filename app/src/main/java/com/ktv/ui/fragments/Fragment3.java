@@ -9,8 +9,6 @@ import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -19,7 +17,6 @@ import com.ktv.R;
 import com.ktv.adapters.Fragment3Adater;
 import com.ktv.bean.MusicPlayBean;
 import com.ktv.tools.Logger;
-import com.ktv.tools.ToastUtils;
 import com.ktv.ui.BaseFr;
 import com.ktv.ui.diy.Tips;
 import com.ktv.ui.play.PlayerActivity;
@@ -62,13 +59,8 @@ public class Fragment3 extends BaseFr {
                 case Search_Music_Success:
                     mNofoundText.setVisibility(View.GONE);
                     playAdater.notifyDataSetChanged();
+                    listView.requestFocusFromTouch();
                     mSerachText.setText("按【菜单】键编辑本地歌曲");
-
-//                    if (!listView.isSelected()) {
-//                        listView.setSelection(0);
-//                        listView.setItemsCanFocus(true);
-//                    }
-
                     break;
                 case Search_Music_Failure:
                     mNofoundText.setText("还未添加歌曲,请先点歌!");
@@ -88,28 +80,16 @@ public class Fragment3 extends BaseFr {
         return view;
     }
 
-
-    private View v = null;
-
     @Override
     public void onResume() {
         super.onResume();
         isMusicStateList();
-        if (v != null) {
-            v.requestFocus();
-        } else {
-//            mPlayImme.requestFocus();
-//            Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.a_scale);
-//            mPlayImme.startAnimation(animation);
-
-        }
         Logger.i(TAG, "当前焦点..." + getActivity().getCurrentFocus());
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        v = getActivity().getCurrentFocus();
     }
 
     /**
@@ -129,21 +109,8 @@ public class Fragment3 extends BaseFr {
         listView = view.findViewById(R.id.listview);
         listView.setItemsCanFocus(true);//设置item项的子控件能够获得焦点（默认为false，即默认item项的子空间是不能获得焦点的）
 
-
         playAdater = new Fragment3Adater(listView, getActivity(), R.layout.fragment3_item, musicPlayBeans, mDb);
         listView.setAdapter(playAdater);
-
-        listView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                playAdater.updateUI(i);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
     }
 
     /**
