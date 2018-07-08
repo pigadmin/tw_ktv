@@ -70,6 +70,7 @@ public class Fragment2 extends BaseFr {
                 case Search_Music_Success:
                     mNoText.setVisibility(View.GONE);
                     playAdater.notifyDataSetChanged();
+                    mRecyclerView.requestFocusFromTouch();
                     break;
                 case Search_Music_Failure:
                     mNoText.setVisibility(View.VISIBLE);
@@ -118,24 +119,14 @@ public class Fragment2 extends BaseFr {
         mRecyclerView.setLayoutManager(mLayoutManager);
     }
 
-
-    private View v = null;
-
     @Override
     public void onResume() {
         super.onResume();
-        if (v != null) {
-            v.requestFocus();
-        } else {
-            mRecyclerView.requestFocus();
-        }
-        System.out.println( getActivity().getCurrentFocus());
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        v = getActivity().getCurrentFocus();
     }
 
     /**
