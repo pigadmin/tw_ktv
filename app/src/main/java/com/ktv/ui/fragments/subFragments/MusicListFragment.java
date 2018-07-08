@@ -92,6 +92,13 @@ public class MusicListFragment extends BaseFr {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        playAdater.notifyDataSetChanged();
+        listView.requestFocusFromTouch();
+    }
+
     /**
      * Bundle传值
      */
@@ -176,11 +183,6 @@ public class MusicListFragment extends BaseFr {
                 isMusicStateList(numBean.list);
             }
         }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
     }
 
     @Override

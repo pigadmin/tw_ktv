@@ -93,6 +93,13 @@ public class MusicFragment extends BaseFr {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        playAdater.notifyDataSetChanged();
+        listView.requestFocusFromTouch();
+    }
+
     /**
      * Bundle传值
      */

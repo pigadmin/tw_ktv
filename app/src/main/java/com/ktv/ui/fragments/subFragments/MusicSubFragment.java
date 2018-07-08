@@ -92,6 +92,13 @@ public class MusicSubFragment extends BaseFr {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        playAdater.notifyDataSetChanged();
+        listView.requestFocusFromTouch();
+    }
+
     /**
      * Bundle传值
      */
@@ -127,11 +134,6 @@ public class MusicSubFragment extends BaseFr {
 
         playAdater=new MusicPlayAdater(listView,getActivity(),R.layout.music_play_item, musicPlayBeans,mDb);
         listView.setAdapter(playAdater);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
     }
 
     @Override
