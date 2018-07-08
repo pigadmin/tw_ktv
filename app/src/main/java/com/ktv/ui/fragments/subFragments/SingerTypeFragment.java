@@ -329,6 +329,7 @@ public class SingerTypeFragment extends BaseFr {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+
     }
 
     /**
@@ -454,7 +455,7 @@ public class SingerTypeFragment extends BaseFr {
      * 通过搜索输入法,获取歌星分类
      */
     private void serverSeach(String searchContent) {
-
+        mItemList.clear();
         weakHashMap.put("mac", App.mac);
         weakHashMap.put("STBtype", "2");
         weakHashMap.put("page", "1");//第几页    不填默认1

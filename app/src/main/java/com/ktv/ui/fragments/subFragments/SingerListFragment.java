@@ -466,6 +466,7 @@ public class SingerListFragment extends BaseFr {
      * 通过搜索输入法,获取歌星
      */
     private void serverSeach(String searchContent){
+        mItemList.clear();
         isInterfaceType=false;
 
         weakHashMap.put("mac", App.mac);
