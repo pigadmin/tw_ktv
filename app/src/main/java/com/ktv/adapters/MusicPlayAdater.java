@@ -29,13 +29,10 @@ public class MusicPlayAdater extends BAdapter<MusicPlayBean> {
 
     private DbManager mDb;
 
-    private ListView listView;
-
-    public MusicPlayAdater(ListView listView,Context context, int layoutId, List<MusicPlayBean> list, DbManager mDb) {
+    public MusicPlayAdater(Context context, int layoutId, List<MusicPlayBean> list, DbManager mDb) {
         super(context, layoutId, list);
         this.mContext = context;
         this.mDb = mDb;
-        this.listView = listView;
     }
 
     @Override
