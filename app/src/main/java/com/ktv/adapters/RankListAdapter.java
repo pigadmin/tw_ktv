@@ -19,6 +19,7 @@ import com.ktv.ui.play.PlayerActivity;
 import org.xutils.DbManager;
 import org.xutils.ex.DbException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RankListAdapter extends BAdapter<ListItem> {
@@ -33,7 +34,13 @@ public class RankListAdapter extends BAdapter<ListItem> {
         super(context, layoutId, list);
         this.mContext = context;
         this.mDb = mDb;
+        try {
+            playlist = mDb.selector(MusicPlayBean.class).orderBy("localTime", true).findAll();
+        } catch (Exception e) {
+        }
     }
+
+    private List<MusicPlayBean> playlist;
 
     @Override
     public void onInitView(View convertView, final int position) {
@@ -62,17 +69,24 @@ public class RankListAdapter extends BAdapter<ListItem> {
             playType.setText(playBean.getLabel());
         }
 
-        pointText.setText("未點");
+
+        System.out.println(playlist.contains(musicPlayBean.id));
+        if (playlist.contains(musicPlayBean.id)) {
+            pointText.setText("已點");
+        } else {
+            pointText.setText("未點");
+        }
+
 
         //播放
         play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CustomAnimatUtils.showStyle1(play,mContext,R.anim.play_top_1,true);
+                CustomAnimatUtils.showStyle1(play, mContext, R.anim.play_top_1, true);
 
-                saveData(musicPlayBean,false);
+                saveData(musicPlayBean, false);
 
-                Intent intent=new Intent(mContext, PlayerActivity.class);
+                Intent intent = new Intent(mContext, PlayerActivity.class);
                 mContext.startActivity(intent);
             }
         });
@@ -81,22 +95,22 @@ public class RankListAdapter extends BAdapter<ListItem> {
         addPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveData(musicPlayBean,true);
-                CustomAnimatUtils.showStyle1(addPlay,mContext,R.anim.addplay_top_1,false);
+                saveData(musicPlayBean, true);
+                CustomAnimatUtils.showStyle1(addPlay, mContext, R.anim.addplay_top_1, false);
             }
         });
     }
 
-    private void saveData(MusicPlayBean playBean,boolean isInfo){
+    private void saveData(MusicPlayBean playBean, boolean isInfo) {
         try {
             mDb.save(playBean);
-            if (isInfo){
-                ToastUtils.showShortToast(mContext,playBean.singerName+" 的 "+playBean.name+" 歌曲添加成功");
+            if (isInfo) {
+                ToastUtils.showShortToast(mContext, playBean.singerName + " 的 " + playBean.name + " 歌曲添加成功");
             }
-        } catch (Exception e){
-            Logger.i(TAG,"保存数据异常.."+e.getMessage());
-            if (isInfo){
-                ToastUtils.showShortToast(mContext,"此歌曲已被添加");
+        } catch (Exception e) {
+            Logger.i(TAG, "保存数据异常.." + e.getMessage());
+            if (isInfo) {
+                ToastUtils.showShortToast(mContext, "此歌曲已被添加");
             }
         }
     }

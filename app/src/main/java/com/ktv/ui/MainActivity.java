@@ -154,7 +154,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             switch (msg.what) {
                 case 0:
                     hidead();
-                    if (currentad < adEntities.size() - 1) {
+                    if (currentad < adEntities.size()) {
                         switch (adEntities.get(currentad).getAppearWay()) {
                             case 1:
                                 startAnim(ad_alpha);
@@ -186,6 +186,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private void startAnim(Animation animation) {
         try {
             System.out.println(currentad);
+
             String[] weizhi = adLists.getPosition().split(",");
             ImageView ad_image = null;
             if (weizhi[currentad].equals("2")) {
