@@ -84,8 +84,6 @@ public class Fragment2 extends BaseFr {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment2, container, false);
         mContext = getActivity();
-        mPage=1;
-        getMusicServer();
         initView();
         initLiter();
         return view;
@@ -122,6 +120,8 @@ public class Fragment2 extends BaseFr {
     @Override
     public void onResume() {
         super.onResume();
+        mPage=1;
+        getMusicServer();
     }
 
     @Override
@@ -171,6 +171,7 @@ public class Fragment2 extends BaseFr {
     }
 
     private void isMusicStateList(List<SongNumBean.SongLargeBean> playBeans) {
+        mItemList.clear();
         if (playBeans != null && !playBeans.isEmpty()) {
             Logger.d(TAG, "list长度1..." + playBeans.size());
             mItemList.addAll(playBeans);
