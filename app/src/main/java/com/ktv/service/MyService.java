@@ -247,8 +247,7 @@ public class MyService extends Service implements Runnable, IScrollState {
     public void rollTitles() {
         try {
             if (rollTitles != null && !rollTitles.isEmpty()) {
-                Log.d(tag, LtoDate.yMdHmsE(rollTitles.get(currentmsg).getEndtime()) + "----" + rollTitles.size());
-                if (rollTitles.get(currentmsg).getEndtime() > System.currentTimeMillis()) {
+                if (System.currentTimeMillis() > rollTitles.get(currentmsg).getEndtime()) {
                     rollTitles.remove(currentmsg);
                     handler.post(this);
                     return;
