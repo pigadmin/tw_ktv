@@ -61,12 +61,14 @@ public class MusicListFragmentAdater extends BAdapter<MusicPlayBean> {
             playType.setText(playBean.label);
         }
 
+        Logger.i(TAG,"playlist."+playlist.size());
+
         String [] str= (playBean.id).split("\\.0");
         if (playlist!=null&&!playlist.isEmpty()){
             for (MusicPlayBean music : playlist) {
                 if (str[0].equals(music.id)) {
                     pointText.setText(R.string.yd);
-                    return;
+                    break;
                 }
             }
         }
