@@ -125,7 +125,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private Animation ad_rotate;
     private Animation ad_scale;
     private Animation ad_translate;
-    private AdList adLists;
+    private AdList adLists = new AdList();
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
@@ -145,7 +145,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             }
         }
     };
-    private List<AdEntities> adEntities;
+    private List<AdEntities> adEntities = new ArrayList<>();
     private int currentad = 0;
     private Handler adhandler = new Handler() {
         @Override

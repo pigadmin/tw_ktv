@@ -101,15 +101,20 @@ public class PlayerActivity extends BaseActivity implements MediaPlayer.OnPrepar
     }
 
     private void checkad() {
-        adLists = app.getAdLists();
-        adEntities = adLists.getAdEntities();
-        if (adEntities.isEmpty())
-            return;
+        try {
+            adLists = app.getAdLists();
+            adEntities = adLists.getAdEntities();
+            if (adLists == null)
+                return;
+            if (adEntities.isEmpty())
+                return;
 
-        adhandler.sendEmptyMessage(0);
-        Log.e(tag, "广告结束时间" + LtoDate.HMmd(adLists.getEndtime() - System.currentTimeMillis()));
+            adhandler.sendEmptyMessage(0);
+            Log.e(tag, "广告结束时间" + LtoDate.HMmd(adLists.getEndtime() - System.currentTimeMillis()));
 
-        adhandler.sendEmptyMessageDelayed(1, adLists.getEndtime() - System.currentTimeMillis());
+            adhandler.sendEmptyMessageDelayed(1, adLists.getEndtime() - System.currentTimeMillis());
+        } catch (Exception e) {
+        }
 
     }
 
@@ -133,10 +138,10 @@ public class PlayerActivity extends BaseActivity implements MediaPlayer.OnPrepar
     private Animation ad_rotate;
     private Animation ad_scale;
     private Animation ad_translate;
-    private AdList adLists;
+    private AdList adLists = new AdList();
 
 
-    private List<AdEntities> adEntities;
+    private List<AdEntities> adEntities = new ArrayList<>();
     private int currentad = 0;
     private Handler adhandler = new Handler() {
         @Override
@@ -427,12 +432,12 @@ public class PlayerActivity extends BaseActivity implements MediaPlayer.OnPrepar
     private void exit() {
         AlertDialog dialog = new AlertDialog.Builder(this).setTitle(R.string.tip_title).setMessage(R.string.tip_exit)
                 .setIcon(android.R.drawable.ic_dialog_info)
-               .setNegativeButton(R.string.cancle, new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.cancle, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                     }
-                }) .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                }).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         finish();

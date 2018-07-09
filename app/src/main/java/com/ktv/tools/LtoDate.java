@@ -12,7 +12,7 @@ public class LtoDate {
     static SimpleDateFormat E = new SimpleDateFormat("E");
 
     static SimpleDateFormat HMmd = new SimpleDateFormat("HH:mm MM/dd");
-    static SimpleDateFormat yMdHmE = new SimpleDateFormat(
+    static SimpleDateFormat yMdHmsE = new SimpleDateFormat(
             "yyyy-MM-dd HH:mm:ss E");
 
 
@@ -46,9 +46,9 @@ public class LtoDate {
 
     }
 
-    public static String yMdHmE(long dates) {
+    public static String yMdHmsE(long dates) {
         Date date = new Date(dates);
-        return yMdHmE.format(date);
+        return yMdHmsE.format(date);
 
     }
 

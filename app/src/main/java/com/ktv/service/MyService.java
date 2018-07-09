@@ -24,6 +24,7 @@ import com.ktv.bean.RollTitles;
 import com.ktv.service.msg.IScrollState;
 import com.ktv.service.msg.MarqueeToast;
 import com.ktv.service.msg.TextSurfaceView;
+import com.ktv.tools.LtoDate;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -57,7 +58,7 @@ public class MyService extends Service implements Runnable, IScrollState {
 
     private Socket socket;
 
-    private List<RollTitles> rollTitles;
+    private List<RollTitles> rollTitles = new ArrayList<>();
     private AdList adLists;
 
     private void websocket() {
@@ -89,8 +90,8 @@ public class MyService extends Service implements Runnable, IScrollState {
                     // TODO Auto-generated method stub
                     try {
                         String json = arg0[0].toString();
-                        Log.d(tag + System.currentTimeMillis() + "---" + "rollTitles", json );
-                        rollTitles = Arrays.asList(App.gson.fromJson(json, RollTitles[].class));
+                        Log.d(tag + System.currentTimeMillis() + "---" + "rollTitles", json);
+                        rollTitles = new ArrayList<>(Arrays.asList(App.gson.fromJson(json, RollTitles[].class)));
                         currentmsg = 0;
                         handler.post(MyService.this);
 
@@ -107,7 +108,7 @@ public class MyService extends Service implements Runnable, IScrollState {
                         String json = arg0[0].toString();
                         Log.d(tag + "---" + "adList", json);
                         System.out.println("初始化广告");
-                        AdList tmp = Arrays.asList(App.gson.fromJson(json, AdList[].class)).get(0);
+                        AdList tmp = new ArrayList<>(Arrays.asList(App.gson.fromJson(json, AdList[].class))).get(0);
                         adLists = tmp;
                         app.setAdLists(adLists);
                         adList();
@@ -245,9 +246,13 @@ public class MyService extends Service implements Runnable, IScrollState {
 
     public void rollTitles() {
         try {
-            System.out.println("-------------------------------------66");
-            System.out.println(rollTitles != null && !rollTitles.isEmpty());
             if (rollTitles != null && !rollTitles.isEmpty()) {
+                Log.d(tag, LtoDate.yMdHmsE(rollTitles.get(currentmsg).getEndtime()) + "----" + rollTitles.size());
+                if (rollTitles.get(currentmsg).getEndtime() > System.currentTimeMillis()) {
+                    rollTitles.remove(currentmsg);
+                    handler.post(this);
+                    return;
+                }
 //                System.out.println("开始跑马灯");
                 if (rollTitles.size() <= currentmsg)
                     currentmsg = 0;
