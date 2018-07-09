@@ -14,6 +14,8 @@ import java.util.List;
 
 public class Fragment2Adapter extends RecyclerAdapter<SongNumBean.SongLargeBean>  {
 
+    private static final String TAG="Fragment2Adapter";
+
     public Fragment2Adapter(Context context, int layoutId, List datas) {
         super(context, layoutId, datas);
     }

@@ -6,6 +6,7 @@ import android.widget.ImageView;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
 
 public class PicassoUtil {
     //基础使用 - 网络加载
@@ -18,7 +19,7 @@ public class PicassoUtil {
     }
     //站位使用 - 网络加载 - 推荐
     public static void picassoAdvanced(Context context, String loadUrl, int placeImageView, int errorImageView, ImageView imageView) {
-        Picasso.with(context).load(loadUrl).placeholder(placeImageView).error(errorImageView).into(imageView);
+        Picasso.with(context).load(utf8Togb2312(loadUrl)).placeholder(placeImageView).error(errorImageView).into(imageView);
     }
     //限制使用（可设置图片大小，圆角） - 网络加载
     public static void picassoClip(Context context, String loadUrl, int width, int height, ImageView imageView) {
@@ -39,5 +40,29 @@ public class PicassoUtil {
          * 之后获取url输入到第二个参数就可以
          * */
         Picasso.with(context).load(url).into(imageView);
+    }
+
+    /**
+     * 加载中文网址
+     * @param str
+     * @return
+     */
+    public  static String utf8Togb2312(String str){
+        String data="";
+        try {
+            for(int i=0;i<str.length();i++){
+                char c=str.charAt(i);
+                if(c+"".getBytes().length>1&&c!=':'&&c!='/'){
+                    data = data+java.net.URLEncoder.encode(c+"","utf-8");
+                }else {
+                    data=data+c;
+                }
+            }
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }finally{
+            System.out.println(data);
+        }
+        return  data;
     }
 }
