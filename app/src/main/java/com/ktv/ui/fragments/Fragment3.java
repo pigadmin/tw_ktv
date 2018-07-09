@@ -60,11 +60,11 @@ public class Fragment3 extends BaseFr {
                     mNofoundText.setVisibility(View.GONE);
                     playAdater.notifyDataSetChanged();
                     listView.requestFocusFromTouch();
-                    mSerachText.setText("按【菜单】键编辑本地歌曲");
+                    mSerachText.setText("當前已點歌曲 "+musicPlayBeans.size()+" 首");
                     break;
                 case Search_Music_Failure:
                     mNofoundText.setText("还未添加歌曲,请先点歌!");
-                    mSerachText.setText("按【菜单】键编辑本地歌曲");
+                    mSerachText.setText("當前暫無已點歌曲");
                     playAdater.notifyDataSetChanged();
                     break;
             }

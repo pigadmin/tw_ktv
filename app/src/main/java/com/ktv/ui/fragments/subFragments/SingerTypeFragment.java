@@ -100,7 +100,7 @@ public class SingerTypeFragment extends BaseFr {
                 case Search_Music_Failure:
                     playAdater.notifyDataSetChanged();
                     mNoText.setVisibility(View.VISIBLE);
-                    mNoText.setText("当前无数据");
+                    mNoText.setText("當前无数据");
                     break;
             }
         }
