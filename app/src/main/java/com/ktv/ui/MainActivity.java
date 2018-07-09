@@ -442,10 +442,17 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 Logger.i(TAG, "s.." + s);
                 MusicNumBean numBean = GsonJsonUtils.parseJson2Obj(s, MusicNumBean.class);
                 if (numBean == null) {
-                    if (!mllt.isShown()) {
-                        mllt.setVisibility(View.VISIBLE);
-                    }
-                    mInfo1.setText("未開通編號點歌功能!");
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (!mllt.isShown()) {
+                                mllt.setVisibility(View.VISIBLE);
+                            }
+                            mInfo1.setText("未開通編號點歌功能!");
+                            mInfo2.setText(null);
+                            mInfo3.setText(null);
+                        }
+                    });
                 } else {
                     isMusicStateList(numBean.list);
                 }
