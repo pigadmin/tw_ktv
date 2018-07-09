@@ -27,7 +27,7 @@ public class MusicPlayAdater extends BAdapter<MusicPlayBean> {
     Context mContext;
 
     private DbManager mDb;
-
+    private List<MusicPlayBean> playlist;
 
     public MusicPlayAdater(Context context, int layoutId, List<MusicPlayBean> list, DbManager mDb) {
         super(context, layoutId, list);
@@ -36,10 +36,9 @@ public class MusicPlayAdater extends BAdapter<MusicPlayBean> {
         try {
             playlist = mDb.selector(MusicPlayBean.class).orderBy("localTime", true).findAll();
         } catch (Exception e) {
+            Logger.i(TAG,"e.."+e.getMessage());
         }
     }
-
-    private List<MusicPlayBean> playlist;
 
     @Override
     public void onInitView(View convertView, final int position) {
@@ -52,7 +51,7 @@ public class MusicPlayAdater extends BAdapter<MusicPlayBean> {
 
         final MusicPlayBean playBean= getItem(position);
 
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         if (playBean.singerName.length()==2){
             sb.append(playBean.singerName).insert(1,"\t\t");
@@ -70,14 +69,15 @@ public class MusicPlayAdater extends BAdapter<MusicPlayBean> {
             playType.setText(playBean.label);
         }
 
-        String id = playBean.id;
-        for (MusicPlayBean music : playlist) {
-            if (id.equals(music.id)) {
-                pointText.setText(R.string.yd);
-                return;
+        String [] str= (playBean.id).split("\\.0");
+        if (playlist!=null&&!playlist.isEmpty()){
+            for (MusicPlayBean music : playlist) {
+                if (str[0].equals(music.id)) {
+                    pointText.setText(R.string.yd);
+                    return;
+                }
             }
         }
-
 
         //播放
         play.setOnClickListener(new View.OnClickListener() {
