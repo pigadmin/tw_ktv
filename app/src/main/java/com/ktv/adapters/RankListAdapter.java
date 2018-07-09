@@ -40,7 +40,7 @@ public class RankListAdapter extends BAdapter<ListItem> {
         }
     }
 
-    private List<MusicPlayBean> playlist;
+    private List<MusicPlayBean> playlist = new ArrayList<>();
 
     @Override
     public void onInitView(View convertView, final int position) {

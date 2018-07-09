@@ -176,20 +176,23 @@ public class PlayerActivity extends BaseActivity implements MediaPlayer.OnPrepar
 
     private void startAnim(Animation animation) {
         try {
-            System.out.println(currentad);
-            String[] weizhi = adLists.getPosition().split(",");
-            ImageView ad_image = null;
-            if (weizhi[currentad].equals("2")) {
-                ad_image = ad_top;
-            } else if (weizhi[currentad].equals("3")) {
-                ad_image = ad_bottom;
-            } else if (weizhi[currentad].equals("4")) {
-                ad_image = ad_left;
-            } else if (weizhi[currentad].equals("5")) {
-                ad_image = ad_right;
+            String weizhi = adLists.getPosition();
+            if (weizhi.contains("2")) {
+                ad_top.startAnimation(animation);
+                Picasso.with(PlayerActivity.this).load(adEntities.get(currentad).getNgPath()).into(ad_top);
             }
-            ad_image.startAnimation(animation);
-            Picasso.with(PlayerActivity.this).load(adEntities.get(currentad).getNgPath()).into(ad_image);
+            if (weizhi.contains("3")) {
+                ad_bottom.startAnimation(animation);
+                Picasso.with(PlayerActivity.this).load(adEntities.get(currentad).getNgPath()).into(ad_bottom);
+            }
+            if (weizhi.contains("4")) {
+                ad_left.startAnimation(animation);
+                Picasso.with(PlayerActivity.this).load(adEntities.get(currentad).getNgPath()).into(ad_left);
+            }
+            if (weizhi.contains("5")) {
+                ad_right.startAnimation(animation);
+                Picasso.with(PlayerActivity.this).load(adEntities.get(currentad).getNgPath()).into(ad_right);
+            }
         } catch (Exception e) {
         }
 

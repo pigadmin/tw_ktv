@@ -185,21 +185,25 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private void startAnim(Animation animation) {
         try {
-            System.out.println(currentad);
-
-            String[] weizhi = adLists.getPosition().split(",");
-            ImageView ad_image = null;
-            if (weizhi[currentad].equals("2")) {
-                ad_image = ad_top;
-            } else if (weizhi[currentad].equals("3")) {
-                ad_image = ad_bottom;
-            } else if (weizhi[currentad].equals("4")) {
-                ad_image = ad_left;
-            } else if (weizhi[currentad].equals("5")) {
-                ad_image = ad_right;
+            String weizhi = adLists.getPosition();
+            if (weizhi.contains("2")) {
+                ad_top.startAnimation(animation);
+                Picasso.with(MainActivity.this).load(adEntities.get(currentad).getNgPath()).into(ad_top);
             }
-            ad_image.startAnimation(animation);
-            Picasso.with(MainActivity.this).load(adEntities.get(currentad).getNgPath()).into(ad_image);
+            if (weizhi.contains("3")) {
+                ad_bottom.startAnimation(animation);
+                Picasso.with(MainActivity.this).load(adEntities.get(currentad).getNgPath()).into(ad_bottom);
+            }
+            if (weizhi.contains("4")) {
+                ad_left.startAnimation(animation);
+                Picasso.with(MainActivity.this).load(adEntities.get(currentad).getNgPath()).into(ad_left);
+            }
+            if (weizhi.contains("5")) {
+                ad_right.startAnimation(animation);
+                Picasso.with(MainActivity.this).load(adEntities.get(currentad).getNgPath()).into(ad_right);
+            }
+
+
         } catch (Exception e) {
         }
 
@@ -401,10 +405,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     ToastUtils.showShortToast(mContext, "請先搜索歌曲");
                     return;
                 }
-                String [] str= (bianhao.id).split("\\.0");
-                Logger.i(TAG,"str[0].."+str[0]);
+                String[] str = (bianhao.id).split("\\.0");
+                Logger.i(TAG, "str[0].." + str[0]);
                 try {
-                    bianhao.id=str[0];//这里是去除id 6.0转为 6;
+                    bianhao.id = str[0];//这里是去除id 6.0转为 6;
                     mDb.save(bianhao);
                     ToastUtils.showShortToast(mContext, "歌曲已添加至已點歌曲");
                 } catch (Exception e) {

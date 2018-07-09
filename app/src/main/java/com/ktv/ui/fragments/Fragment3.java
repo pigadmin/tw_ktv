@@ -60,7 +60,7 @@ public class Fragment3 extends BaseFr {
                     mNofoundText.setVisibility(View.GONE);
                     playAdater.notifyDataSetChanged();
                     listView.requestFocusFromTouch();
-                    mSerachText.setText("當前已點歌曲 "+musicPlayBeans.size()+" 首");
+                    mSerachText.setText("當前已點歌曲 " + musicPlayBeans.size() + " 首");
                     break;
                 case Search_Music_Failure:
                     mNofoundText.setText("还未添加歌曲,请先点歌!");

@@ -89,10 +89,11 @@ public class MyService extends Service implements Runnable, IScrollState {
                     // TODO Auto-generated method stub
                     try {
                         String json = arg0[0].toString();
-                        Log.d(tag + "---" + "rollTitles", json);
+                        Log.d(tag + System.currentTimeMillis() + "---" + "rollTitles", json );
                         rollTitles = Arrays.asList(App.gson.fromJson(json, RollTitles[].class));
                         currentmsg = 0;
                         handler.post(MyService.this);
+
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -244,6 +245,8 @@ public class MyService extends Service implements Runnable, IScrollState {
 
     public void rollTitles() {
         try {
+            System.out.println("-------------------------------------66");
+            System.out.println(rollTitles != null && !rollTitles.isEmpty());
             if (rollTitles != null && !rollTitles.isEmpty()) {
 //                System.out.println("开始跑马灯");
                 if (rollTitles.size() <= currentmsg)

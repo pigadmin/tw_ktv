@@ -309,25 +309,28 @@ public class WelcomeActivity extends BaseActivity implements MediaPlayer.OnError
     private AlertDialog.Builder builder;
 
     private void warn(String title, String msg) {
-        builder = new AlertDialog.Builder(this);
-        builder.setCancelable(false);
-        builder.setTitle(title)
-                .setIcon(android.R.drawable.ic_dialog_info)
-                .setMessage(msg)
-                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+        try {
+            builder = new AlertDialog.Builder(this);
+            builder.setCancelable(false);
+            builder.setTitle(title)
+                    .setIcon(android.R.drawable.ic_dialog_info)
+                    .setMessage(msg)
+                    .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        init();
-                    }
-                }).setNegativeButton(R.string.cancle, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            init();
+                        }
+                    }).setNegativeButton(R.string.cancle, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            builder.show();
+        } catch (Exception e) {
+        }
 
-        builder.show();
     }
 }
