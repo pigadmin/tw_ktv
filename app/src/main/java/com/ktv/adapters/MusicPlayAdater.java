@@ -46,7 +46,7 @@ public class MusicPlayAdater extends BAdapter<MusicPlayBean> {
         TextView singertitle = get(convertView, R.id.singername);//歌手名称
         TextView singername = get(convertView, R.id.songname);//歌曲名称
         TextView playType = get(convertView, R.id.playType);// 标识HD or 演唱会
-       final TextView pointText = get(convertView, R.id.pointText);//未点
+        final TextView pointText = get(convertView, R.id.pointText);//未点
         final TextView play = get(convertView, R.id.play);//播放
         final TextView addPlay = get(convertView, R.id.addPlay);//添加
 

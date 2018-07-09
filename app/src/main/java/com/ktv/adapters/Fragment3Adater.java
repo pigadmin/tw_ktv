@@ -48,7 +48,15 @@ public class Fragment3Adater extends BAdapter<MusicPlayBean> {
 
         final MusicPlayBean playBean = getItem(position);
 
-        singertitle.setText(playBean.singerName);
+        StringBuffer sb = new StringBuffer();
+
+        if (playBean.singerName.length()==2){
+            sb.append(playBean.singerName).insert(1,"\t\t");
+            singertitle.setText(sb.toString());
+        } else {
+            singertitle.setText(playBean.singerName);
+        }
+
         singername.setText(playBean.name);
 
         if (TextUtils.isEmpty(playBean.label)) {
