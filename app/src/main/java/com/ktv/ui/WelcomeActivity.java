@@ -321,7 +321,12 @@ public class WelcomeActivity extends BaseActivity implements MediaPlayer.OnError
                         dialog.dismiss();
                         init();
                     }
-                });
+                }).setNegativeButton(R.string.cancle, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
 
         builder.show();
     }
