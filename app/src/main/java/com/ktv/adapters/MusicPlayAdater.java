@@ -23,7 +23,7 @@ import java.util.List;
  */
 public class MusicPlayAdater extends BAdapter<MusicPlayBean> {
 
-    private static final String TAG = "MusicPlayAdater";
+    private static final String TAG="MusicPlayAdater";
 
     Context mContext;
 
@@ -51,12 +51,12 @@ public class MusicPlayAdater extends BAdapter<MusicPlayBean> {
         final TextView play = get(convertView, R.id.play);//播放
         final TextView addPlay = get(convertView, R.id.addPlay);//添加
 
-        final MusicPlayBean playBean = getItem(position);
+        final MusicPlayBean playBean= getItem(position);
 
         singertitle.setText(playBean.singerName);
         singername.setText(playBean.name);
 
-        if (TextUtils.isEmpty(playBean.label)) {
+        if (TextUtils.isEmpty(playBean.label)){
             playType.setVisibility(View.GONE);
         } else {
             playType.setVisibility(View.VISIBLE);
@@ -76,11 +76,11 @@ public class MusicPlayAdater extends BAdapter<MusicPlayBean> {
         play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CustomAnimatUtils.showStyle1(play, mContext, R.anim.play_top_1, true);
+                CustomAnimatUtils.showStyle1(play,mContext,R.anim.play_top_1,true);
 
-                saveData(playBean, false);
+                saveData(playBean,false);
 
-                Intent intent = new Intent(mContext, PlayerActivity.class);
+                Intent intent=new Intent(mContext, PlayerActivity.class);
                 mContext.startActivity(intent);
             }
         });
@@ -89,22 +89,24 @@ public class MusicPlayAdater extends BAdapter<MusicPlayBean> {
         addPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveData(playBean, true);
-                CustomAnimatUtils.showStyle1(addPlay, mContext, R.anim.addplay_top_1, false);
+                saveData(playBean,true);
+                CustomAnimatUtils.showStyle1(addPlay,mContext,R.anim.addplay_top_1,false);
             }
         });
     }
 
-    private void saveData(MusicPlayBean playBean, boolean isInfo) {
+    private void saveData(MusicPlayBean playBean,boolean isInfo){
+        String [] str= (playBean.id).split("\\.0");
         try {
+            playBean.id=str[0];
             mDb.save(playBean);
-            if (isInfo) {
-                ToastUtils.showShortToast(mContext, playBean.singerName + " 的 " + playBean.name + " 歌曲添加成功");
+            if (isInfo){
+                ToastUtils.showShortToast(mContext,playBean.singerName+" 的 "+playBean.name+" 歌曲添加成功");
             }
-        } catch (Exception e) {
-            Logger.i(TAG, "保存数据异常.." + e.getMessage());
-            if (isInfo) {
-                ToastUtils.showShortToast(mContext, "此歌曲已被添加");
+        } catch (Exception e){
+            Logger.i(TAG,"保存数据异常.."+e.getMessage());
+            if (isInfo){
+                ToastUtils.showShortToast(mContext,"此歌曲已被添加");
             }
         }
     }
