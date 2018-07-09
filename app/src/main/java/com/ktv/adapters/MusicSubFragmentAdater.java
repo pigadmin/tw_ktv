@@ -20,7 +20,7 @@ import java.util.List;
 /**
  * 歌曲Adater
  */
-public class MusicPlayAdater extends BAdapter<MusicPlayBean> {
+public class MusicSubFragmentAdater extends BAdapter<MusicPlayBean> {
 
     private static final String TAG="MusicPlayAdater";
 
@@ -28,39 +28,24 @@ public class MusicPlayAdater extends BAdapter<MusicPlayBean> {
 
     private DbManager mDb;
 
-
-    public MusicPlayAdater(Context context, int layoutId, List<MusicPlayBean> list, DbManager mDb) {
+    public MusicSubFragmentAdater(Context context, int layoutId, List<MusicPlayBean> list, DbManager mDb) {
         super(context, layoutId, list);
         this.mContext = context;
         this.mDb = mDb;
-        try {
-            playlist = mDb.selector(MusicPlayBean.class).orderBy("localTime", true).findAll();
-        } catch (Exception e) {
-        }
     }
-
-    private List<MusicPlayBean> playlist;
 
     @Override
     public void onInitView(View convertView, final int position) {
         TextView singertitle = get(convertView, R.id.singername);//歌手名称
         TextView singername = get(convertView, R.id.songname);//歌曲名称
         TextView playType = get(convertView, R.id.playType);// 标识HD or 演唱会
-       final TextView pointText = get(convertView, R.id.pointText);//未点
+        TextView pointText = get(convertView, R.id.pointText);//未点
         final TextView play = get(convertView, R.id.play);//播放
         final TextView addPlay = get(convertView, R.id.addPlay);//添加
 
         final MusicPlayBean playBean= getItem(position);
 
-        StringBuffer sb = new StringBuffer();
-
-        if (playBean.singerName.length()==2){
-            sb.append(playBean.singerName).insert(1,"\t\t");
-            singertitle.setText(sb.toString());
-        } else {
-            singertitle.setText(playBean.singerName);
-        }
-
+        singertitle.setText(playBean.singerName);
         singername.setText(playBean.name);
 
         if (TextUtils.isEmpty(playBean.label)){
@@ -70,14 +55,7 @@ public class MusicPlayAdater extends BAdapter<MusicPlayBean> {
             playType.setText(playBean.label);
         }
 
-        String id = playBean.id;
-        for (MusicPlayBean music : playlist) {
-            if (id.equals(music.id)) {
-                pointText.setText(R.string.yd);
-                return;
-            }
-        }
-
+        pointText.setText("未點");
 
         //播放
         play.setOnClickListener(new View.OnClickListener() {
@@ -89,7 +67,6 @@ public class MusicPlayAdater extends BAdapter<MusicPlayBean> {
 
                 Intent intent=new Intent(mContext, PlayerActivity.class);
                 mContext.startActivity(intent);
-                pointText.setText(R.string.yd);
             }
         });
 
@@ -99,7 +76,6 @@ public class MusicPlayAdater extends BAdapter<MusicPlayBean> {
             public void onClick(View v) {
                 saveData(playBean,true);
                 CustomAnimatUtils.showStyle1(addPlay,mContext,R.anim.addplay_top_1,false);
-                pointText.setText(R.string.yd);
             }
         });
     }
