@@ -66,7 +66,7 @@ public class MusicSubFragmentAdater extends BAdapter<MusicPlayBean> {
             for (MusicPlayBean music : playlist) {
                 if (str[0].equals(music.id)) {
                     pointText.setText(R.string.yd);
-                    return;
+                    break;
                 }
             }
         }
