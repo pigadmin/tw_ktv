@@ -13,7 +13,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.ktv.R;
-import com.ktv.adapters.MusicPlayAdater;
+import com.ktv.adapters.MusicSubFragmentAdater;
 import com.ktv.app.App;
 import com.ktv.bean.AJson;
 import com.ktv.bean.MusicNumBean;
@@ -46,7 +46,7 @@ public class MusicSubFragment extends BaseFr {
     private TextView mNofoundText;
 
     private ListView listView;
-    private MusicPlayAdater playAdater;
+    private MusicSubFragmentAdater playAdater;
     private List<MusicPlayBean> musicPlayBeans;
 
     public static final int Search_Music_Success=100;//搜索歌曲成功
@@ -132,7 +132,7 @@ public class MusicSubFragment extends BaseFr {
         listView=view.findViewById(R.id.listview);
         listView.setItemsCanFocus(true);//设置item项的子控件能够获得焦点（默认为false，即默认item项的子空间是不能获得焦点的）
 
-        playAdater=new MusicPlayAdater(getActivity(),R.layout.music_play_item, musicPlayBeans,mDb);
+        playAdater=new MusicSubFragmentAdater(getActivity(),R.layout.music_play_item, musicPlayBeans,mDb);
         listView.setAdapter(playAdater);
     }
 

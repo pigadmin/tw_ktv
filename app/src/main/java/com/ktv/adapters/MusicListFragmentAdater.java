@@ -20,7 +20,7 @@ import java.util.List;
 /**
  * 歌曲Adater
  */
-public class MusicPlayAdater extends BAdapter<MusicPlayBean> {
+public class MusicListFragmentAdater extends BAdapter<MusicPlayBean> {
 
     private static final String TAG="MusicPlayAdater";
 
@@ -28,7 +28,7 @@ public class MusicPlayAdater extends BAdapter<MusicPlayBean> {
 
     private DbManager mDb;
 
-    public MusicPlayAdater(Context context, int layoutId, List<MusicPlayBean> list, DbManager mDb) {
+    public MusicListFragmentAdater(Context context, int layoutId, List<MusicPlayBean> list, DbManager mDb) {
         super(context, layoutId, list);
         this.mContext = context;
         this.mDb = mDb;
@@ -45,15 +45,7 @@ public class MusicPlayAdater extends BAdapter<MusicPlayBean> {
 
         final MusicPlayBean playBean= getItem(position);
 
-        StringBuffer sb = new StringBuffer();
-
-        if (playBean.singerName.length()==2){
-            sb.append(playBean.singerName).insert(1,"\t\t");
-            singertitle.setText(sb.toString());
-        } else {
-            singertitle.setText(playBean.singerName);
-        }
-
+        singertitle.setText(playBean.singerName);
         singername.setText(playBean.name);
 
         if (TextUtils.isEmpty(playBean.label)){
