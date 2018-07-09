@@ -51,7 +51,7 @@ dependencies {
     implementation 'com.android.support:design:27.1.1'
     implementation files('libs/xUtils3.3.36.jar')
     implementation files('libs/engine.io-client-1.0.0.jar')
-    compile(name: 'svprogresshud-release', ext: 'aar')
+    implementation(name: 'svprogresshud-release', ext: 'aar')
     implementation 'org.jbundle.util.osgi.wrapped:org.jbundle.util.osgi.wrapped.org.apache.http.client:4.1.2'
 }
 
