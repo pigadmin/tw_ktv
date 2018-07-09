@@ -441,7 +441,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 String s = GsonJsonUtils.parseObj2Json(aJsons.getData());
                 Logger.i(TAG, "s.." + s);
                 MusicNumBean numBean = GsonJsonUtils.parseJson2Obj(s, MusicNumBean.class);
-                isMusicStateList(numBean.list);
+                if (numBean == null) {
+                    if (!mllt.isShown()) {
+                        mllt.setVisibility(View.VISIBLE);
+                    }
+                    mInfo1.setText("未開通編號點歌功能!");
+                } else {
+                    isMusicStateList(numBean.list);
+                }
+
             }
         } else if (event.gettag().equals(update)) {
             AJson<Update> data = App.gson.fromJson(
