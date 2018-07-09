@@ -102,6 +102,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         initLiter();
         update();
 
+
+        startService(new Intent(this, MyService.class));
+        regad();
+    }
+
+    private void regad() {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(App.InitAdList);
         intentFilter.addAction(App.UpdateAdList);
@@ -112,8 +118,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         ad_rotate = AnimationUtils.loadAnimation(this, R.anim.ad_rotate);
         ad_scale = AnimationUtils.loadAnimation(this, R.anim.ad_scale);
         ad_translate = AnimationUtils.loadAnimation(this, R.anim.ad_translate);
-        startService(new Intent(this, MyService.class));
     }
+
 
     private Animation ad_alpha;
     private Animation ad_rotate;
@@ -148,7 +154,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             switch (msg.what) {
                 case 0:
                     hidead();
-                    if (currentad < adEntities.size()) {
+                    if (currentad < adEntities.size() - 1) {
                         switch (adEntities.get(currentad).getAppearWay()) {
                             case 1:
                                 startAnim(ad_alpha);
@@ -178,19 +184,25 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     };
 
     private void startAnim(Animation animation) {
-        String[] weizhi = adLists.getPosition().split(",");
-        ImageView ad_image = null;
-        if (weizhi[currentad].equals("2")) {
-            ad_image = ad_top;
-        } else if (weizhi[currentad].equals("3")) {
-            ad_image = ad_bottom;
-        } else if (weizhi[currentad].equals("4")) {
-            ad_image = ad_left;
-        } else if (weizhi[currentad].equals("5")) {
-            ad_image = ad_right;
+        try {
+            System.out.println(currentad);
+            String[] weizhi = adLists.getPosition().split(",");
+            ImageView ad_image = null;
+            if (weizhi[currentad].equals("2")) {
+                ad_image = ad_top;
+            } else if (weizhi[currentad].equals("3")) {
+                ad_image = ad_bottom;
+            } else if (weizhi[currentad].equals("4")) {
+                ad_image = ad_left;
+            } else if (weizhi[currentad].equals("5")) {
+                ad_image = ad_right;
+            }
+            ad_image.startAnimation(animation);
+            Picasso.with(MainActivity.this).load(adEntities.get(currentad).getNgPath()).into(ad_image);
+        } catch (Exception e) {
         }
-        ad_image.startAnimation(animation);
-        Picasso.with(MainActivity.this).load(adEntities.get(currentad).getNgPath()).into(ad_image);
+
+
     }
 
 
