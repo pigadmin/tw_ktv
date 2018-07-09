@@ -47,7 +47,7 @@ public class RankListAdapter extends BAdapter<ListItem> {
         TextView singertitle = get(convertView, R.id.singername);//歌手名称
         TextView singername = get(convertView, R.id.songname);//歌曲名称
         TextView playType = get(convertView, R.id.playType);// 标识HD or 演唱会
-        TextView pointText = get(convertView, R.id.pointText);//未点
+        final TextView pointText = get(convertView, R.id.pointText);//未点
         final TextView play = get(convertView, R.id.play);//播放
         final TextView addPlay = get(convertView, R.id.addPlay);//添加
 
@@ -69,12 +69,12 @@ public class RankListAdapter extends BAdapter<ListItem> {
             playType.setText(playBean.getLabel());
         }
 
-
-        System.out.println(playlist.contains(musicPlayBean.id));
-        if (playlist.contains(musicPlayBean.id)) {
-            pointText.setText("已點");
-        } else {
-            pointText.setText("未點");
+        String id = musicPlayBean.id;
+        for (MusicPlayBean music : playlist) {
+            if (id.equals(music.id)) {
+                pointText.setText(R.string.yd);
+                return;
+            }
         }
 
 
@@ -88,6 +88,7 @@ public class RankListAdapter extends BAdapter<ListItem> {
 
                 Intent intent = new Intent(mContext, PlayerActivity.class);
                 mContext.startActivity(intent);
+                pointText.setText(R.string.yd);
             }
         });
 
@@ -97,6 +98,7 @@ public class RankListAdapter extends BAdapter<ListItem> {
             public void onClick(View v) {
                 saveData(musicPlayBean, true);
                 CustomAnimatUtils.showStyle1(addPlay, mContext, R.anim.addplay_top_1, false);
+                pointText.setText(R.string.yd);
             }
         });
     }

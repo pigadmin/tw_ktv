@@ -58,7 +58,7 @@ public class Fragment3Adater extends BAdapter<MusicPlayBean> {
             playType.setText(playBean.label);
         }
 
-        pointText.setText("已點");
+        pointText.setText(R.string.yd);
 
         //置顶
         play.setOnClickListener(new View.OnClickListener() {

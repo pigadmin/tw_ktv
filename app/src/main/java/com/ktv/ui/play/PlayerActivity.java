@@ -1,8 +1,10 @@
 package com.ktv.ui.play;
 
+import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
@@ -412,6 +414,27 @@ public class PlayerActivity extends BaseActivity implements MediaPlayer.OnPrepar
             handler.sendEmptyMessageDelayed(hide, 10 * 1000);
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public void onBackPressed() {
+        exit();
+    }
+
+    private void exit() {
+        AlertDialog dialog = new AlertDialog.Builder(this).setTitle(R.string.tip_title).setMessage(R.string.tip_exit)
+                .setIcon(android.R.drawable.ic_dialog_info)
+               .setNegativeButton(R.string.cancle, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }) .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                }).show();
     }
 
     @Override
