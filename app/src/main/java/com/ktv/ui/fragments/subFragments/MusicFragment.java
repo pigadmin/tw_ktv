@@ -128,6 +128,7 @@ public class MusicFragment extends BaseFr {
                 weakHashMap.put("pinyin",searchContent);//注音
                 break;
             case 3:
+                weakHashMap.put("keyword",searchContent);//keyword 按关键字搜索
                 break;
             case 4:
                 weakHashMap.put("vietnam",searchContent);//越南

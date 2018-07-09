@@ -483,6 +483,7 @@ public class SingerListFragment extends BaseFr {
                 weakHashMap.put("pinyin",searchContent);//注音
                 break;
             case Constant.InputNameMethod.InputNameThree:
+                weakHashMap.put("keyword",searchContent);//keyword 按关键字搜索
                 break;
             case Constant.InputNameMethod.InputNameFour:
                 weakHashMap.put("vietnam",searchContent);//越南

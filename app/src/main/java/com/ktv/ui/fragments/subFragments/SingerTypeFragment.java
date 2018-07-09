@@ -458,8 +458,8 @@ public class SingerTypeFragment extends BaseFr {
         mItemList.clear();
         weakHashMap.put("mac", App.mac);
         weakHashMap.put("STBtype", "2");
-        weakHashMap.put("page", "1");//第几页    不填默认1
-        weakHashMap.put("limit", "100");//页码量   不填默认10，最大限度100
+        weakHashMap.put("page", mPage+"");//第几页    不填默认1
+        weakHashMap.put("limit", mLimit+"");//页码量   不填默认10，最大限度100
         weakHashMap.put("songtypeid", null);//歌手类型id
 
         switch (mSetTextName) {
@@ -470,6 +470,7 @@ public class SingerTypeFragment extends BaseFr {
                 weakHashMap.put("pinyin", searchContent);//注音
                 break;
             case Constant.InputNameMethod.InputNameThree:
+                weakHashMap.put("keyword",searchContent);//keyword 按关键字搜索
                 break;
             case Constant.InputNameMethod.InputNameFour:
                 weakHashMap.put("vietnam", searchContent);//越南
