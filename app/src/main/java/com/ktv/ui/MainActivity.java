@@ -400,7 +400,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     ToastUtils.showShortToast(mContext, "請先搜索歌曲");
                     return;
                 }
+                String [] str= (bianhao.id).split("\\.0");
+                Logger.i(TAG,"str[0].."+str[0]);
                 try {
+                    bianhao.id=str[0];//这里是去除id 6.0转为 6;
                     mDb.save(bianhao);
                     ToastUtils.showShortToast(mContext, "歌曲已添加至已點歌曲");
                 } catch (Exception e) {

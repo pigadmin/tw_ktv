@@ -82,7 +82,9 @@ public class MusicPlayAdater extends BAdapter<MusicPlayBean> {
     }
 
     private void saveData(MusicPlayBean playBean,boolean isInfo){
+        String [] str= (playBean.id).split("\\.0");
         try {
+            playBean.id=str[0];
             mDb.save(playBean);
             if (isInfo){
                 ToastUtils.showShortToast(mContext,playBean.singerName+" 的 "+playBean.name+" 歌曲添加成功");
