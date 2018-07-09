@@ -7,8 +7,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.ktv.R;
-import com.ktv.adapters.base.RecyclerAdapter;
-import com.ktv.adapters.base.ViewHolders;
 import com.ktv.bean.ListItem;
 import com.ktv.bean.MusicPlayBean;
 import com.ktv.tools.CustomAnimatUtils;
@@ -17,7 +15,6 @@ import com.ktv.tools.ToastUtils;
 import com.ktv.ui.play.PlayerActivity;
 
 import org.xutils.DbManager;
-import org.xutils.ex.DbException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,12 +49,17 @@ public class RankListAdapter extends BAdapter<ListItem> {
         final TextView addPlay = get(convertView, R.id.addPlay);//添加
 
         final ListItem playBean = getItem(position);
+
         final MusicPlayBean musicPlayBean = new MusicPlayBean();
         musicPlayBean.id = playBean.getId() + "";
+        musicPlayBean.songnumber=playBean.getSongnumber();
+        musicPlayBean.singerid=playBean.getSingerid()+"";
         musicPlayBean.name = playBean.getName();
         musicPlayBean.path = playBean.getPath();
+        musicPlayBean.lanId=playBean.getLanId()+"";
+        musicPlayBean.label=playBean.getLabel();
         musicPlayBean.singerName = playBean.getSingerName();
-
+        musicPlayBean.lanName=playBean.getLanName();
 
         singertitle.setText(playBean.getSingerName());
         singername.setText(playBean.getName());
@@ -73,17 +75,15 @@ public class RankListAdapter extends BAdapter<ListItem> {
         for (MusicPlayBean music : playlist) {
             if (id.equals(music.id)) {
                 pointText.setText(R.string.yd);
-                return;
+                break;
             }
         }
-
 
         //播放
         play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 CustomAnimatUtils.showStyle1(play, mContext, R.anim.play_top_1, true);
-
                 saveData(musicPlayBean, false);
 
                 Intent intent = new Intent(mContext, PlayerActivity.class);

@@ -194,12 +194,18 @@ public class RankList extends BaseFr implements RecyclerAdapter.OnItemClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.rank_add:
-                for (ListItem listItem : list) {
+                for (ListItem playBean : list) {
                     MusicPlayBean musicPlayBean = new MusicPlayBean();
-                    musicPlayBean.id = listItem.getId() + "";
-                    musicPlayBean.name = listItem.getName();
-                    musicPlayBean.path = listItem.getPath();
-                    musicPlayBean.singerName = listItem.getSingerName();
+                    musicPlayBean.id = playBean.getId() + "";
+                    musicPlayBean.songnumber=playBean.getSongnumber();
+                    musicPlayBean.singerid=playBean.getSingerid()+"";
+                    musicPlayBean.name = playBean.getName();
+                    musicPlayBean.path = playBean.getPath();
+                    musicPlayBean.lanId=playBean.getLanId()+"";
+                    musicPlayBean.label=playBean.getLabel();
+                    musicPlayBean.singerName = playBean.getSingerName();
+                    musicPlayBean.lanName=playBean.getLanName();
+
                     try {
                         mDb.save(musicPlayBean);
                     } catch (Exception e) {
