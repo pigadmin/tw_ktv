@@ -58,6 +58,17 @@
         <activity android:name=".ui.play.PlayerActivity"></activity>
 
         <activity android:name=".ui.BaseActivity" />
+
+        <receiver android:name="com.ktv.tools.AutoStart">
+            <intent-filter android:priority="2147483646">
+                <action android:name="android.intent.action.PACKAGE_REPLACED" />
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+                <action android:name="android.intent.action.PACKAGE_REMOVED" />
+
+                <data android:scheme="package" />
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>

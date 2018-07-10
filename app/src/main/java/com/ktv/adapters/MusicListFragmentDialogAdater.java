@@ -62,7 +62,6 @@ public class MusicListFragmentDialogAdater extends BAdapter<MusicPlayBean> {
             playType.setText(playBean.label);
         }
 
-        Logger.i(TAG,"playlist."+playlist.size());
 
         String [] str= (playBean.id).split("\\.0");
         if (playlist!=null&&!playlist.isEmpty()){
