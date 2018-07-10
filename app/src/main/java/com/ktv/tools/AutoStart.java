@@ -16,10 +16,8 @@ public class AutoStart extends BroadcastReceiver {
             // .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
         }
         if (intent.getAction().equals("android.intent.action.PACKAGE_REPLACED")) {
-            if (context.getPackageName().equals("com.ktv")) {
-                context.startActivity(new Intent(context, WelcomeActivity.class)
-                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-            }
+            context.startActivity(new Intent(context, WelcomeActivity.class)
+                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
         }
         if (intent.getAction().equals("android.intent.action.PACKAGE_ADDED")) {
             String packageName = intent.getDataString();
