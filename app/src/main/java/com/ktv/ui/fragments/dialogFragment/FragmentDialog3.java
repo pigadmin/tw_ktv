@@ -9,7 +9,6 @@ import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -17,8 +16,8 @@ import com.ktv.R;
 import com.ktv.adapters.Fragment3Adater;
 import com.ktv.bean.MusicPlayBean;
 import com.ktv.tools.Logger;
-import com.ktv.tools.ToastUtils;
 import com.ktv.ui.BaseFr;
+import com.ktv.ui.diy.Tips;
 import com.ktv.ui.play.PlayerActivity;
 
 import org.xutils.DbManager;
@@ -58,12 +57,13 @@ public class FragmentDialog3 extends BaseFr {
             switch (msg.what) {
                 case Search_Music_Success:
                     mNofoundText.setVisibility(View.GONE);
-//                    playAdater.notifyDataSetChanged();
-                    mSerachText.setText("按【菜单】键编辑本地歌曲");
+                    playAdater.notifyDataSetChanged();
+                    listView.requestFocusFromTouch();
+                    mSerachText.setText("當前已點歌曲 " + musicPlayBeans.size() + " 首");
                     break;
                 case Search_Music_Failure:
                     mNofoundText.setText("还未添加歌曲,请先点歌!");
-                    mSerachText.setText("按【菜单】键编辑本地歌曲");
+                    mSerachText.setText("當前暫無已點歌曲");
                     playAdater.notifyDataSetChanged();
                     break;
             }
@@ -83,6 +83,12 @@ public class FragmentDialog3 extends BaseFr {
     public void onResume() {
         super.onResume();
         isMusicStateList();
+        Logger.i(TAG, "当前焦点..." + getActivity().getCurrentFocus());
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
     }
 
     /**
@@ -97,11 +103,12 @@ public class FragmentDialog3 extends BaseFr {
         mSerachText = view.findViewById(R.id.no_found_text_tvw);
         mNofoundText = view.findViewById(R.id.no_found_tvw);
         mPlayImme = view.findViewById(R.id.play_imme_tvw);
+        mPlayImme.setVisibility(View.VISIBLE);
 
         listView = view.findViewById(R.id.listview);
         listView.setItemsCanFocus(true);//设置item项的子控件能够获得焦点（默认为false，即默认item项的子空间是不能获得焦点的）
 
-        playAdater = new Fragment3Adater(listView, getActivity(), R.layout.fragment3_item, musicPlayBeans, mDb,mSerachText,mNofoundText);
+        playAdater = new Fragment3Adater(listView, getActivity(), R.layout.fragment3_item_dialog, musicPlayBeans, mDb,mSerachText,mNofoundText);
         listView.setAdapter(playAdater);
     }
 
@@ -112,16 +119,15 @@ public class FragmentDialog3 extends BaseFr {
         mPlayImme.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ToastUtils.showShortToast(mContext, "立即播放");
+                if (musicPlayBeans.isEmpty()) {
+                    Tips.show(getActivity(),
+                            getString(R.string.tip_title),
+                            getString(R.string.playlist_none));
+                    return;
+                }
+//                    ToastUtils.showShortToast(mContext, "立即播放");
                 Intent intent = new Intent(mContext, PlayerActivity.class);
                 mContext.startActivity(intent);
-            }
-        });
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
             }
         });
     }
@@ -134,7 +140,7 @@ public class FragmentDialog3 extends BaseFr {
             musicPlayBeans.clear();
             List<MusicPlayBean> playBeans = mDb.selector(MusicPlayBean.class).orderBy("localTime", true).findAll();//数据库查询
             if (playBeans != null && !playBeans.isEmpty()) {
-                Logger.d(TAG, "list长度1..." + playBeans.size());
+                Logger.d(TAG, "list长度..." + playBeans.size());
                 musicPlayBeans.addAll(playBeans);
                 handler.sendEmptyMessage(Search_Music_Success);
             } else {
