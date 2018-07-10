@@ -92,6 +92,7 @@ public class RankListDialog extends BaseFr implements RecyclerAdapter.OnItemClic
             lists.setItemsCanFocus(true);
 
             rank_add = view.findViewById(R.id.rank_add);
+            rank_add.setVisibility(View.GONE);
             rank_add.setOnClickListener(this);
 
 //            grids.addItemDecoration(new SpacesItemDecoration(0, 0, 0, 5));
