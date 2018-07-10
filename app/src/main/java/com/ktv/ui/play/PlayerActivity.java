@@ -23,7 +23,6 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
@@ -41,11 +40,8 @@ import com.ktv.net.Req;
 import com.ktv.tools.FULL;
 import com.ktv.tools.Logger;
 import com.ktv.tools.LtoDate;
-import com.ktv.tools.ToastUtils;
 import com.ktv.ui.BaseActivity;
-import com.ktv.ui.MainActivity;
 import com.ktv.ui.diy.Tips;
-import com.ktv.ui.fragments.subFragments.MusicSubFragment;
 import com.ktv.views.MyDialogFragment;
 import com.squareup.picasso.Picasso;
 
@@ -73,10 +69,13 @@ public class PlayerActivity extends BaseActivity implements MediaPlayer.OnPrepar
                     break;
                 case updateprogress:
                     try {
-                        current_progress.setText(LtoDate.ms(player.getCurrentPosition()));
-                        music_progress.setProgress(player.getCurrentPosition());
+                        if (player.getCurrentPosition() != 0l) {
+                            current_progress.setText(LtoDate.ms(player.getCurrentPosition()));
+                            music_progress.setProgress(player.getCurrentPosition());
 
-                        handler.sendEmptyMessageDelayed(updateprogress, 1000);
+                            handler.sendEmptyMessageDelayed(updateprogress, 1000);
+                        }
+
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -110,7 +109,7 @@ public class PlayerActivity extends BaseActivity implements MediaPlayer.OnPrepar
                 return;
 
             adhandler.sendEmptyMessage(0);
-            Log.e(tag, "广告结束时间" + LtoDate.HMmd(adLists.getEndtime() - System.currentTimeMillis()));
+            Log.d(tag, "广告结束时间" + LtoDate.yMdHmsE(adLists.getEndtime() - System.currentTimeMillis()));
 
             adhandler.sendEmptyMessageDelayed(1, adLists.getEndtime() - System.currentTimeMillis());
         } catch (Exception e) {
@@ -150,7 +149,7 @@ public class PlayerActivity extends BaseActivity implements MediaPlayer.OnPrepar
             switch (msg.what) {
                 case 0:
                     hidead();
-                    if (currentad < adEntities.size() - 1) {
+                    if (currentad < adEntities.size()) {
                         switch (adEntities.get(currentad).getAppearWay()) {
                             case 1:
                                 startAnim(ad_alpha);
@@ -173,6 +172,8 @@ public class PlayerActivity extends BaseActivity implements MediaPlayer.OnPrepar
                     }
                     break;
                 case 1:
+                    Log.d(tag, "广告结束");
+                    adhandler.removeMessages(0);
                     hidead();
                     break;
             }
@@ -198,6 +199,8 @@ public class PlayerActivity extends BaseActivity implements MediaPlayer.OnPrepar
                 ad_right.startAnimation(animation);
                 Picasso.with(PlayerActivity.this).load(adEntities.get(currentad).getNgPath()).into(ad_right);
             }
+
+
         } catch (Exception e) {
         }
 
@@ -206,10 +209,14 @@ public class PlayerActivity extends BaseActivity implements MediaPlayer.OnPrepar
 
 
     private void hidead() {
-        ad_left.setImageResource(R.color.transparent);
-        ad_right.setImageResource(R.color.transparent);
-        ad_top.setImageResource(R.color.transparent);
-        ad_bottom.setImageResource(R.color.transparent);
+        try {
+            ad_left.setImageResource(R.color.transparent);
+            ad_right.setImageResource(R.color.transparent);
+            ad_top.setImageResource(R.color.transparent);
+            ad_bottom.setImageResource(R.color.transparent);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -227,6 +234,7 @@ public class PlayerActivity extends BaseActivity implements MediaPlayer.OnPrepar
                 adhandler.sendEmptyMessage(0);
 
                 adhandler.removeMessages(1);
+                System.out.println((adLists.getEndtime() - System.currentTimeMillis()) + "后停止广告");
                 adhandler.sendEmptyMessageDelayed(1, adLists.getEndtime() - System.currentTimeMillis());
             } else if (intent.getAction().equals(App.DeleteAdList)) {
                 adhandler.sendEmptyMessage(1);
@@ -478,17 +486,12 @@ public class PlayerActivity extends BaseActivity implements MediaPlayer.OnPrepar
 
 
     @Override
-    protected void onStop() {
-        player.stopPlayback();
-        super.onStop();
-    }
-
-    @Override
     protected void onDestroy() {
         super.onDestroy();
+        player.stopPlayback();
         player = null;
         unregisterReceiver(receiver);
-
+        handler.removeMessages(updateprogress);
     }
 
 

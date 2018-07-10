@@ -10,7 +10,7 @@ import com.ktv.tools.PicassoUtil;
 
 import java.util.List;
 
-public class SingerListAdapter extends RecyclerAdapter<SingerNumBean.SingerBean>  {
+public class SingerListAdapter extends RecyclerAdapter<SingerNumBean.SingerBean> {
 
     public SingerListAdapter(Context context, int layoutId, List datas) {
         super(context, layoutId, datas);
@@ -22,6 +22,12 @@ public class SingerListAdapter extends RecyclerAdapter<SingerNumBean.SingerBean>
         TextView name = holder.itemView.findViewById(R.id.name);//名称
 
         name.setText(item.name);
-        PicassoUtil.picassoAdvanced(context,item.ngPath,R.mipmap.station_src,R.mipmap.error_src,icon);
+        if (item.ngPath == null) {
+            icon.setImageResource(R.mipmap.error_src);
+        } else {
+            PicassoUtil.picassoAdvanced(context, item.ngPath, R.mipmap.station_src, R.mipmap.error_src, icon);
+        }
+
+
     }
 }

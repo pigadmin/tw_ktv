@@ -34,7 +34,7 @@ import java.util.Map;
 
 import okhttp3.OkHttpClient;
 
-public class App extends Application {
+public class App extends Application{
     public static final String InitAdList = "InitAdList";
     public static final String UpdateAdList = "UpdateAdList";
     public static final String DeleteAdList = "DeleteAdList";
@@ -45,6 +45,7 @@ public class App extends Application {
     public static OkHttpClient client;
     public static RequestQueue queue;
     private static SharedPreferences config;
+
 
     @Override
     public void onCreate() {
@@ -66,9 +67,9 @@ public class App extends Application {
 
     private boolean fstart;
     //        private static String ip = "192.168.2.9";
-//    private static String ip = "192.168.2.25";
-    private static String ip = "192.168.2.5";
-//    private static String ip = "192.168.2.11";
+    private static String ip = "192.168.2.25";
+//    private static String ip = "192.168.2.5";
+//    private static String ip = "192.168.2.10";
 //    private static String ip = "192.168.2.7";
     public static String version;
 

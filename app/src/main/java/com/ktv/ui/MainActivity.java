@@ -45,6 +45,7 @@ import com.ktv.tools.ApkUpdate;
 import com.ktv.tools.Fragments;
 import com.ktv.tools.GsonJsonUtils;
 import com.ktv.tools.Logger;
+import com.ktv.tools.LtoDate;
 import com.ktv.tools.ToastUtils;
 import com.ktv.ui.fragments.Fragment1;
 import com.ktv.ui.fragments.Fragment2;
@@ -107,6 +108,19 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         regad();
     }
 
+    @Override
+    public void onAttachedToWindow() {
+        System.out.println("Home");
+        super.onAttachedToWindow();
+    }
+
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        System.out.println("----------------");
+        System.out.println(event);
+        return super.dispatchKeyEvent(event);
+    }
+
     private void regad() {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(App.InitAdList);
@@ -139,6 +153,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 adhandler.sendEmptyMessage(0);
 
                 adhandler.removeMessages(1);
+                Log.d(TAG, "广告结束时间" + LtoDate.yMdHmsE(adLists.getEndtime() - System.currentTimeMillis()));
                 adhandler.sendEmptyMessageDelayed(1, adLists.getEndtime() - System.currentTimeMillis());
             } else if (intent.getAction().equals(App.DeleteAdList)) {
                 adhandler.sendEmptyMessage(1);
@@ -151,34 +166,40 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            switch (msg.what) {
-                case 0:
-                    hidead();
-                    if (currentad < adEntities.size()) {
-                        switch (adEntities.get(currentad).getAppearWay()) {
-                            case 1:
-                                startAnim(ad_alpha);
-                                break;
-                            case 2:
-                                startAnim(ad_translate);
-                                break;
-                            case 3:
-                                startAnim(ad_scale);
-                                break;
-                            case 4:
-                                startAnim(ad_rotate);
-                                break;
+            try {
+                switch (msg.what) {
+                    case 0:
+                        hidead();
+                        if (currentad < adEntities.size()) {
+                            switch (adEntities.get(currentad).getAppearWay()) {
+                                case 1:
+                                    startAnim(ad_alpha);
+                                    break;
+                                case 2:
+                                    startAnim(ad_translate);
+                                    break;
+                                case 3:
+                                    startAnim(ad_scale);
+                                    break;
+                                case 4:
+                                    startAnim(ad_rotate);
+                                    break;
+                            }
+                            adhandler.sendEmptyMessageDelayed(0, adEntities.get(currentad).getPlaytime() * 1000);
+                            currentad++;
+                        } else {
+                            currentad = 0;
+                            adhandler.sendEmptyMessage(0);
                         }
-                        adhandler.sendEmptyMessageDelayed(0, adEntities.get(currentad).getPlaytime() * 1000);
-                        currentad++;
-                    } else {
-                        currentad = 0;
-                        adhandler.sendEmptyMessage(0);
-                    }
-                    break;
-                case 1:
-                    hidead();
-                    break;
+                        break;
+                    case 1:
+                        Log.d(TAG, "广告结束");
+                        adhandler.removeMessages(0);
+                        hidead();
+                        break;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     };
@@ -212,10 +233,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
 
     private void hidead() {
-        ad_left.setImageResource(R.color.transparent);
-        ad_right.setImageResource(R.color.transparent);
-        ad_top.setImageResource(R.color.transparent);
-        ad_bottom.setImageResource(R.color.transparent);
+        try {
+            ad_left.setImageResource(R.color.transparent);
+            ad_right.setImageResource(R.color.transparent);
+            ad_top.setImageResource(R.color.transparent);
+            ad_bottom.setImageResource(R.color.transparent);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private String update = "update";

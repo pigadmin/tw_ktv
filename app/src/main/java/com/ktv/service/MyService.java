@@ -90,7 +90,7 @@ public class MyService extends Service implements Runnable, IScrollState {
                     // TODO Auto-generated method stub
                     try {
                         String json = arg0[0].toString();
-                        Log.d(tag + System.currentTimeMillis() + "---" + "rollTitles", json);
+                        Log.d(tag + "---" + "rollTitles", json);
                         rollTitles = new ArrayList<>(Arrays.asList(App.gson.fromJson(json, RollTitles[].class)));
                         currentmsg = 0;
                         handler.post(MyService.this);
@@ -125,6 +125,9 @@ public class MyService extends Service implements Runnable, IScrollState {
                         String json = arg0[0].toString();
                         Log.d(tag + "---" + "add_ad", json);
                         System.out.println("新增广告");
+                        AdList tmp = App.gson.fromJson(json, AdList.class);
+                        adLists = tmp;
+                        app.setAdLists(adLists);
                         add_ad();
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -155,10 +158,13 @@ public class MyService extends Service implements Runnable, IScrollState {
                     try {
                         String json = arg0[0].toString();
                         Log.d(tag + "---" + "delete_ad", json);
-                        if (adLists.getId() == Integer.parseInt(json)) {
-                            System.out.println("删除广告");
-                            delete_ad();
-                        }
+                        System.out.println("删除广告");
+                        app.setAdLists(null);
+                        delete_ad();
+//                        if (adLists.getId() == Integer.parseInt(json)) {
+//                            System.out.println("删除广告");
+//                            delete_ad();
+//                        }
 
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -203,9 +209,9 @@ public class MyService extends Service implements Runnable, IScrollState {
 
     private void delete_ad() {
         Intent intent = new Intent(App.DeleteAdList);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("key", (Serializable) adLists);
-        intent.putExtras(bundle);
+//        Bundle bundle = new Bundle();
+//        bundle.putSerializable("key", (Serializable) adLists);
+//        intent.putExtras(bundle);
         sendBroadcast(intent);
     }
 
@@ -213,7 +219,6 @@ public class MyService extends Service implements Runnable, IScrollState {
 //    返回数据：AdGroupEntity adGroupEntity
     private void update_ad() {
         Intent intent = new Intent(App.UpdateAdList);
-
         Bundle bundle = new Bundle();
         bundle.putSerializable("key", (Serializable) adLists);
         intent.putExtras(bundle);
@@ -223,7 +228,11 @@ public class MyService extends Service implements Runnable, IScrollState {
     //    新增：add_ad
 //    返回数据：AdGroupEntity adGroupEntity
     private void add_ad() {
-
+        Intent intent = new Intent(App.UpdateAdList);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("key", (Serializable) adLists);
+        intent.putExtras(bundle);
+        sendBroadcast(intent);
     }
 
     //    广告：adList
@@ -247,14 +256,17 @@ public class MyService extends Service implements Runnable, IScrollState {
     public void rollTitles() {
         try {
             if (rollTitles != null && !rollTitles.isEmpty()) {
-                if (System.currentTimeMillis() > rollTitles.get(currentmsg).getEndtime()) {
-                    rollTitles.remove(currentmsg);
-                    handler.post(this);
-                    return;
-                }
 //                System.out.println("开始跑马灯");
                 if (rollTitles.size() <= currentmsg)
                     currentmsg = 0;
+                if (System.currentTimeMillis() > rollTitles.get(currentmsg).getEndtime()) {
+                    rollTitles.remove(currentmsg);
+                    currentmsg = 0;
+                    handler.post(this);
+                    return;
+                }
+
+
                 if (toast != null)
                     toast.hid();
                 toast = new MarqueeToast(getApplicationContext());
@@ -272,7 +284,8 @@ public class MyService extends Service implements Runnable, IScrollState {
                     Text.setBackgroundColor(Color.TRANSPARENT);
                     Text.setContent("");
                 } else {
-                    Text.setContent("《" + rollTitles.get(currentmsg).getName() + "》\t" + rollTitles.get(currentmsg).getContent());
+                    Text.setContent(rollTitles.get(currentmsg).getContent());
+//                    Text.setContent("《" + rollTitles.get(currentmsg).getName() + "》\t" + rollTitles.get(currentmsg).getContent());
                 }
                 toast.setView(Text);
                 toast.setGravity(Gravity.TOP | Gravity.LEFT, 1280, 0, 0);

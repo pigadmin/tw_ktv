@@ -58,7 +58,7 @@ public class PicassoUtil {
                     data=data+c;
                 }
             }
-        } catch (UnsupportedEncodingException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }finally{
             System.out.println(data);
