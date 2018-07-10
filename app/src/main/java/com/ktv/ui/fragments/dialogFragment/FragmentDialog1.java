@@ -121,8 +121,14 @@ public class FragmentDialog1 extends BaseFr implements View.OnFocusChangeListene
         mUltinomialSerach.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                if (TextUtils.isEmpty(mSerchLanguageEdt.getText().toString().trim())){
+                String serach=mSerchLanguageEdt.getText().toString().trim();
+//                if (TextUtils.isEmpty(serach)){
 //                    ToastUtils.showShortToast(mContext,"请先填写关键字");
+//                    return;
+//                }
+//
+//                if (serach.contains(".")){
+//                    ToastUtils.showShortToast(mContext,"输入框不能包含特殊字符");
 //                    return;
 //                }
                 toClass(isMusicState);
