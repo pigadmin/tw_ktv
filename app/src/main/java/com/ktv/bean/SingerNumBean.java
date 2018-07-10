@@ -14,6 +14,17 @@ public class SingerNumBean implements Serializable {
     public String currPage;
     public List<SingerNumBean.SingerBean> list;
 
+    @Override
+    public String toString() {
+        return "SingerNumBean{" +
+                "totalCount='" + totalCount + '\'' +
+                ", pageSize='" + pageSize + '\'' +
+                ", totalPage='" + totalPage + '\'' +
+                ", currPage='" + currPage + '\'' +
+                ", list=" + list +
+                '}';
+    }
+
     /**
      * 解析歌曲大类列表Bean
      */

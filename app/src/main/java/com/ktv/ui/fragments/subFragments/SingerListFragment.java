@@ -419,13 +419,13 @@ public class SingerListFragment extends BaseFr {
             if(!TextUtils.isEmpty(event.getData())){
                 AJson aJsons=  GsonJsonUtils.parseJson2Obj(event.getData(),AJson.class);
                 String s=  GsonJsonUtils.parseObj2Json(aJsons.getData());
+                Logger.i(TAG,"isInterfaceType..."+isInterfaceType);
                 Logger.i(TAG,"s..."+s);
                 if (isInterfaceType){
                     SingerNumBean numBean= GsonJsonUtils.parseJson2Obj(s,SingerNumBean.class);
                     isMusicStateList(numBean.list);
                 } else {
                     List<SingerNumBean.SingerBean> playBeans=GsonJsonUtils.parseJson2Obj(s, new TypeToken<List<SingerNumBean.SingerBean>>(){});
-                    Logger.i(TAG,"playBeans.."+playBeans.toString());
                     isMusicStateList(playBeans);
                 }
             }
