@@ -139,6 +139,10 @@ public class MyDialogFragment extends DialogFragment implements View.OnClickList
     public void onClick(View v) {
         FragmentManager fragmentManager = getChildFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);//动画效果(打开)
+        for (int i = 0; i < getChildFragmentManager().getBackStackEntryCount() - 1; i++) {
+            getChildFragmentManager().popBackStack();
+        }
         switch (v.getId()) {
             case R.id.rdb1_top_menu:
                 transaction.replace(R.id.main_popudows, new FragmentDialog1());

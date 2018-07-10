@@ -21,7 +21,7 @@ import java.util.List;
 
 public class RankListAdapter extends BAdapter<ListItem> {
 
-    private static final String TAG = "MusicPlayAdater";
+    private static final String TAG = "RankListAdapter";
 
     Context mContext;
 
