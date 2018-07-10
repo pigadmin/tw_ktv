@@ -1,16 +1,19 @@
 package com.ktv.ui.fragments.dialogFragment;
 
 
-import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.google.gson.reflect.TypeToken;
 import com.ktv.R;
@@ -22,58 +25,63 @@ import com.ktv.bean.AJson;
 import com.ktv.bean.GridItem;
 import com.ktv.event.DataMessage;
 import com.ktv.net.Req;
-import com.ktv.tools.Fragments;
+import com.ktv.tools.GsonJsonUtils;
+import com.ktv.tools.Logger;
 import com.ktv.ui.BaseFr;
 import com.ktv.ui.fragments.dialogFragment.disubFragments.RankListDialog;
-import com.ktv.ui.fragments.subFragments.SingerTypeFragment;
-import com.ktv.ui.rank.RankList;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * 排行榜
  */
-public class FragmentDialog4 extends BaseFr implements RecyclerAdapter.OnItemClickListener, RecyclerAdapter.OnItemSelectedListener {
+public class FragmentDialog4 extends BaseFr {
 
     private static final String TAG="FragmentDialog4";
     private View view;
-    private Activity activity;
+    private Context mContext;
+
+    private RecyclerView mRecyclerView;
+    private RankGridAdapter playAdater;
+    private List<GridItem> mItemList;
+
+    public static final int Search_Music_Success = 100;//查找歌曲歌曲成功
+    public static final int Search_Music_Failure = 200;//查找歌曲失败
+
+    private StaggeredGridLayoutManager mLayoutManager;
+
+    private TextView mNoText;//无数据提示
 
     private FragmentManager manager;
     private FragmentTransaction ft;
 
+    public Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case Search_Music_Success:
+                    mNoText.setVisibility(View.GONE);
+                    playAdater.notifyDataSetChanged();
+                    mRecyclerView.requestFocusFromTouch();
+                    break;
+                case Search_Music_Failure:
+                    mNoText.setVisibility(View.VISIBLE);
+                    mNoText.setText("当前无数据");
+                    break;
+            }
+        }
+    };
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.grids_dialog, container, false);
-        activity = getActivity();
-        find();
+        mContext = getActivity();
+        getMusicServer();
+        initView();
+        initLiter();
         return view;
-    }
-
-    private RankGridAdapter adapter;
-
-    private void init() {
-        adapter.notifyDataSetChanged();
-    }
-
-    private RecyclerView grids;
-    private StaggeredGridLayoutManager layoutManager;
-
-    private void find() {
-        grids = view.findViewById(R.id.grids);
-        grids.addItemDecoration(new SpacesItemDecoration(0, 30, 0, 40));
-        layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.HORIZONTAL);
-        grids.setLayoutManager(layoutManager);
-
-        adapter = new RankGridAdapter(activity, R.layout.adapter_grid_dialog, list);
-        grids.setAdapter(adapter);
-        adapter.setOnItemClickListener(this);
-        adapter.setOnItemSelectedListener(this);
-
-        String url = App.headurl + "song/rangking?mac=" + App.mac + "&STBtype=2";
-        Req.get(tag, url);
     }
 
     @Override
@@ -82,70 +90,83 @@ public class FragmentDialog4 extends BaseFr implements RecyclerAdapter.OnItemCli
         manager = getFragmentManager();
     }
 
-    private String tag = "rangking";
-    private List<GridItem> list = new ArrayList<>();
+    /**
+     * 初始化View
+     */
+    private void initView() {
+        mItemList = new ArrayList<>();
 
-    public void onEvent(DataMessage event) {
-        if (event.gettag().equals(tag)) {
-            AJson<List<GridItem>> data = App.gson.fromJson(
-                    event.getData(), new TypeToken<AJson<List<GridItem>>>() {
-                    }.getType());
-            if (!list.isEmpty()){
-                list.clear();
-            }
-            list.addAll(data.getData());
-            handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    init();
-                }
-            });
-        }
+        mNoText = view.findViewById(R.id.no_tvw);
+        mRecyclerView = view.findViewById(R.id.grids);
 
-    }
+        playAdater = new RankGridAdapter(getActivity(), R.layout.adapter_grid_dialog, mItemList);
+        mRecyclerView.setAdapter(playAdater);
 
-    private Handler handler = new Handler();
-
-    @Override
-    public void onItemClick(View view, int position) {
-        try {
-//            System.out.println("点击-------------------------" + position);
-//            //  创建一个 bundle 传递 数据
-//            Bundle bundle = new Bundle();
-//            //使用bundle合适的put方法传递数据
-//            bundle.putSerializable("key", (Serializable) list.get(position));
-//            // 新建一个 fragment
-//            RankList fragment = new RankList();
-//            // 将数据 保存到 fragment 里面
-//            fragment.setArguments(bundle);
-//            Fragments.add(getFragmentManager(), fragment);
-
-
-
-            toClass(list.get(position));
-
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void onFocusChange(View view, int position) {
-        System.out.println("选中-------------------------" + position);
+        mRecyclerView.addItemDecoration(new SpacesItemDecoration(0, 30, 0, 40));
+        mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.HORIZONTAL);
+        mRecyclerView.setLayoutManager(mLayoutManager);
     }
 
     /**
-     * 切换到 排行榜列表
-     * @param item
+     * item事件
      */
-    private void toClass(GridItem item){
+    private void initLiter() {
+        playAdater.setOnItemClickListener(new RecyclerAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                GridItem largeBean = mItemList.get(position);
+                toClass(largeBean);
+            }
+        });
+    }
+
+    public void onEvent(DataMessage event) {
+        Logger.d(TAG, "data.." + event.getData());
+        if (event.gettag().equals(TAG)) {
+            if (!TextUtils.isEmpty(event.getData())) {
+                try {
+                    AJson aJsons = GsonJsonUtils.parseJson2Obj(event.getData(), AJson.class);
+                    String s = GsonJsonUtils.parseObj2Json(aJsons.getData());
+                    List<GridItem> playBeans=GsonJsonUtils.parseJson2Obj(s, new TypeToken<List<GridItem>>(){});
+                    isMusicStateList(playBeans);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    private void isMusicStateList(List<GridItem> playBeans) {
+        mItemList.clear();
+        if (playBeans != null && !playBeans.isEmpty()) {
+            Logger.d(TAG, "list长度1..." + playBeans.size());
+            mItemList.addAll(playBeans);
+        }
+
+        if (mItemList != null && !mItemList.isEmpty()) {
+            handler.sendEmptyMessage(Search_Music_Success);
+        } else {
+            handler.sendEmptyMessage(Search_Music_Failure);
+        }
+    }
+
+    /**
+     * 获取歌曲大类
+     */
+    private void getMusicServer() {
+        String url = App.headurl + "song/rangking?mac=" + App.mac + "&STBtype=2";
+
+        Logger.i(TAG, "url.." + url);
+        Req.get(TAG, url);
+    }
+
+    private void toClass(GridItem largeBean) {
         Bundle bundle = new Bundle();
         ft = manager.beginTransaction();
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);//打开
         RankListDialog mufrt = new RankListDialog();
         ft.replace(R.id.main_popudows, mufrt);
-        bundle.putSerializable("key",item);
+        bundle.putSerializable("key",largeBean);
         mufrt.setArguments(bundle);
         ft.addToBackStack(null);
         ft.commit();
