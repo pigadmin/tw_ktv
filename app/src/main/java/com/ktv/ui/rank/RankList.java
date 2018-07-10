@@ -45,25 +45,6 @@ public class RankList extends BaseFr implements RecyclerAdapter.OnItemClickListe
     private App app;
     public DbManager mDb;
 
-//    public Handler handler=new Handler(){
-//        @Override
-//        public void handleMessage(Message msg) {
-//            super.handleMessage(msg);
-//            switch (msg.what){
-//                case Search_Music_Success:
-//                    mNofoundText.setVisibility(View.GONE);
-//                    playAdater.notifyDataSetChanged();
-//                    mSerachText.setText("搜索到 "+mSingerName+" 的歌曲"+musicPlayBeans.size()+"首");
-//                    break;
-//                case Search_Music_Failure:
-//                    mNofoundText.setVisibility(View.VISIBLE);
-//                    mNofoundText.setText("未能搜索到您想要的歌曲!");
-//                    mSerachText.setText(mSingerName);
-//                    break;
-//            }
-//        }
-//    };
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.rank_list, container, false);

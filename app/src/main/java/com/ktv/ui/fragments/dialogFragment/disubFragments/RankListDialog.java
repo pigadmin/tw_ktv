@@ -48,25 +48,6 @@ public class RankListDialog extends BaseFr implements RecyclerAdapter.OnItemClic
     private App app;
     public DbManager mDb;
 
-//    public Handler handler=new Handler(){
-//        @Override
-//        public void handleMessage(Message msg) {
-//            super.handleMessage(msg);
-//            switch (msg.what){
-//                case Search_Music_Success:
-//                    mNofoundText.setVisibility(View.GONE);
-//                    playAdater.notifyDataSetChanged();
-//                    mSerachText.setText("搜索到 "+mSingerName+" 的歌曲"+musicPlayBeans.size()+"首");
-//                    break;
-//                case Search_Music_Failure:
-//                    mNofoundText.setVisibility(View.VISIBLE);
-//                    mNofoundText.setText("未能搜索到您想要的歌曲!");
-//                    mSerachText.setText(mSingerName);
-//                    break;
-//            }
-//        }
-//    };
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.rank_list_dialog, container, false);
@@ -87,8 +68,8 @@ public class RankListDialog extends BaseFr implements RecyclerAdapter.OnItemClic
 
         if (page == 1) {
             playAdater.notifyDataSetChanged();
+            lists.requestFocusFromTouch();
         }
-
     }
 
     private RecyclerView grids;
@@ -129,7 +110,23 @@ public class RankListDialog extends BaseFr implements RecyclerAdapter.OnItemClic
             e.printStackTrace();
         }
     }
+    private View v = null;
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (v != null) {
+            v.requestFocus();
+        } else {
+            lists.requestFocus();
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        v = getActivity().getCurrentFocus();
+    }
     private void ReList() {
         String url = App.headurl + "song/getRangeSong?mac=" + App.mac + "&STBtype=2" + "&rangId=" + item.getId() + "&page=" + page + "&limit=" + limit;
         Req.get(tag, url);
@@ -181,19 +178,26 @@ public class RankListDialog extends BaseFr implements RecyclerAdapter.OnItemClic
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.rank_add:
-                for (ListItem listItem : list) {
+                for (ListItem playBean : list) {
                     MusicPlayBean musicPlayBean = new MusicPlayBean();
-                    musicPlayBean.id = listItem.getId() + "";
-                    musicPlayBean.name = listItem.getName();
-                    musicPlayBean.path = listItem.getPath();
-                    musicPlayBean.singerName = listItem.getSingerName();
+                    musicPlayBean.id = playBean.getId() + "";
+                    musicPlayBean.songnumber=playBean.getSongnumber();
+                    musicPlayBean.singerid=playBean.getSingerid()+"";
+                    musicPlayBean.name = playBean.getName();
+                    musicPlayBean.path = playBean.getPath();
+                    musicPlayBean.lanId=playBean.getLanId()+"";
+                    musicPlayBean.label=playBean.getLabel();
+                    musicPlayBean.singerName = playBean.getSingerName();
+                    musicPlayBean.lanName=playBean.getLanName();
+
                     try {
                         mDb.save(musicPlayBean);
                     } catch (Exception e) {
                         ToastUtils.showShortToast(activity, "部分重複歌曲未被添加");
                     }
+
                 }
-                ToastUtils.showShortToast(activity, "歌曲添加成功");
+                ToastUtils.showShortToast(activity, "歌曲添加成功，馬上爲您播放。");
 //                Intent intent = new Intent(activity, PlayerActivity.class);
 //                activity.startActivity(intent);
                 break;
