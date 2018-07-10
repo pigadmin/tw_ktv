@@ -12,7 +12,7 @@
     <string name="play_now"> 正在播放：</string>
     <string name="play_next">下一曲：</string>
     <string name="play_num"> 播放列表：</string>
-    <string name="none"> 沒有了</string>
+    <string name="none"> </string>
 
     <string name="replay">重唱</string>
     <string name="dgt">點歌臺</string>
@@ -34,5 +34,6 @@
     <string name="tip_exit">是否確認退出</string>
     <string name="play_time">00：00</string>
     <string name="playlist_last">不能再切了，已經是最後一首了</string>
+    <string name="playlist_dgt">去點歌臺點歌</string>
     <string name="playlist_none">您的播放列表已經空了，請前往點歌臺選歌</string>
 </resources>

@@ -52,14 +52,14 @@ public class RankListAdapter extends BAdapter<ListItem> {
 
         final MusicPlayBean musicPlayBean = new MusicPlayBean();
         musicPlayBean.id = playBean.getId() + "";
-        musicPlayBean.songnumber=playBean.getSongnumber();
-        musicPlayBean.singerid=playBean.getSingerid()+"";
+        musicPlayBean.songnumber = playBean.getSongnumber();
+        musicPlayBean.singerid = playBean.getSingerid() + "";
         musicPlayBean.name = playBean.getName();
         musicPlayBean.path = playBean.getPath();
-        musicPlayBean.lanId=playBean.getLanId()+"";
-        musicPlayBean.label=playBean.getLabel();
+        musicPlayBean.lanId = playBean.getLanId() + "";
+        musicPlayBean.label = playBean.getLabel();
         musicPlayBean.singerName = playBean.getSingerName();
-        musicPlayBean.lanName=playBean.getLanName();
+        musicPlayBean.lanName = playBean.getLanName();
 
         singertitle.setText(playBean.getSingerName());
         singername.setText(playBean.getName());
@@ -72,12 +72,16 @@ public class RankListAdapter extends BAdapter<ListItem> {
         }
 
         String id = musicPlayBean.id;
-        for (MusicPlayBean music : playlist) {
-            if (id.equals(music.id)) {
-                pointText.setText(R.string.yd);
-                break;
+        if (playlist != null && !playlist.isEmpty()) {
+            Logger.i(TAG, "playlist." + playlist.size());
+            for (MusicPlayBean music : playlist) {
+                if (id.equals(music.id)) {
+                    pointText.setText(R.string.yd);
+                    break;
+                }
             }
         }
+
 
         //播放
         play.setOnClickListener(new View.OnClickListener() {

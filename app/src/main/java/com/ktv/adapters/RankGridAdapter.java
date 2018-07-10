@@ -2,6 +2,7 @@ package com.ktv.adapters;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,7 +16,7 @@ import java.util.List;
 
 public class RankGridAdapter extends RecyclerAdapter<GridItem> {
 
-    private static final String TAG="RankGridAdapter";
+    private static final String TAG = "RankGridAdapter";
 
     public RankGridAdapter(Context context, int layoutId, List datas) {
         super(context, layoutId, datas);
@@ -28,11 +29,15 @@ public class RankGridAdapter extends RecyclerAdapter<GridItem> {
 
         name.setText(item.getName());
 
-        if (TextUtils.isEmpty(item.getNgPath())){
-            icon.setImageResource(R.mipmap.station_src);
-        } else {
-            String srcPath= PicassoUtil.utf8Togb2312(item.getNgPath());
-            PicassoUtil.picassoAdvanced(context,srcPath,R.mipmap.station_src,R.mipmap.error_src,icon);
+        try {
+            if (TextUtils.isEmpty(item.getNgPath())) {
+                icon.setImageResource(R.mipmap.station_src);
+            } else {
+                String srcPath = PicassoUtil.utf8Togb2312(item.getNgPath());
+                PicassoUtil.picassoAdvanced(context, srcPath, R.mipmap.station_src, R.mipmap.error_src, icon);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

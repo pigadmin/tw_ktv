@@ -343,8 +343,8 @@ public class PlayerActivity extends BaseActivity implements MediaPlayer.OnPrepar
     }
 
 
-    //    String testurl = "http://mx.djkk.com/mix/2018/2018-3/2018-3-13/201831311131.m4a";
-//    private String testurl = "http://183.60.197.29/20/x/h/k/k/xhkkasvwnohcmcnivchcmpnugztujq/hc.yinyuetai.com/7C110164442D4B67745E9D3E77F66929.mp4";
+    //  String testurl = "http://mx.djkk.com/mix/2018/2018-3/2018-3-13/201831311131.m4a";
+//  private String testurl = "http://183.60.197.29/20/x/h/k/k/xhkkasvwnohcmcnivchcmpnugztujq/hc.yinyuetai.com/7C110164442D4B67745E9D3E77F66929.mp4";
 
     private void play() {//播放、重唱
         try {
@@ -384,8 +384,6 @@ public class PlayerActivity extends BaseActivity implements MediaPlayer.OnPrepar
     @Override
 
     public void onCompletion(MediaPlayer mp) {
-
-
         next();
     }
 
@@ -395,22 +393,41 @@ public class PlayerActivity extends BaseActivity implements MediaPlayer.OnPrepar
                 mDb.delete(current);
                 musicPlayBeans.remove(0);
                 if (musicPlayBeans.isEmpty()) {
-//                    Tips.show(PlayerActivity.this,
-////                            getString(R.string.tip_title),
-////                            getString(R.string.playlist_last));
                     player.stopPlayback();
+                    String info = getString(R.string.play_now) + getString(R.string.none) + "\n"
+                            + getString(R.string.play_next) + getString(R.string.none) + "\n"
+                            + getString(R.string.play_num) + musicPlayBeans.size();
+                    play_info.setText(info);
+                    playover();
                 } else {
                     play();
                 }
             } else {
-                Tips.show(PlayerActivity.this,
-                        getString(R.string.tip_title),
-                        getString(R.string.playlist_none));
+                playover();
             }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void playover() {
+        AlertDialog dialog = new AlertDialog.Builder(PlayerActivity.this).setTitle(getString(R.string.tip_title))
+                .setMessage(getString(R.string.playlist_none))
+                .setIcon(android.R.drawable.ic_dialog_info)
+                .setNegativeButton(R.string.playlist_dgt, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int i) {
+                        dialog.dismiss();
+                        showDialogFragment(false);
+                    }
+                })
+                .setPositiveButton(R.string.cancle, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).show();
     }
 
     @Override

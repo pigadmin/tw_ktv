@@ -336,7 +336,6 @@ public class MyService extends Service implements Runnable, IScrollState {
     @Override
     public void onDestroy() {
         System.out.println("-----");
-        stop();
         stopService(new Intent(this, MyService.class));
         super.onDestroy();
     }
