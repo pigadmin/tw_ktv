@@ -197,7 +197,7 @@ public class RankListDialog extends BaseFr implements RecyclerAdapter.OnItemClic
                     }
 
                 }
-                ToastUtils.showShortToast(activity, "歌曲添加成功，馬上爲您播放。");
+                ToastUtils.showShortToast(activity, "歌曲添加成功");
 //                Intent intent = new Intent(activity, PlayerActivity.class);
 //                activity.startActivity(intent);
                 break;

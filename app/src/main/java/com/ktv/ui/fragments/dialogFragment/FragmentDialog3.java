@@ -126,8 +126,8 @@ public class FragmentDialog3 extends BaseFr {
                     return;
                 }
 //                    ToastUtils.showShortToast(mContext, "立即播放");
-                Intent intent = new Intent(mContext, PlayerActivity.class);
-                mContext.startActivity(intent);
+//                Intent intent = new Intent(mContext, PlayerActivity.class);
+//                mContext.startActivity(intent);
             }
         });
     }
