@@ -1,6 +1,7 @@
 package com.ktv.adapters.base;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -12,6 +13,8 @@ import java.util.List;
 
 public class SingerListAdapter extends RecyclerAdapter<SingerNumBean.SingerBean> {
 
+    private static final String TAG="SingerListAdapter";
+
     public SingerListAdapter(Context context, int layoutId, List datas) {
         super(context, layoutId, datas);
     }
@@ -22,12 +25,12 @@ public class SingerListAdapter extends RecyclerAdapter<SingerNumBean.SingerBean>
         TextView name = holder.itemView.findViewById(R.id.name);//名称
 
         name.setText(item.name);
-        if (item.ngPath == null) {
-            icon.setImageResource(R.mipmap.error_src);
+
+        if (TextUtils.isEmpty(item.ngPath)){
+            icon.setImageResource(R.mipmap.station_src);
         } else {
-            PicassoUtil.picassoAdvanced(context, item.ngPath, R.mipmap.station_src, R.mipmap.error_src, icon);
+            String srcPath= PicassoUtil.utf8Togb2312(item.ngPath);
+            PicassoUtil.picassoAdvanced(context,srcPath,R.mipmap.station_src,R.mipmap.error_src,icon);
         }
-
-
     }
 }

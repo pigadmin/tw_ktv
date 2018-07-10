@@ -1,6 +1,7 @@
 package com.ktv.adapters;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -26,6 +27,12 @@ public class Fragment2Adapter extends RecyclerAdapter<SongNumBean.SongLargeBean>
         TextView name = holder.itemView.findViewById(R.id.name);//名称
 
         name.setText(item.name);
-        PicassoUtil.picassoAdvanced(context,item.ngPath,R.mipmap.station_src,R.mipmap.error_src,icon);
+
+        if (TextUtils.isEmpty(item.ngPath)){
+            icon.setImageResource(R.mipmap.station_src);
+        } else {
+           String srcPath= PicassoUtil.utf8Togb2312(item.ngPath);
+           PicassoUtil.picassoAdvanced(context,srcPath,R.mipmap.station_src,R.mipmap.error_src,icon);
+        }
     }
 }
