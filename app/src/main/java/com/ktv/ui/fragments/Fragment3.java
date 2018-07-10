@@ -109,7 +109,7 @@ public class Fragment3 extends BaseFr {
         listView = view.findViewById(R.id.listview);
         listView.setItemsCanFocus(true);//设置item项的子控件能够获得焦点（默认为false，即默认item项的子空间是不能获得焦点的）
 
-        playAdater = new Fragment3Adater(listView, getActivity(), R.layout.fragment3_item, musicPlayBeans, mDb);
+        playAdater = new Fragment3Adater(listView, getActivity(), R.layout.fragment3_item, musicPlayBeans, mDb,mSerachText,mNofoundText);
         listView.setAdapter(playAdater);
     }
 
@@ -129,15 +129,6 @@ public class Fragment3 extends BaseFr {
 //                    ToastUtils.showShortToast(mContext, "立即播放");
                 Intent intent = new Intent(mContext, PlayerActivity.class);
                 mContext.startActivity(intent);
-
-
-            }
-        });
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
             }
         });
     }

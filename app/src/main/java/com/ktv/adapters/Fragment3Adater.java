@@ -25,16 +25,17 @@ public class Fragment3Adater extends BAdapter<MusicPlayBean> {
 
     Context mContext;
     public DbManager mDb;
-
-    public List<MusicPlayBean> list;
     public ListView listView;
+    public TextView mSerachText;
+    public TextView mNofoundText;
 
-    public Fragment3Adater(ListView listView, Context context, int layoutId, List<MusicPlayBean> list, DbManager mDb) {
+    public Fragment3Adater(ListView listView, Context context, int layoutId, List<MusicPlayBean> list, DbManager mDb,TextView mSerachText,TextView mNofoundText) {
         super(context, layoutId, list);
         this.mContext = context;
-        this.list = list;
         this.mDb = mDb;
         this.listView = listView;
+        this.mSerachText=mSerachText;
+        this.mNofoundText=mNofoundText;
     }
 
     @Override
@@ -99,6 +100,15 @@ public class Fragment3Adater extends BAdapter<MusicPlayBean> {
                     listView.setSelection(position);
                     notifyDataSetChanged();
                     listView.requestFocusFromTouch();
+
+                    if (getAllData()!=null&&!getAllData().isEmpty()){
+                        mSerachText.setText("當前已點歌曲 " + getAllData().size() + " 首");
+                        mNofoundText.setVisibility(View.GONE);
+                    } else {
+                        mSerachText.setText("當前暫無已點歌曲");
+                        mNofoundText.setText("还未添加歌曲,请先点歌!");
+                        mNofoundText.setVisibility(View.VISIBLE);
+                    }
                 } catch (Exception e) {
                     Logger.i(TAG, "删除异常e.." + e.getMessage());
                 }
