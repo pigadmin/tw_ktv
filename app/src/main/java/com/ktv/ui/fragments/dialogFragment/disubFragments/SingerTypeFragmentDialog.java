@@ -23,7 +23,6 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.ktv.R;
-import com.ktv.adapters.CustomAdater;
 import com.ktv.adapters.CustomDialogAdater;
 import com.ktv.adapters.SingerTypeAdapter;
 import com.ktv.adapters.base.RecyclerAdapter;
@@ -39,7 +38,6 @@ import com.ktv.tools.Logger;
 import com.ktv.tools.SoftKeyboard;
 import com.ktv.tools.ToastUtils;
 import com.ktv.ui.BaseFr;
-import com.ktv.ui.fragments.subFragments.SingerListFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +47,7 @@ import java.util.WeakHashMap;
  * 歌星分类(点歌台) (大陆男歌星,内地女歌星,港台女歌星,国语合唱)  2级
  */
 public class SingerTypeFragmentDialog extends BaseFr {
-    private static final String TAG="SingerTypeFragment";
+    private static final String TAG="SingerTypeFragmentDialog";
 
     private View view;
     private Context mContext;
@@ -58,10 +56,10 @@ public class SingerTypeFragmentDialog extends BaseFr {
     private SingerTypeAdapter playAdater;
     private List<SingerNumBean.SingerBean> mItemList;
 
-    private WeakHashMap<String,String> weakHashMap=new WeakHashMap<>();
+    private WeakHashMap<String, String> weakHashMap = new WeakHashMap<>();
 
-    public static final int Search_Music_Success=100;//查找歌曲歌曲成功
-    public static final int Search_Music_Failure=200;//查找歌曲失败
+    public static final int Search_Music_Success = 100;//查找歌曲歌曲成功
+    public static final int Search_Music_Failure = 200;//查找歌曲失败
 
     private StaggeredGridLayoutManager mLayoutManager;
 
@@ -79,26 +77,30 @@ public class SingerTypeFragmentDialog extends BaseFr {
     private String mSingerId;//歌曲大类ID
     private String mSingerName;//歌曲大类名称
 
-    private int mSetTextName= Constant.InputNameMethod.InputNameOne;//动态选择文字
+    private int mSetTextName = Constant.InputNameMethod.InputNameOne;//动态选择文字
 
-    private String [] arrays = null;
+    private String[] arrays = null;
 
     private CustomDialogAdater mAdater;
 
-    public Handler handler=new Handler(){
+    private int mLimit = App.Srclimit;//页码量
+    private int mPage = 1;//第几页
+
+    public Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            switch (msg.what){
+            switch (msg.what) {
                 case Search_Music_Success:
                     mTextLeft.setText(mSingerName);//显示大类列表名称
                     mNoText.setVisibility(View.GONE);
                     playAdater.notifyDataSetChanged();
+                    mRecyclerView.requestFocusFromTouch();
                     break;
                 case Search_Music_Failure:
                     playAdater.notifyDataSetChanged();
                     mNoText.setVisibility(View.VISIBLE);
-                    mNoText.setText("当前无数据");
+                    mNoText.setText("當前无数据");
                     break;
             }
         }
@@ -107,7 +109,7 @@ public class SingerTypeFragmentDialog extends BaseFr {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_dialog2, container, false);
-        mContext=getActivity();
+        mContext = getActivity();
         getIntentData();
         initView();
         initLiter();
@@ -123,30 +125,31 @@ public class SingerTypeFragmentDialog extends BaseFr {
     /**
      * Bundle传值
      */
-    private void getIntentData(){
-        mSingerId= getArguments().getString("singerId");
-        mSingerName= getArguments().getString("singerName");
+    private void getIntentData() {
+        mSingerId = getArguments().getString("singerId");
+        mSingerName = getArguments().getString("singerName");
 
-        Logger.i(TAG,"mSingerId..."+mSingerId+"...mSingerName..."+mSingerName);
+        Logger.i(TAG, "mSingerId..." + mSingerId + "...mSingerName..." + mSingerName);
+        mPage=1;
         getMusicServer(mSingerId);
     }
 
     /**
      * 初始化View
      */
-    private void initView(){
+    private void initView() {
         mItemList=new ArrayList<>();
 
-        mNoText=view.findViewById(R.id.no_tvw);
+        mNoText = view.findViewById(R.id.no_tvw);
 
-        mTextLeft=view.findViewById(R.id.textLeft_tvw);
-        mSerch=view.findViewById(R.id.serch_edt);
-        SoftKeyboard.hideSoftInputMode(getActivity(),mSerch);//禁止显示键盘
-        mListText=view.findViewById(R.id.list_tvw);
+        mTextLeft = view.findViewById(R.id.textLeft_tvw);
+        mSerch = view.findViewById(R.id.serch_edt);
+        SoftKeyboard.hideSoftInputMode(getActivity(), mSerch);//禁止显示键盘
+        mListText = view.findViewById(R.id.list_tvw);
 
-        mRecyclerView=view.findViewById(R.id.recyview);
+        mRecyclerView = view.findViewById(R.id.recyview);
 
-        playAdater=new SingerTypeAdapter(getActivity(),R.layout.adapter_grid_dialog, mItemList);
+        playAdater = new SingerTypeAdapter(getActivity(), R.layout.adapter_grid_dialog, mItemList);
         mRecyclerView.setAdapter(playAdater);
 
         mRecyclerView.addItemDecoration(new SpacesItemDecoration(0, 30, 0, 40));
@@ -157,12 +160,12 @@ public class SingerTypeFragmentDialog extends BaseFr {
     /**
      * item事件
      */
-    private void initLiter(){
+    private void initLiter() {
         playAdater.setOnItemClickListener(new RecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                SingerNumBean.SingerBean singerBean=  mItemList.get(position);
-                toClass(singerBean.id,singerBean.name);
+                SingerNumBean.SingerBean singerBean = mItemList.get(position);
+                toClass(singerBean.id, singerBean.name);
             }
         });
 
@@ -179,15 +182,27 @@ public class SingerTypeFragmentDialog extends BaseFr {
                 showInputPown();
             }
         });
+
+        playAdater.setOnItemSelectedListener(new RecyclerAdapter.OnItemSelectedListener() {
+            @Override
+            public void onFocusChange(View view, int position) {
+                Logger.i(TAG,"position...."+position);
+                int index = position+1;
+                if (mPage*mLimit==index){
+                    mPage++;
+                    getMusicServer(mSingerId);
+                }
+            }
+        });
     }
 
-    private void Attribute(View strView,final PopupWindow window){
-        ImageView serach =strView.findViewById(R.id.serach_ivw);//搜索键
+    private void Attribute(View strView, final PopupWindow window) {
+        ImageView serach = strView.findViewById(R.id.serach_ivw);//搜索键
         serach.setVisibility(View.VISIBLE);
-        ImageView delete =strView.findViewById(R.id.delete_text);//清除键
-        GridView gridView =strView.findViewById(R.id.grid);//键盘
+        ImageView delete = strView.findViewById(R.id.delete_text);//清除键
+        GridView gridView = strView.findViewById(R.id.grid);//键盘
         gridView.setNumColumns(10);
-        mAdater=new CustomDialogAdater(getActivity(),arrays);
+        mAdater = new CustomDialogAdater(getActivity(), arrays);
         gridView.setAdapter(mAdater);
         mAdater.notifyDataSetChanged();
 
@@ -202,12 +217,12 @@ public class SingerTypeFragmentDialog extends BaseFr {
             @Override
             public void onClick(View view) {
                 String str = mSerch.getText().toString();
-                if (!TextUtils.isEmpty(str)){
-                    String s1= str.substring(0,str.length()-1);
+                if (!TextUtils.isEmpty(str)) {
+                    String s1 = str.substring(0, str.length() - 1);
                     mSerch.setText(s1);
                     mSerch.setSelection(mSerch.getText().length());
                 } else {
-                    ToastUtils.showShortToast(mContext,"输入框不存在字符!");
+                    ToastUtils.showShortToast(mContext, "输入框不存在字符!");
                 }
             }
         });
@@ -215,8 +230,8 @@ public class SingerTypeFragmentDialog extends BaseFr {
         serach.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (TextUtils.isEmpty(mSerch.getText().toString().trim())){
-                    ToastUtils.showShortToast(mContext,"请先选择搜索关键字");
+                if (TextUtils.isEmpty(mSerch.getText().toString().trim())) {
+                    ToastUtils.showShortToast(mContext, "请先选择搜索关键字");
                     return;
                 }
                 window.dismiss();
@@ -225,26 +240,26 @@ public class SingerTypeFragmentDialog extends BaseFr {
         });
     }
 
-    private void isState(int postion){
+    private void isState(int postion) {
         String resule = "";
-        switch (mSetTextName){
+        switch (mSetTextName) {
             case Constant.InputNameMethod.InputNameOne:
-                resule= Constant.LanguageType.PhoneticNotation[postion];
+                resule = Constant.LanguageType.PhoneticNotation[postion];
                 break;
             case Constant.InputNameMethod.InputNameTwo:
-                resule= Constant.LanguageType.PinYin[postion];
+                resule = Constant.LanguageType.PinYin[postion];
                 break;
             case Constant.InputNameMethod.InputNameThree:
-                resule= Constant.LanguageType.Number[postion];
+                resule = Constant.LanguageType.Number[postion];
                 break;
             case Constant.InputNameMethod.InputNameFour:
-                resule= Constant.LanguageType.Vietnam[postion];
+                resule = Constant.LanguageType.Vietnam[postion];
                 break;
             case Constant.InputNameMethod.InputNameFive:
-                resule= Constant.LanguageType.Japanese[postion];
+                resule = Constant.LanguageType.Japanese[postion];
                 break;
         }
-        String str = mSerch.getText().toString() +resule;
+        String str = mSerch.getText().toString() + resule;
         mSerch.setText(str);
         mSerch.setSelection(mSerch.getText().length());
     }
@@ -292,7 +307,7 @@ public class SingerTypeFragmentDialog extends BaseFr {
     @Override
     public void onResume() {
         super.onResume();
-        switch (mSetTextName){
+        switch (mSetTextName) {
             case Constant.InputNameMethod.InputNameOne:
                 mListText.setText("注 音");
                 break;
@@ -311,12 +326,19 @@ public class SingerTypeFragmentDialog extends BaseFr {
         }
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+    }
+
     /**
      * 显示自定义Popuwindows
      */
-    private void showPoPuWindos(){
+    private void showPoPuWindos() {
         mSerch.setText(null);
         mListText.setText(null);
+
         View strView = getActivity().getLayoutInflater().inflate(R.layout.serch_powin_layout_dialog, null, false);
         final PopupWindow window=new PopupWindow(strView, 50,ViewGroup.LayoutParams.WRAP_CONTENT, true);
         window.setAnimationStyle(R.style.AnimationFade);
@@ -324,18 +346,18 @@ public class SingerTypeFragmentDialog extends BaseFr {
 //        window.setBackgroundDrawable(new BitmapDrawable());
         window.showAsDropDown(view.findViewById(R.id.list_tvw),4,-30);
 
-        final TextView textType1=strView.findViewById(R.id.text_type_1);
-        final TextView textType2=strView.findViewById(R.id.text_type_2);
-        final TextView textType3=strView.findViewById(R.id.text_type_3);
-        final TextView textType4=strView.findViewById(R.id.text_type_4);
-        final TextView textType5=strView.findViewById(R.id.text_type_5);
+        final TextView textType1 = strView.findViewById(R.id.text_type_1);
+        final TextView textType2 = strView.findViewById(R.id.text_type_2);
+        final TextView textType3 = strView.findViewById(R.id.text_type_3);
+        final TextView textType4 = strView.findViewById(R.id.text_type_4);
+        final TextView textType5 = strView.findViewById(R.id.text_type_5);
 
         textType1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mListText.setText(null);
                 mListText.setText(textType1.getText().toString().trim());
-                mSetTextName= Constant.InputNameMethod.InputNameOne;
+                mSetTextName = Constant.InputNameMethod.InputNameOne;
                 window.dismiss();
             }
         });
@@ -345,7 +367,7 @@ public class SingerTypeFragmentDialog extends BaseFr {
             public void onClick(View v) {
                 mListText.setText(null);
                 mListText.setText(textType2.getText().toString().trim());
-                mSetTextName= Constant.InputNameMethod.InputNameTwo;
+                mSetTextName = Constant.InputNameMethod.InputNameTwo;
                 window.dismiss();
             }
         });
@@ -355,7 +377,7 @@ public class SingerTypeFragmentDialog extends BaseFr {
             public void onClick(View v) {
                 mListText.setText(null);
                 mListText.setText(textType3.getText().toString().trim());
-                mSetTextName= Constant.InputNameMethod.InputNameThree;
+                mSetTextName = Constant.InputNameMethod.InputNameThree;
                 window.dismiss();
             }
         });
@@ -365,7 +387,7 @@ public class SingerTypeFragmentDialog extends BaseFr {
             public void onClick(View v) {
                 mListText.setText(null);
                 mListText.setText(textType4.getText().toString().trim());
-                mSetTextName= Constant.InputNameMethod.InputNameFour;
+                mSetTextName = Constant.InputNameMethod.InputNameFour;
                 window.dismiss();
             }
         });
@@ -375,29 +397,35 @@ public class SingerTypeFragmentDialog extends BaseFr {
             public void onClick(View v) {
                 mListText.setText(null);
                 mListText.setText(textType5.getText().toString().trim());
-                mSetTextName= Constant.InputNameMethod.InputNameFive;
+                mSetTextName = Constant.InputNameMethod.InputNameFive;
                 window.dismiss();
             }
         });
     }
 
     public void onEvent(DataMessage event) {
-        Logger.d(TAG,"data.."+event.getData());
+        Logger.d(TAG, "data.." + event.getData());
         if (event.gettag().equals(TAG)) {
-            if(!TextUtils.isEmpty(event.getData())){
-                mItemList.clear();
-                AJson aJsons=  GsonJsonUtils.parseJson2Obj(event.getData(),AJson.class);
-                String s=  GsonJsonUtils.parseObj2Json(aJsons.getData());
-                SingerNumBean numBean= GsonJsonUtils.parseJson2Obj(s,SingerNumBean.class);
-                isMusicStateList(numBean.list);
+            if (!TextUtils.isEmpty(event.getData())) {
+                try {
+                    AJson aJsons = GsonJsonUtils.parseJson2Obj(event.getData(), AJson.class);
+                    String s = GsonJsonUtils.parseObj2Json(aJsons.getData());
+                    SingerNumBean numBean = GsonJsonUtils.parseJson2Obj(s, SingerNumBean.class);
+                    isMusicStateList(numBean.list);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
 
-    private void isMusicStateList(List<SingerNumBean.SingerBean> playBeans){
-        if (playBeans !=null&&!playBeans.isEmpty()){
-            Logger.d(TAG,"list长度1..."+playBeans.size());
+    private void isMusicStateList(List<SingerNumBean.SingerBean> playBeans) {
+        if (playBeans != null && !playBeans.isEmpty()) {
+            Logger.d(TAG, "list长度1..." + playBeans.size());
             mItemList.addAll(playBeans);
+        }
+
+        if (mItemList != null && !mItemList.isEmpty()) {
             handler.sendEmptyMessage(Search_Music_Success);
         } else {
             handler.sendEmptyMessage(Search_Music_Failure);
@@ -407,69 +435,71 @@ public class SingerTypeFragmentDialog extends BaseFr {
     /**
      * 通过大类id,获取歌星分类
      */
-    private void getMusicServer(String singerId){
+    private void getMusicServer(String singerId) {
 
         weakHashMap.put("mac", App.mac);
-        weakHashMap.put("STBtype","2");
-        weakHashMap.put("songtypeid",singerId);
-        weakHashMap.put("zhuyin",null);
-        weakHashMap.put("pinyin",null);
-        weakHashMap.put("japanese",null);
-        weakHashMap.put("vietnam",null);
-        weakHashMap.put("page","1");//第几页    不填默认1
-        weakHashMap.put("limit","100");//页码量   不填默认10，最大限度100
-        String url= App.getRqstUrl(App.headurl+"song/getsongSingerType", weakHashMap);
+        weakHashMap.put("STBtype", "2");
+        weakHashMap.put("songtypeid", singerId);
+        weakHashMap.put("zhuyin", null);
+        weakHashMap.put("pinyin", null);
+        weakHashMap.put("japanese", null);
+        weakHashMap.put("vietnam", null);
+        weakHashMap.put("page", mPage+"");//第几页    不填默认1
+        weakHashMap.put("limit", mLimit+"");//页码量   不填默认10，最大限度100
+        String url = App.getRqstUrl(App.headurl + "song/getsongSingerType", weakHashMap);
 
-        Logger.i(TAG,"url.."+url);
+        Logger.i(TAG, "url.." + url);
         Req.get(TAG, url);
     }
 
     /**
      * 通过搜索输入法,获取歌星分类
      */
-    private void serverSeach(String searchContent){
-
+    private void serverSeach(String searchContent) {
+        mItemList.clear();
         weakHashMap.put("mac", App.mac);
-        weakHashMap.put("STBtype","2");
-        weakHashMap.put("page","1");//第几页    不填默认1
-        weakHashMap.put("limit","100");//页码量   不填默认10，最大限度100
-        weakHashMap.put("songtypeid",null);//歌手类型id
+        weakHashMap.put("STBtype", "2");
+        weakHashMap.put("page", mPage+"");//第几页    不填默认1
+        weakHashMap.put("limit", mLimit+"");//页码量   不填默认10，最大限度100
+        weakHashMap.put("songtypeid", null);//歌手类型id
 
-        switch (mSetTextName){
+        switch (mSetTextName) {
             case Constant.InputNameMethod.InputNameOne:
-                weakHashMap.put("zhuyin",searchContent);//拼音
+                weakHashMap.put("zhuyin", searchContent);//拼音
                 break;
             case Constant.InputNameMethod.InputNameTwo:
-                weakHashMap.put("pinyin",searchContent);//注音
+                weakHashMap.put("pinyin", searchContent);//注音
                 break;
             case Constant.InputNameMethod.InputNameThree:
+                weakHashMap.put("keyword",searchContent);//keyword 按关键字搜索
                 break;
             case Constant.InputNameMethod.InputNameFour:
-                weakHashMap.put("vietnam",searchContent);//越南
+                weakHashMap.put("vietnam", searchContent);//越南
                 break;
             case Constant.InputNameMethod.InputNameFive:
-                weakHashMap.put("japanese",searchContent);//日文
+                weakHashMap.put("japanese", searchContent);//日文
                 break;
         }
 
-        String url= App.getRqstUrl(App.headurl+"song/getsongSingerType", weakHashMap);
-        Logger.i(TAG,"url.."+url);
+        String url = App.getRqstUrl(App.headurl + "song/getsongSingerType", weakHashMap);
+        Logger.i(TAG, "url.." + url);
         Req.get(TAG, url);
     }
 
-
     /**
      * 切换到 歌星界面
+     *
      * @param id
      * @param name
      */
-    private void toClass(String id,String name){
+    private void toClass(String id, String name) {
         Bundle bundle = new Bundle();
         ft = manager.beginTransaction();
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);//打开
         SingerListFragmentDialog mufrt = new SingerListFragmentDialog();
         ft.replace(R.id.main_popudows, mufrt);
-        bundle.putString("singertypeid",id);
-        bundle.putString("singerTypeName",name);
+        bundle.putString("singertypeid", id);
+        bundle.putString("singerTypeName", name);
         mufrt.setArguments(bundle);
         ft.addToBackStack(null);
         ft.commit();

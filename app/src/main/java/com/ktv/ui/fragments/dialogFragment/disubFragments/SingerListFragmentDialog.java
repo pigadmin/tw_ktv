@@ -24,7 +24,6 @@ import android.widget.TextView;
 
 import com.google.gson.reflect.TypeToken;
 import com.ktv.R;
-import com.ktv.adapters.CustomAdater;
 import com.ktv.adapters.CustomDialogAdater;
 import com.ktv.adapters.base.RecyclerAdapter;
 import com.ktv.adapters.base.SingerListAdapter;
@@ -40,7 +39,6 @@ import com.ktv.tools.Logger;
 import com.ktv.tools.SoftKeyboard;
 import com.ktv.tools.ToastUtils;
 import com.ktv.ui.BaseFr;
-import com.ktv.ui.fragments.subFragments.MusicListFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +48,7 @@ import java.util.WeakHashMap;
  * 歌星列表(点歌台) (薛之谦,许嵩,刘德华)  3级
  */
 public class SingerListFragmentDialog extends BaseFr {
-    private static final String TAG="SingerListFragment";
+    private static final String TAG="SingerListFragmentDialog";
 
     private View view;
     private Context mContext;
@@ -88,6 +86,9 @@ public class SingerListFragmentDialog extends BaseFr {
 
     private boolean isInterfaceType=true;
 
+    private int mLimit = App.Srclimit;//页码量
+    private int mPage = 1;//第几页
+
     public Handler handler=new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -97,6 +98,7 @@ public class SingerListFragmentDialog extends BaseFr {
                     mTextLeft.setText(mSingerTypeName);//显示大类列表名称
                     mNoText.setVisibility(View.GONE);
                     playAdater.notifyDataSetChanged();
+                    mRecyclerView.requestFocusFromTouch();
                     break;
                 case Search_Music_Failure:
                     playAdater.notifyDataSetChanged();
@@ -131,6 +133,8 @@ public class SingerListFragmentDialog extends BaseFr {
         mSingerTypeName= getArguments().getString("singerTypeName");
 
         Logger.i(TAG,"mSingerTypeId..."+mSingerTypeId+"...mSingerTypeName..."+mSingerTypeName);
+
+        mPage=1;
         getMusicServer(mSingerTypeId);
     }
 
@@ -138,7 +142,7 @@ public class SingerListFragmentDialog extends BaseFr {
      * 初始化View
      */
     private void initView(){
-        mItemList=new ArrayList<>();
+        mItemList = new ArrayList<>();
 
         mNoText=view.findViewById(R.id.no_tvw);
 
@@ -180,6 +184,18 @@ public class SingerListFragmentDialog extends BaseFr {
             @Override
             public void onClick(View v) {
                 showInputPown();
+            }
+        });
+
+        playAdater.setOnItemSelectedListener(new RecyclerAdapter.OnItemSelectedListener() {
+            @Override
+            public void onFocusChange(View view, int position) {
+                Logger.i(TAG,"position...."+position);
+                int index = position+1;
+                if (mPage*mLimit==index){
+                    mPage++;
+                    getMusicServer(mSingerTypeId);
+                }
             }
         });
     }
@@ -312,6 +328,19 @@ public class SingerListFragmentDialog extends BaseFr {
                 mListText.setText("日 文");
                 break;
         }
+        if (v != null) {
+            v.requestFocus();
+        } else {
+            mRecyclerView.requestFocus();
+        }
+    }
+
+    private View v = null;
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        v = getActivity().getCurrentFocus();
     }
 
     /**
@@ -388,7 +417,6 @@ public class SingerListFragmentDialog extends BaseFr {
         Logger.d(TAG,"data.."+event.getData());
         if (event.gettag().equals(TAG)) {
             if(!TextUtils.isEmpty(event.getData())){
-                mItemList.clear();
                 AJson aJsons=  GsonJsonUtils.parseJson2Obj(event.getData(),AJson.class);
                 String s=  GsonJsonUtils.parseObj2Json(aJsons.getData());
                 Logger.i(TAG,"s..."+s);
@@ -405,10 +433,12 @@ public class SingerListFragmentDialog extends BaseFr {
     }
 
     private void isMusicStateList(List<SingerNumBean.SingerBean> playBeans){
-        mItemList.clear();
-        if (playBeans !=null&&!playBeans.isEmpty()){
-            Logger.d(TAG,"list长度1..."+playBeans.size());
+        if (playBeans != null && !playBeans.isEmpty()) {
+            Logger.d(TAG, "list长度1..." + playBeans.size());
             mItemList.addAll(playBeans);
+        }
+
+        if (mItemList != null && !mItemList.isEmpty()) {
             handler.sendEmptyMessage(Search_Music_Success);
         } else {
             handler.sendEmptyMessage(Search_Music_Failure);
@@ -424,8 +454,8 @@ public class SingerListFragmentDialog extends BaseFr {
         weakHashMap.put("mac", App.mac);
         weakHashMap.put("STBtype","2");
         weakHashMap.put("singertypeid",singerId);
-        weakHashMap.put("page","1");//第几页    不填默认1
-        weakHashMap.put("limit","100");//页码量   不填默认10，最大限度100
+        weakHashMap.put("page", mPage+"");//第几页    不填默认1
+        weakHashMap.put("limit", mLimit+"");//页码量   不填默认10，最大限度100
         String url= App.getRqstUrl(App.headurl+"song/getsongSinger", weakHashMap);
 
         Logger.i(TAG,"url.."+url);
@@ -436,12 +466,13 @@ public class SingerListFragmentDialog extends BaseFr {
      * 通过搜索输入法,获取歌星
      */
     private void serverSeach(String searchContent){
+        mItemList.clear();
         isInterfaceType=false;
 
         weakHashMap.put("mac", App.mac);
         weakHashMap.put("STBtype","2");
-        weakHashMap.put("page","1");//第几页    不填默认1
-        weakHashMap.put("limit","100");//页码量   不填默认10，最大限度100
+        weakHashMap.put("page", mPage+"");//第几页    不填默认1
+        weakHashMap.put("limit", mLimit+"");//页码量   不填默认10，最大限度100
         weakHashMap.put("singertypeid",null);//歌手类型id
 
         switch (mSetTextName){
@@ -452,6 +483,7 @@ public class SingerListFragmentDialog extends BaseFr {
                 weakHashMap.put("pinyin",searchContent);//注音
                 break;
             case Constant.InputNameMethod.InputNameThree:
+                weakHashMap.put("keyword",searchContent);//keyword 按关键字搜索
                 break;
             case Constant.InputNameMethod.InputNameFour:
                 weakHashMap.put("vietnam",searchContent);//越南
@@ -474,6 +506,7 @@ public class SingerListFragmentDialog extends BaseFr {
     private void toClass(String id,String name){
         Bundle bundle = new Bundle();
         ft = manager.beginTransaction();
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);//打开
         MusicListFragmentDialog mufrt = new MusicListFragmentDialog();
         ft.replace(R.id.main_popudows, mufrt);
         bundle.putString("singerid",id);

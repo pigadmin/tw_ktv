@@ -28,7 +28,6 @@ import com.ktv.tools.GsonJsonUtils;
 import com.ktv.tools.Logger;
 import com.ktv.ui.BaseFr;
 import com.ktv.ui.fragments.dialogFragment.disubFragments.SingerTypeFragmentDialog;
-import com.ktv.ui.fragments.subFragments.SingerTypeFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,10 +46,10 @@ public class FragmentDialog2 extends BaseFr {
     private Fragment2Adapter playAdater;
     private List<SongNumBean.SongLargeBean> mItemList;
 
-    private WeakHashMap<String,String> weakHashMap=new WeakHashMap<>();
+    private WeakHashMap<String, String> weakHashMap = new WeakHashMap<>();
 
-    public static final int Search_Music_Success=100;//查找歌曲歌曲成功
-    public static final int Search_Music_Failure=200;//查找歌曲失败
+    public static final int Search_Music_Success = 100;//查找歌曲歌曲成功
+    public static final int Search_Music_Failure = 200;//查找歌曲失败
 
     private StaggeredGridLayoutManager mLayoutManager;
 
@@ -59,15 +58,19 @@ public class FragmentDialog2 extends BaseFr {
     private FragmentManager manager;
     private FragmentTransaction ft;
 
+    private int mLimit = App.Srclimit;//页码量
+    private int mPage = 1;//第几页
 
-    public Handler handler=new Handler(){
+
+    public Handler handler = new Handler() {
         @Override
-        public void handleMessage(Message msg) { Context mContext;
+        public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            switch (msg.what){
+            switch (msg.what) {
                 case Search_Music_Success:
                     mNoText.setVisibility(View.GONE);
                     playAdater.notifyDataSetChanged();
+                    mRecyclerView.requestFocusFromTouch();
                     break;
                 case Search_Music_Failure:
                     mNoText.setVisibility(View.VISIBLE);
@@ -80,8 +83,7 @@ public class FragmentDialog2 extends BaseFr {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_dialog2, container, false);
-        mContext=getActivity();
-        getMusicServer();
+        mContext = getActivity();
         initView();
         initLiter();
         return view;
@@ -96,53 +98,86 @@ public class FragmentDialog2 extends BaseFr {
     /**
      * 初始化View
      */
-    private void initView(){
-        mItemList=new ArrayList<>();
+    private void initView() {
+        mItemList = new ArrayList<>();
 
-        mNoText=view.findViewById(R.id.no_tvw);
+        mNoText = view.findViewById(R.id.no_tvw);
 
         view.findViewById(R.id.lableTop).setVisibility(View.INVISIBLE);
 
-        mRecyclerView=view.findViewById(R.id.recyview);
+        mRecyclerView = view.findViewById(R.id.recyview);
 
-        playAdater=new Fragment2Adapter(getActivity(),R.layout.adapter_grid_dialog, mItemList);
+
+        playAdater = new Fragment2Adapter(getActivity(), R.layout.adapter_grid_dialog, mItemList);
         mRecyclerView.setAdapter(playAdater);
+
 
         mRecyclerView.addItemDecoration(new SpacesItemDecoration(0, 30, 0, 40));
         mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.HORIZONTAL);
         mRecyclerView.setLayoutManager(mLayoutManager);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        mPage=1;
+        getMusicServer();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+    }
+
     /**
      * item事件
      */
-    private void initLiter(){
+    private void initLiter() {
         playAdater.setOnItemClickListener(new RecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                SongNumBean.SongLargeBean largeBean=mItemList.get(position);
-                toClass(largeBean.id,largeBean.name);
+                SongNumBean.SongLargeBean largeBean = mItemList.get(position);
+                toClass(largeBean.id, largeBean.name);
+            }
+        });
+
+        playAdater.setOnItemSelectedListener(new RecyclerAdapter.OnItemSelectedListener() {
+            @Override
+            public void onFocusChange(View view, int position) {
+                Logger.i(TAG,"position...."+position);
+                int index = position+1;
+                if (mPage*mLimit==index){
+                    mPage++;
+                    getMusicServer();
+                }
             }
         });
     }
 
     public void onEvent(DataMessage event) {
-        Logger.d(TAG,"data.."+event.getData());
+        Logger.d(TAG, "data.." + event.getData());
         if (event.gettag().equals(TAG)) {
-            if(!TextUtils.isEmpty(event.getData())){
-                mItemList.clear();
-                AJson aJsons=  GsonJsonUtils.parseJson2Obj(event.getData(),AJson.class);
-                String s=  GsonJsonUtils.parseObj2Json(aJsons.getData());
-                SongNumBean numBean= GsonJsonUtils.parseJson2Obj(s,SongNumBean.class);
-                isMusicStateList(numBean.list);
+            if (!TextUtils.isEmpty(event.getData())) {
+                try {
+                    AJson aJsons = GsonJsonUtils.parseJson2Obj(event.getData(), AJson.class);
+                    String s = GsonJsonUtils.parseObj2Json(aJsons.getData());
+                    SongNumBean numBean = GsonJsonUtils.parseJson2Obj(s, SongNumBean.class);
+                    isMusicStateList(numBean.list);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
 
-    private void isMusicStateList(List<SongNumBean.SongLargeBean> playBeans){
-        if (playBeans !=null&&!playBeans.isEmpty()){
-            Logger.d(TAG,"list长度1..."+playBeans.size());
+    private void isMusicStateList(List<SongNumBean.SongLargeBean> playBeans) {
+        mItemList.clear();
+        if (playBeans != null && !playBeans.isEmpty()) {
+            Logger.d(TAG, "list长度1..." + playBeans.size());
             mItemList.addAll(playBeans);
+        }
+
+        if (mItemList != null && !mItemList.isEmpty()) {
             handler.sendEmptyMessage(Search_Music_Success);
         } else {
             handler.sendEmptyMessage(Search_Music_Failure);
@@ -152,29 +187,31 @@ public class FragmentDialog2 extends BaseFr {
     /**
      * 获取歌曲大类
      */
-    private void getMusicServer(){
+    private void getMusicServer() {
         weakHashMap.put("mac", App.mac);
-        weakHashMap.put("STBtype","2");
-        weakHashMap.put("page","1");//第几页    不填默认1
-        weakHashMap.put("limit","100");//页码量   不填默认10，最大限度100
-        String url= App.getRqstUrl(App.headurl+"song/getSongType", weakHashMap);
+        weakHashMap.put("STBtype", "2");
+        weakHashMap.put("page", mPage+"");//第几页    不填默认1
+        weakHashMap.put("limit", mLimit+"");//页码量   不填默认10，最大限度100
+        String url = App.getRqstUrl(App.headurl + "song/getSongType", weakHashMap);
 
-        Logger.i(TAG,"url.."+url);
+        Logger.i(TAG, "url.." + url);
         Req.get(TAG, url);
     }
 
     /**
      * 切换到 歌星分类界面
+     *
      * @param id
      * @param name
      */
-    private void toClass(String id,String name){
+    private void toClass(String id, String name) {
         Bundle bundle = new Bundle();
         ft = manager.beginTransaction();
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);//打开
         SingerTypeFragmentDialog mufrt = new SingerTypeFragmentDialog();
         ft.replace(R.id.main_popudows, mufrt);
-        bundle.putString("singerId",id);//歌曲大类ID
-        bundle.putString("singerName",name);//歌曲大类名称
+        bundle.putString("singerId", id);//歌曲大类ID
+        bundle.putString("singerName", name);//歌曲大类名称
         mufrt.setArguments(bundle);
         ft.addToBackStack(null);
         ft.commit();
