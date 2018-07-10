@@ -29,6 +29,7 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.ktv.R;
 import com.ktv.app.App;
@@ -91,11 +92,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private TextView mInfo2;//歌手名称
     private TextView mInfo3;//歌曲名称
     public DbManager mDb;
+    private App app;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        app = (App) getApplication();
         DbManager.DaoConfig daoConfig = new DbManager.DaoConfig();
         mDb = x.getDb(daoConfig);
 
@@ -105,6 +108,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
 
         startService(new Intent(this, MyService.class));
+        checkad();
         regad();
     }
 
@@ -116,9 +120,24 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
-        System.out.println("----------------");
-        System.out.println(event);
         return super.dispatchKeyEvent(event);
+    }
+
+    private void checkad() {
+        try {
+            adLists = app.getAdLists();
+            adEntities = adLists.getAdEntities();
+            if (adLists == null)
+                return;
+            if (adEntities.isEmpty())
+                return;
+
+            adhandler.sendEmptyMessage(0);
+            Log.d(TAG, "广告结束时间" + LtoDate.yMdHmsE(adLists.getEndtime() - System.currentTimeMillis()));
+            adhandler.sendEmptyMessageDelayed(1, adLists.getEndtime() - System.currentTimeMillis());
+        } catch (Exception e) {
+        }
+
     }
 
     private void regad() {
@@ -132,6 +151,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         ad_rotate = AnimationUtils.loadAnimation(this, R.anim.ad_rotate);
         ad_scale = AnimationUtils.loadAnimation(this, R.anim.ad_scale);
         ad_translate = AnimationUtils.loadAnimation(this, R.anim.ad_translate);
+
+
     }
 
 
@@ -466,36 +487,48 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     }
 
     public void onEvent(DataMessage event) {
-        Logger.d(TAG, "data.." + event.getData());
-        if (event.gettag().equals(TAG)) {
-            if (!TextUtils.isEmpty(event.getData())) {
-                musicPlayBeans.clear();
-                AJson aJsons = GsonJsonUtils.parseJson2Obj(event.getData(), AJson.class);
-                String s = GsonJsonUtils.parseObj2Json(aJsons.getData());
-                Logger.i(TAG, "s.." + s);
-                MusicNumBean numBean = GsonJsonUtils.parseJson2Obj(s, MusicNumBean.class);
-                if (numBean == null) {
+        try {
+            Logger.d(TAG, "data.." + event.getData());
+            if (event.gettag().equals(TAG)) {
+                if (!TextUtils.isEmpty(event.getData())) {
+                    musicPlayBeans.clear();
+                    AJson aJsons = GsonJsonUtils.parseJson2Obj(event.getData(), AJson.class);
+                    String s = GsonJsonUtils.parseObj2Json(aJsons.getData());
+                    Logger.i(TAG, "s.." + s);
+                    MusicNumBean numBean = GsonJsonUtils.parseJson2Obj(s, MusicNumBean.class);
+                    if (numBean == null) {
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (!mllt.isShown()) {
+                                    mllt.setVisibility(View.VISIBLE);
+                                }
+                                mInfo1.setText("未開通編號點歌功能!");
+                                mInfo2.setText(null);
+                                mInfo3.setText(null);
+                            }
+                        });
+                    } else {
+                        isMusicStateList(numBean.list);
+                    }
+
+                }
+            } else if (event.gettag().equals(update)) {
+                final AJson<Update> data = App.gson.fromJson(
+                        event.getData(), new TypeToken<AJson<Update>>() {
+                        }.getType());
+                if (data.getData() != null) {
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
-                            if (!mllt.isShown()) {
-                                mllt.setVisibility(View.VISIBLE);
-                            }
-                            mInfo1.setText("未開通編號點歌功能!");
-                            mInfo2.setText(null);
-                            mInfo3.setText(null);
+                            new ApkUpdate(MainActivity.this, data.getData().getPath()).downloadAndInstall();
                         }
                     });
-                } else {
-                    isMusicStateList(numBean.list);
                 }
 
             }
-        } else if (event.gettag().equals(update)) {
-            AJson<Update> data = App.gson.fromJson(
-                    event.getData(), new TypeToken<AJson<Update>>() {
-                    }.getType());
-            ApkUpdate.install(data.getData().getPath());
+        } catch (Exception e) {
+//            e.printStackTrace();
         }
     }
 

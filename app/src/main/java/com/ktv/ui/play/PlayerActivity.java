@@ -40,6 +40,7 @@ import com.ktv.net.Req;
 import com.ktv.tools.FULL;
 import com.ktv.tools.Logger;
 import com.ktv.tools.LtoDate;
+import com.ktv.tools.ToastUtils;
 import com.ktv.ui.BaseActivity;
 import com.ktv.ui.diy.Tips;
 import com.ktv.views.MyDialogFragment;
@@ -69,15 +70,13 @@ public class PlayerActivity extends BaseActivity implements MediaPlayer.OnPrepar
                     break;
                 case updateprogress:
                     try {
-                        if (player.getCurrentPosition() != 0l) {
-                            current_progress.setText(LtoDate.ms(player.getCurrentPosition()));
-                            music_progress.setProgress(player.getCurrentPosition());
+                        current_progress.setText(LtoDate.ms(player.getCurrentPosition()));
+                        music_progress.setProgress(player.getCurrentPosition());
 
-                            handler.sendEmptyMessageDelayed(updateprogress, 1000);
-                        }
+                        handler.sendEmptyMessageDelayed(updateprogress, 1000);
 
                     } catch (Exception e) {
-                        e.printStackTrace();
+//                        e.printStackTrace();
                     }
                     break;
             }
@@ -567,7 +566,7 @@ public class PlayerActivity extends BaseActivity implements MediaPlayer.OnPrepar
                 break;
             case R.id.btn_tyt:
 //                showtyt();
-
+                ToastUtils.showShortToast(PlayerActivity.this, "此功能暫未開放！");
                 break;
 
 

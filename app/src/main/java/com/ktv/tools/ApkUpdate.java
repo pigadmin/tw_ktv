@@ -45,7 +45,6 @@ public class ApkUpdate {
     private ProgressDialog pBar;
 
     public void downloadAndInstall() {
-
         pBar = new ProgressDialog(context);
         pBar.setTitle("自动更新中...");
         pBar.setMessage("检测到程序有更新，正在自动下载更新...");

@@ -13,7 +13,7 @@ public class Update implements Serializable {
 
     private String endTime;
 
-    private int version;
+    private double version;
 
     private int type;
 
@@ -61,11 +61,11 @@ public class Update implements Serializable {
         return this.endTime;
     }
 
-    public void setVersion(int version) {
+    public void setVersion(double version) {
         this.version = version;
     }
 
-    public int getVersion() {
+    public double getVersion() {
         return this.version;
     }
 
