@@ -59,6 +59,9 @@ public class SingerFragmentDialog extends BaseFr {
     private int mIndex;
     private String mSearchContent;
 
+    private int mLimit = App.Srclimit;//页码量
+    private int mPage = 1;//第几页
+
     public Handler handler=new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -67,6 +70,7 @@ public class SingerFragmentDialog extends BaseFr {
                 case Search_Song_Success:
                     mNofoundText.setVisibility(View.GONE);
                     singerPlayAdater.notifyDataSetChanged();
+                    listView.requestFocusFromTouch();
                     mSerachText.setText("搜索到歌手 "+mSingerBeans.size()+" 名");
                     break;
                 case Search_Song_Failure:
@@ -110,8 +114,8 @@ public class SingerFragmentDialog extends BaseFr {
     private void getSingerServer(int mIndex,String searchContent){
         weakHashMap.put("mac", App.mac);
         weakHashMap.put("STBtype","2");
-        weakHashMap.put("page","1");//第几页    不填默认1
-        weakHashMap.put("limit","100");//页码量   不填默认10，最大限度100
+        weakHashMap.put("page",mPage+"");//第几页    不填默认1
+        weakHashMap.put("limit",mLimit+"");//页码量   不填默认10，最大限度100
         weakHashMap.put("singertypeid",null);//歌手类型id
         switch (mIndex){
             case 1:
@@ -121,6 +125,7 @@ public class SingerFragmentDialog extends BaseFr {
                 weakHashMap.put("pinyin",searchContent);//注音
                 break;
             case 3:
+                weakHashMap.put("keyword",searchContent);//keyword 按关键字搜索
                 break;
             case 4:
                 weakHashMap.put("vietnam",searchContent);//越南
@@ -145,6 +150,15 @@ public class SingerFragmentDialog extends BaseFr {
         listView.setAdapter(singerPlayAdater);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+    }
     /**
      * 切换到 MusicSubFragment
      * @param id
@@ -153,6 +167,7 @@ public class SingerFragmentDialog extends BaseFr {
     private void toClass(String id,String name){
         Bundle bundle = new Bundle();
         ft = manager.beginTransaction();
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);//打开
         MusicSubFragmentDialog mufrt = new MusicSubFragmentDialog();
         ft.replace(R.id.main_popudows, mufrt);
         bundle.putString("sid",id);
@@ -168,6 +183,22 @@ public class SingerFragmentDialog extends BaseFr {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 SingerNumBean.SingerBean singerBean=  mSingerBeans.get(position);
                 toClass(singerBean.id,singerBean.name);
+            }
+        });
+
+        listView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                int index = position+1;
+                if (mPage*mLimit==index){
+                    mPage++;
+                    getSingerServer(mIndex,mSearchContent);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
             }
         });
     }

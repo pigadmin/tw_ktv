@@ -70,7 +70,8 @@ public class MusicFragmentDialog extends BaseFr {
             switch (msg.what){
                 case Search_Music_Success:
                     mNofoundText.setVisibility(View.GONE);
-//                    playAdater.notifyDataSetChanged();
+                    playAdater.notifyDataSetChanged();
+                    listView.requestFocusFromTouch();
                     mSerachText.setText("搜索到歌曲 "+musicPlayBeans.size()+" 首");
                     break;
                 case Search_Music_Failure:
@@ -90,6 +91,13 @@ public class MusicFragmentDialog extends BaseFr {
         initView();
         initLiter();
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        playAdater.notifyDataSetChanged();
+        listView.requestFocusFromTouch();
     }
 
     /**
@@ -120,6 +128,7 @@ public class MusicFragmentDialog extends BaseFr {
                 weakHashMap.put("pinyin",searchContent);//注音
                 break;
             case 3:
+                weakHashMap.put("keyword",searchContent);//keyword 按关键字搜索
                 break;
             case 4:
                 weakHashMap.put("vietnam",searchContent);//越南

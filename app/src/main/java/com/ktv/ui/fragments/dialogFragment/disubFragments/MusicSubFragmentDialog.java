@@ -13,7 +13,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.ktv.R;
-import com.ktv.adapters.MusicPlayDialogAdater;
+import com.ktv.adapters.MusicSubFragmentDialogAdater;
 import com.ktv.app.App;
 import com.ktv.bean.AJson;
 import com.ktv.bean.MusicNumBean;
@@ -46,7 +46,7 @@ public class MusicSubFragmentDialog extends BaseFr {
     private TextView mNofoundText;
 
     private ListView listView;
-    private MusicPlayDialogAdater playAdater;
+    private MusicSubFragmentDialogAdater playAdater;
     private List<MusicPlayBean> musicPlayBeans;
 
     public static final int Search_Music_Success=100;//搜索歌曲成功
@@ -69,7 +69,8 @@ public class MusicSubFragmentDialog extends BaseFr {
             switch (msg.what){
                 case Search_Music_Success:
                     mNofoundText.setVisibility(View.GONE);
-//                    playAdater.notifyDataSetChanged();
+                    playAdater.notifyDataSetChanged();
+                    listView.requestFocusFromTouch();
                     mSerachText.setText("搜索到 "+mSName+" 的歌曲"+musicPlayBeans.size()+"首");
                     break;
                 case Search_Music_Failure:
@@ -89,6 +90,13 @@ public class MusicSubFragmentDialog extends BaseFr {
         initView();
         initLiter();
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        playAdater.notifyDataSetChanged();
+        listView.requestFocusFromTouch();
     }
 
     /**
@@ -124,8 +132,13 @@ public class MusicSubFragmentDialog extends BaseFr {
         listView=view.findViewById(R.id.listview);
         listView.setItemsCanFocus(true);//设置item项的子控件能够获得焦点（默认为false，即默认item项的子空间是不能获得焦点的）
 
-        playAdater=new MusicPlayDialogAdater(getActivity(),R.layout.music_play_item_dialog, musicPlayBeans,mDb);
+        playAdater=new MusicSubFragmentDialogAdater(getActivity(),R.layout.music_play_item_dialog, musicPlayBeans,mDb);
         listView.setAdapter(playAdater);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
     }
 
     private void initLiter(){

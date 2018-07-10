@@ -20,16 +20,16 @@ import java.util.List;
 /**
  * 歌曲Adater
  */
-public class MusicPlayDialogAdater extends BAdapter<MusicPlayBean> {
+public class MusicSubFragmentDialogAdater extends BAdapter<MusicPlayBean> {
 
-    private static final String TAG = "MusicPlayDialogAdater";
+    private static final String TAG="MusicSubFragmentDialogAdater";
 
     Context mContext;
 
     private DbManager mDb;
     private List<MusicPlayBean> playlist;
 
-    public MusicPlayDialogAdater(Context context, int layoutId, List<MusicPlayBean> list, DbManager mDb) {
+    public MusicSubFragmentDialogAdater(Context context, int layoutId, List<MusicPlayBean> list, DbManager mDb) {
         super(context, layoutId, list);
         this.mContext = context;
         this.mDb = mDb;
@@ -52,15 +52,7 @@ public class MusicPlayDialogAdater extends BAdapter<MusicPlayBean> {
 
         final MusicPlayBean playBean= getItem(position);
 
-        StringBuilder sb = new StringBuilder();
-
-        if (playBean.singerName.length()==2){
-            sb.append(playBean.singerName).insert(1,"\t\t");
-            singertitle.setText(sb.toString());
-        } else {
-            singertitle.setText(playBean.singerName);
-        }
-
+        singertitle.setText(playBean.singerName);
         singername.setText(playBean.name);
 
         if (TextUtils.isEmpty(playBean.label)){
