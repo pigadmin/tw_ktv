@@ -136,6 +136,9 @@ public class MusicFragmentDialog extends BaseFr {
             case 5:
                 weakHashMap.put("japanese",searchContent);//日文
                 break;
+            default:
+                weakHashMap.put("keyword",searchContent);//keyword 按关键字搜索
+                break;
         }
         String url= App.getRqstUrl(App.headurl+"song", weakHashMap);
         Logger.i(TAG,"url.."+url);
