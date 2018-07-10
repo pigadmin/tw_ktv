@@ -230,8 +230,15 @@ public class SingerTypeFragment extends BaseFr {
         serach.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (TextUtils.isEmpty(mSerch.getText().toString().trim())) {
+                String seachText=mSerch.getText().toString().trim();
+                if (TextUtils.isEmpty(seachText)) {
                     ToastUtils.showShortToast(mContext, "请先选择搜索关键字");
+                    return;
+                }
+
+                if (seachText.contains(".")){
+                    mSerch.setText(null);
+                    ToastUtils.showShortToast(mContext,"输入框不能包含特殊字符");
                     return;
                 }
                 window.dismiss();
@@ -477,6 +484,9 @@ public class SingerTypeFragment extends BaseFr {
                 break;
             case Constant.InputNameMethod.InputNameFive:
                 weakHashMap.put("japanese", searchContent);//日文
+                break;
+            default:
+                weakHashMap.put("keyword",searchContent);//keyword 按关键字搜索
                 break;
         }
 
