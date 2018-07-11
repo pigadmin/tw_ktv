@@ -26,6 +26,7 @@ import com.ktv.net.Req;
 import com.ktv.tools.GsonJsonUtils;
 import com.ktv.tools.Logger;
 import com.ktv.ui.BaseFr;
+import com.ktv.ui.MainActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,7 +71,7 @@ public class SingerFragment extends BaseFr {
                 case Search_Song_Success:
                     mNofoundText.setVisibility(View.GONE);
                     singerPlayAdater.notifyDataSetChanged();
-                    listView.requestFocusFromTouch();
+//                    listView.requestFocusFromTouch();
                     mSerachText.setText("搜索到歌手 "+mSingerBeans.size()+" 名");
                     break;
                 case Search_Song_Failure:
@@ -87,6 +88,9 @@ public class SingerFragment extends BaseFr {
         view = inflater.inflate(R.layout.music_fragment, container, false);
         getIntentData();
         mContext=getActivity();
+
+        ((MainActivity)getActivity()).cleanFocus(false);
+
         initView();
         initLiter();
         return view;

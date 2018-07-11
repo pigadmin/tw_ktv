@@ -18,6 +18,7 @@ import com.ktv.adapters.Fragment3Adater;
 import com.ktv.bean.MusicPlayBean;
 import com.ktv.tools.Logger;
 import com.ktv.ui.BaseFr;
+import com.ktv.ui.MainActivity;
 import com.ktv.ui.diy.Tips;
 import com.ktv.ui.play.PlayerActivity;
 
@@ -59,7 +60,6 @@ public class Fragment3 extends BaseFr {
                 case Search_Music_Success:
                     mNofoundText.setVisibility(View.GONE);
                     playAdater.notifyDataSetChanged();
-                    listView.requestFocusFromTouch();
                     mSerachText.setText("當前已點歌曲 " + musicPlayBeans.size() + " 首");
                     break;
                 case Search_Music_Failure:
@@ -75,6 +75,9 @@ public class Fragment3 extends BaseFr {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment3, container, false);
         mContext = getActivity();
+
+        ((MainActivity)getActivity()).cleanFocus(true);
+
         initView();
         initLiter();
         return view;

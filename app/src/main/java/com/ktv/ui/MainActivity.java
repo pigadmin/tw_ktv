@@ -614,5 +614,41 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     }
 
+    public void cleanFocus(boolean focus){
+        radioMenu1.setFocusable(focus);
+        radioMenu1.setFocusableInTouchMode(focus);
+        radioMenu2.setFocusable(focus);
+        radioMenu2.setFocusableInTouchMode(focus);
+        radioMenu3.setFocusable(focus);
+        radioMenu3.setFocusableInTouchMode(focus);
+        radioMenu4.setFocusable(focus);
+        radioMenu4.setFocusableInTouchMode(focus);
+        radioMenu5.setFocusable(focus);
+        radioMenu5.setFocusableInTouchMode(focus);
+        radioMenu6.setFocusable(focus);
+        radioMenu6.setFocusableInTouchMode(focus);
+    }
 
+    public void setCheckedMenu(int index){
+        switch (index){
+            case 1:
+                radioMenu1.setChecked(true);
+                break;
+            case 2:
+                radioMenu2.setChecked(true);
+                break;
+            case 3:
+                radioMenu3.setChecked(true);
+                break;
+            case 4:
+                radioMenu4.setChecked(true);
+                break;
+            case 5:
+                radioMenu5.setChecked(true);
+                break;
+            case 6:
+                radioMenu6.setChecked(true);
+                break;
+        }
+    }
 }

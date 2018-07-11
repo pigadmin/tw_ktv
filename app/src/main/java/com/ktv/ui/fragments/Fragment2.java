@@ -27,6 +27,7 @@ import com.ktv.net.Req;
 import com.ktv.tools.GsonJsonUtils;
 import com.ktv.tools.Logger;
 import com.ktv.ui.BaseFr;
+import com.ktv.ui.MainActivity;
 import com.ktv.ui.fragments.subFragments.SingerTypeFragment;
 
 import java.util.ArrayList;
@@ -70,7 +71,6 @@ public class Fragment2 extends BaseFr {
                 case Search_Music_Success:
                     mNoText.setVisibility(View.GONE);
                     playAdater.notifyDataSetChanged();
-                    mRecyclerView.requestFocusFromTouch();
                     break;
                 case Search_Music_Failure:
                     mNoText.setVisibility(View.VISIBLE);
@@ -84,6 +84,9 @@ public class Fragment2 extends BaseFr {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment2, container, false);
         mContext = getActivity();
+
+        ((MainActivity)getActivity()).cleanFocus(true);
+
         initView();
         initLiter();
         return view;

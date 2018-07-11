@@ -24,6 +24,7 @@ import com.ktv.tools.BtmDialog;
 import com.ktv.tools.Logger;
 import com.ktv.tools.ToastUtils;
 import com.ktv.ui.BaseFr;
+import com.ktv.ui.MainActivity;
 
 import org.xutils.DbManager;
 import org.xutils.x;
@@ -71,6 +72,8 @@ public class Fragment6 extends BaseFr {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment6_layout, container, false);
+
+        ((MainActivity)getActivity()).cleanFocus(true);
 
         initView();
         initLiter();

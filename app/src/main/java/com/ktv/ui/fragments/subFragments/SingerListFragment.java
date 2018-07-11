@@ -39,6 +39,7 @@ import com.ktv.tools.Logger;
 import com.ktv.tools.SoftKeyboard;
 import com.ktv.tools.ToastUtils;
 import com.ktv.ui.BaseFr;
+import com.ktv.ui.MainActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -98,7 +99,7 @@ public class SingerListFragment extends BaseFr {
                     mTextLeft.setText(mSingerTypeName);//显示大类列表名称
                     mNoText.setVisibility(View.GONE);
                     playAdater.notifyDataSetChanged();
-                    mRecyclerView.requestFocusFromTouch();
+//                    mRecyclerView.requestFocusFromTouch();
                     break;
                 case Search_Music_Failure:
                     playAdater.notifyDataSetChanged();
@@ -113,6 +114,9 @@ public class SingerListFragment extends BaseFr {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment2, container, false);
         mContext=getActivity();
+
+        ((MainActivity)getActivity()).cleanFocus(false);
+
         getIntentData();
         initView();
         initLiter();

@@ -25,6 +25,7 @@ import com.ktv.tools.GsonJsonUtils;
 import com.ktv.tools.Logger;
 import com.ktv.tools.ToastUtils;
 import com.ktv.ui.BaseFr;
+import com.ktv.ui.MainActivity;
 
 import org.xutils.DbManager;
 import org.xutils.x;
@@ -71,7 +72,7 @@ public class MusicFragment extends BaseFr {
                 case Search_Music_Success:
                     mNofoundText.setVisibility(View.GONE);
                     playAdater.notifyDataSetChanged();
-                    listView.requestFocusFromTouch();
+//                    listView.requestFocusFromTouch();
                     mSerachText.setText("搜索到歌曲 "+musicPlayBeans.size()+" 首");
                     break;
                 case Search_Music_Failure:
@@ -86,6 +87,9 @@ public class MusicFragment extends BaseFr {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.music_fragment, container, false);
+
+        ((MainActivity)getActivity()).cleanFocus(false);
+
         getIntentData();
         mContext=getActivity();
         initView();
@@ -97,7 +101,7 @@ public class MusicFragment extends BaseFr {
     public void onResume() {
         super.onResume();
         playAdater.notifyDataSetChanged();
-        listView.requestFocusFromTouch();
+//        listView.requestFocusFromTouch();
     }
 
     /**

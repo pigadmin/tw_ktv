@@ -23,6 +23,7 @@ import com.ktv.tools.Constant;
 import com.ktv.tools.SoftKeyboard;
 import com.ktv.tools.ToastUtils;
 import com.ktv.ui.BaseFr;
+import com.ktv.ui.MainActivity;
 import com.ktv.ui.fragments.subFragments.MusicFragment;
 import com.ktv.ui.fragments.subFragments.SingerFragment;
 
@@ -67,6 +68,9 @@ public class Fragment1 extends BaseFr implements View.OnFocusChangeListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment1, container, false);
         mContext = getActivity();
+
+        ((MainActivity) getActivity()).cleanFocus(true);
+
         initPart1();
         initPart2();
         initPart3();
@@ -122,16 +126,16 @@ public class Fragment1 extends BaseFr implements View.OnFocusChangeListener {
             @Override
             public void onClick(View view) {
                 String serach=mSerchLanguageEdt.getText().toString().trim();
-                if (TextUtils.isEmpty(serach)){
-                    ToastUtils.showShortToast(mContext,"请先填写关键字");
-                    return;
-                }
-
-                if (serach.contains(".")){
-                    mSerchLanguageEdt.setText(null);
-                    ToastUtils.showShortToast(mContext,"输入框不能包含特殊字符");
-                    return;
-                }
+//                if (TextUtils.isEmpty(serach)){
+//                    ToastUtils.showShortToast(mContext,"请先填写关键字");
+//                    return;
+//                }
+//
+//                if (serach.contains(".")){
+//                    mSerchLanguageEdt.setText(null);
+//                    ToastUtils.showShortToast(mContext,"输入框不能包含特殊字符");
+//                    return;
+//                }
 
                 toClass(isMusicState);
             }

@@ -10,6 +10,7 @@ import android.widget.ImageView;
 
 import com.ktv.R;
 import com.ktv.ui.BaseFr;
+import com.ktv.ui.MainActivity;
 
 /**
  * 隔空对唱
@@ -22,6 +23,9 @@ public class Fragment5 extends BaseFr {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
          view = inflater.inflate(R.layout.fragment5, container, false);
          initView();
+
+        ((MainActivity)getActivity()).cleanFocus(true);
+
          return view;
     }
 
