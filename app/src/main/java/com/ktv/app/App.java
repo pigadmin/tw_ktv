@@ -34,7 +34,7 @@ import java.util.Map;
 
 import okhttp3.OkHttpClient;
 
-public class App extends Application{
+public class App extends Application {
     public static final String InitAdList = "InitAdList";
     public static final String UpdateAdList = "UpdateAdList";
     public static final String DeleteAdList = "DeleteAdList";
@@ -67,9 +67,10 @@ public class App extends Application{
 
     private boolean fstart;
     //        private static String ip = "192.168.2.9";
-    private static String ip = "192.168.2.25";
-//    private static String ip = "192.168.2.5";
-//    private static String ip = "192.168.2.10";
+//    private static String ip = "192.168.2.25";
+//    private static String socketip = "192.168.2.25:8000/tv";
+    private static String ip = "192.168.2.6";
+    //    private static String ip = "192.168.2.10";
 //    private static String ip = "192.168.2.7";
     public static String version;
 
@@ -81,6 +82,7 @@ public class App extends Application{
                 editor.putBoolean("fstart", true);
                 Log.d("app", "fstart");
                 editor.putString("ip", ip);
+//                editor.putString("socketip", socketip);
                 Log.d("ip", "---ip---\n" + ip);
                 editor.commit();
             }
@@ -102,7 +104,7 @@ public class App extends Application{
 //            headurl = "http://" + tmp + ":8080/ktv/api/";
             Log.d("host", "---headurl---\n" + headurl);
             socketurl = "http://" + tmp + ":8000/tv";
-            Log.d("host", "---headurl---\n" + socketurl);
+            Log.d("host", "---socketurl---\n" + socketurl);
         }
     }
 
@@ -111,6 +113,10 @@ public class App extends Application{
         return tmp;
     }
 
+    public static String socketip() {
+        String tmp = config.getString("ip", "");
+        return tmp;
+    }
 
     public static void setip(String ip) {
         SharedPreferences.Editor editor = config.edit();
@@ -217,9 +223,9 @@ public class App extends Application{
 
     private ArrayList<ListItem> playlist = new ArrayList<>();
 
-    public static int limit=30;//用于歌曲列表 页码量
+    public static int limit = 30;//用于歌曲列表 页码量
 
-    public static int Srclimit=90;//用于带 图片显示的列表 页码量
+    public static int Srclimit = 90;//用于带 图片显示的列表 页码量
 
     private AdList adLists;
 

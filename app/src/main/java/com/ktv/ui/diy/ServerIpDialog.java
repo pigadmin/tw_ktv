@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.Button;
+
 import com.ktv.R;
 import com.ktv.app.App;
 
@@ -37,6 +38,7 @@ public class ServerIpDialog {
             final EditText serverip = serverip_dialog
                     .findViewById(R.id.serverip);
             serverip.setText(App.ip());
+//            serverip.setText(App.ip());
             serverip.setSelection(serverip.length());
             Button serverip_ok = serverip_dialog
                     .findViewById(R.id.serverip_ok);

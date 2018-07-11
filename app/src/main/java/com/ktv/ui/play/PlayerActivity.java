@@ -366,12 +366,22 @@ public class PlayerActivity extends BaseActivity implements MediaPlayer.OnPrepar
     @Override
     public void onPrepared(MediaPlayer mp) {
         mediaPlayer = mp;
+
         mp.start();
         total_progress.setText(LtoDate.ms(mediaPlayer.getDuration()));
         music_progress.setMax(mediaPlayer.getDuration());
         handler.sendEmptyMessage(updateprogress);
 
 //        record();
+        try {
+            if (btn_yc.getText().toString().equals(getString(R.string.bc))) {
+                mediaPlayer.selectTrack(1);
+            } else if (btn_yc.getText().toString().equals(getString(R.string.yc))) {
+                mediaPlayer.selectTrack(2);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void record() {
@@ -564,17 +574,22 @@ public class PlayerActivity extends BaseActivity implements MediaPlayer.OnPrepar
                     for (int i = 0; i < trackInfo.length; i++) {
                         Log.d(tag, trackInfo[i].getTrackType() + "---ybc");
                     }
-                    //測試
-                    if (btn_yc.getText().toString().equals(getString(R.string.yc))) {
-                        btn_yc.setText(getString(R.string.bc));
-                    } else if (btn_yc.getText().toString().equals(getString(R.string.bc))) {
+                    System.out.println(trackInfo.length);
+                    if (trackInfo.length < 3) {
+
+                    }
+                    if (btn_yc.getText().toString().equals(getString(R.string.bc))) {
+                        mediaPlayer.selectTrack(2);
                         btn_yc.setText(getString(R.string.yc));
+                    } else if (btn_yc.getText().toString().equals(getString(R.string.yc))) {
+                        mediaPlayer.selectTrack(1);
+                        btn_yc.setText(getString(R.string.bc));
                     }
                     //測試  後期下移到下列判斷
-                    if (trackInfo.length > 2) {
-                        mediaPlayer.selectTrack(ybc == 1 ? 2 : 1);
-                        mediaPlayer.seekTo(mediaPlayer.getCurrentPosition());
-                    }
+//                    if (trackInfo.length > 2) {
+//                        mediaPlayer.selectTrack(ybc == 1 ? 2 : 1);
+//                        mediaPlayer.seekTo(mediaPlayer.getCurrentPosition());
+//                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
