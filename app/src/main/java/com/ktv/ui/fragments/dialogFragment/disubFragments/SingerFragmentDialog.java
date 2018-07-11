@@ -71,7 +71,6 @@ public class SingerFragmentDialog extends BaseFr {
                 case Search_Song_Success:
                     mNofoundText.setVisibility(View.GONE);
                     singerPlayAdater.notifyDataSetChanged();
-                    listView.requestFocusFromTouch();
                     mSerachText.setText("搜索到歌手 "+mSingerBeans.size()+" 名");
                     break;
                 case Search_Song_Failure:
