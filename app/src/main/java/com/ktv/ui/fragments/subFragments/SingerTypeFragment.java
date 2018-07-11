@@ -334,7 +334,9 @@ public class SingerTypeFragment extends BaseFr {
                 mListText.setText("日 文");
                 break;
         }
-        mRecyclerView.requestFocus();
+        if (mRecyclerView!=null){
+            mRecyclerView.requestFocus();
+        }
     }
 
     /**

@@ -98,7 +98,9 @@ public class Fragment4 extends BaseFr {
     @Override
     public void onResume() {
         super.onResume();
-        mRecyclerView.requestFocus();
+        if (mRecyclerView!=null){
+            mRecyclerView.requestFocus();
+        }
     }
 
     /**
