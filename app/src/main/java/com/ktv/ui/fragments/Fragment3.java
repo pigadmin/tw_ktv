@@ -114,6 +114,11 @@ public class Fragment3 extends BaseFr {
 
         playAdater = new Fragment3Adater(listView, getActivity(), R.layout.fragment3_item, musicPlayBeans, mDb,mSerachText,mNofoundText);
         listView.setAdapter(playAdater);
+
+
+
+        mPlayImme.setNextFocusUpId(R.id.rdb3_top_menu_main);
+
     }
 
     /**

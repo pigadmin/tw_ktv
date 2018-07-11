@@ -24,8 +24,11 @@ public class RankGridAdapter extends RecyclerAdapter<GridItem> {
 
     @Override
     public void convert(ViewHolders holder, GridItem item) {
+        holder.itemView.setNextFocusUpId(R.id.rdb4_top_menu_main);
+
         ImageView icon = holder.itemView.findViewById(R.id.icon);
         TextView name = holder.itemView.findViewById(R.id.name);
+
 
         name.setText(item.getName());
 

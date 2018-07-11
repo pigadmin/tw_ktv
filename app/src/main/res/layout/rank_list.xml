@@ -36,6 +36,7 @@
             android:layout_width="140dp"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:nextFocusUp="@id/rdb4_top_menu_main"
             android:background="@drawable/add_all"
             android:text="@string/play_all"
             android:gravity="center"

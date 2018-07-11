@@ -110,6 +110,10 @@ public class Fragment4 extends BaseFr {
         mRecyclerView.addItemDecoration(new SpacesItemDecoration(0, 30, 0, 40));
         mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.HORIZONTAL);
         mRecyclerView.setLayoutManager(mLayoutManager);
+
+
+
+//        mRecyclerView.setNextFocusUpId(R.id.rdb4_top_menu_main);
     }
 
     /**

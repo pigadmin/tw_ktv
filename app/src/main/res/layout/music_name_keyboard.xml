@@ -2,70 +2,74 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="5dp"
     android:background="@mipmap/middle_ssk"
-    android:orientation="horizontal" >
+    android:orientation="horizontal"
+    android:padding="5dp">
 
     <EditText
         android:id="@+id/serch_language_edt"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
         android:layout_weight="1"
         android:background="@null"
-        android:textSize="20sp"
         android:gravity="center|left"
-        android:singleLine="true"
-        android:paddingLeft="20dp"
-        android:textColorHint="@color/gray"
         android:hint="輸入歌曲名称、歌星、即可搜索"
+        android:nextFocusUp="@id/rdb1_top_menu_main"
+        android:paddingLeft="20dp"
+        android:singleLine="true"
         android:textColor="@color/white"
-        android:layout_width="match_parent"
+        android:textColorHint="@color/gray"
         android:textCursorDrawable="@null"
-        android:layout_gravity="center"
-        android:layout_height="40dp" />
+        android:textSize="20sp" />
 
     <ImageView
         android:id="@+id/delete_close_ivw"
         android:layout_width="wrap_content"
-        android:textSize="20sp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/sector_delete_close"
         android:focusable="true"
         android:focusableInTouchMode="true"
-        android:layout_marginRight="10dp"
-        android:textColor="@color/white"
-        android:background="@drawable/sector_delete_close"
-        android:layout_gravity="center"
         android:gravity="center"
-        android:layout_height="wrap_content"/>
+        android:nextFocusUp="@id/rdb1_top_menu_main"
+        android:textColor="@color/white"
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/spinner_singer"
         android:layout_width="80dp"
-        android:textSize="20sp"
-        android:focusable="true"
-        android:drawableRight="@drawable/sector_singer_music"
-        android:focusableInTouchMode="true"
-        android:layout_marginRight="10dp"
-        android:textColor="@color/white"
+        android:layout_height="40dp"
         android:layout_gravity="center"
+        android:layout_marginRight="10dp"
+        android:drawableRight="@drawable/sector_singer_music"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:gravity="center"
-        android:layout_height="40dp"/>
+        android:nextFocusUp="@id/rdb1_top_menu_main"
+        android:textColor="@color/white"
+        android:textSize="20sp" />
 
     <View
         android:layout_width="1dp"
+        android:layout_height="30dp"
         android:layout_gravity="center"
-        android:background="@color/gray"
-        android:layout_height="30dp"/>
+        android:background="@color/gray" />
 
     <TextView
         android:id="@+id/multinomial_serach"
-        android:text="搜索"
-        android:gravity="center"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"
         android:layout_width="80dp"
-        android:focusable="true"
-        android:textColor="@drawable/selected_btn_textcolor"
-        android:focusableInTouchMode="true"
+        android:layout_height="40dp"
         android:layout_gravity="center"
-        android:textSize="20sp"
-        android:layout_height="40dp" />
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:gravity="center"
+        android:nextFocusUp="@id/rdb1_top_menu_main"
+        android:text="搜索"
+        android:textColor="@drawable/selected_btn_textcolor"
+        android:textSize="20sp" />
 
 </LinearLayout>

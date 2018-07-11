@@ -70,7 +70,7 @@ public class App extends Application {
     private static String ip = "192.168.2.25";
 //    private static String socketip = "192.168.2.25:8000/tv";
 //    private static String ip = "192.168.2.6";
-    //    private static String ip = "192.168.2.10";
+    //        private static String ip = "192.168.2.10";
 //    private static String ip = "192.168.2.7";
     public static String version;
 
