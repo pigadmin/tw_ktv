@@ -95,6 +95,12 @@ public class Fragment4 extends BaseFr {
         manager = getFragmentManager();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        mRecyclerView.requestFocus();
+    }
+
     /**
      * 初始化View
      */
