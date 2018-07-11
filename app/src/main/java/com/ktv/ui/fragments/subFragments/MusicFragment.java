@@ -72,7 +72,6 @@ public class MusicFragment extends BaseFr {
                 case Search_Music_Success:
                     mNofoundText.setVisibility(View.GONE);
                     playAdater.notifyDataSetChanged();
-//                    listView.requestFocusFromTouch();
                     mSerachText.setText("搜索到歌曲 "+musicPlayBeans.size()+" 首");
                     break;
                 case Search_Music_Failure:
@@ -101,7 +100,6 @@ public class MusicFragment extends BaseFr {
     public void onResume() {
         super.onResume();
         playAdater.notifyDataSetChanged();
-//        listView.requestFocusFromTouch();
     }
 
     /**
