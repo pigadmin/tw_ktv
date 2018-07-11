@@ -70,7 +70,6 @@ public class RankListDialog extends BaseFr implements RecyclerAdapter.OnItemClic
 
         if (page == 1) {
             playAdater.notifyDataSetChanged();
-            lists.requestFocusFromTouch();
         }
     }
 

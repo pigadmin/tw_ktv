@@ -99,7 +99,6 @@ public class SingerListFragmentDialog extends BaseFr {
                     mTextLeft.setText(mSingerTypeName);//显示大类列表名称
                     mNoText.setVisibility(View.GONE);
                     playAdater.notifyDataSetChanged();
-                    mRecyclerView.requestFocusFromTouch();
                     break;
                 case Search_Music_Failure:
                     playAdater.notifyDataSetChanged();
