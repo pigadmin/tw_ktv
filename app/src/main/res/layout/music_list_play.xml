@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ListView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/listview"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="490dp"
-    android:layout_marginLeft="80dp"
-    android:layout_marginRight="80dp"
-    android:dividerHeight="2dp"
-    android:focusable="false"
-    android:listSelector="@mipmap/list1_select"
-    android:scrollbars="none">
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
 
-    <!--<requestFocus />-->
+    <ListView
+        android:id="@+id/listview"
+        android:layout_width="match_parent"
+        android:layout_height="490dp"
+        android:layout_marginLeft="80dp"
+        android:layout_marginRight="80dp"
+        android:focusable="false"
+        android:dividerHeight="2dp"
+        android:listSelector="@mipmap/list1_select"
+        android:scrollbars="none" />
 
-
-</ListView>
+</LinearLayout>
