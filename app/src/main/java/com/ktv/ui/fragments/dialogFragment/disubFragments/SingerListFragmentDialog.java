@@ -338,19 +338,9 @@ public class SingerListFragmentDialog extends BaseFr {
                 mListText.setText("日 文");
                 break;
         }
-        if (v != null) {
-            v.requestFocus();
-        } else {
+        if (mRecyclerView!=null){
             mRecyclerView.requestFocus();
         }
-    }
-
-    private View v = null;
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        v = getActivity().getCurrentFocus();
     }
 
     /**

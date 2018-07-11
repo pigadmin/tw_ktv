@@ -334,6 +334,9 @@ public class SingerTypeFragmentDialog extends BaseFr {
                 mListText.setText("日 文");
                 break;
         }
+        if (mRecyclerView!=null){
+            mRecyclerView.requestFocus();
+        }
     }
 
     @Override
