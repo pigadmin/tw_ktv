@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.google.gson.reflect.TypeToken;
 import com.ktv.R;
+import com.ktv.adapters.RankListAda;
 import com.ktv.adapters.RankListAdapter;
 import com.ktv.adapters.base.RecyclerAdapter;
 import com.ktv.app.App;
