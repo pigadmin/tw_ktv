@@ -99,7 +99,6 @@ public class SingerListFragment extends BaseFr {
                     mTextLeft.setText(mSingerTypeName);//显示大类列表名称
                     mNoText.setVisibility(View.GONE);
                     playAdater.notifyDataSetChanged();
-//                    mRecyclerView.requestFocusFromTouch();
                     break;
                 case Search_Music_Failure:
                     playAdater.notifyDataSetChanged();
@@ -339,19 +338,7 @@ public class SingerListFragment extends BaseFr {
                 mListText.setText("日 文");
                 break;
         }
-        if (v != null) {
-            v.requestFocus();
-        } else {
-            mRecyclerView.requestFocus();
-        }
-    }
-
-    private View v = null;
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        v = getActivity().getCurrentFocus();
+        mRecyclerView.requestFocus();
     }
 
     /**

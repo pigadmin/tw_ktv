@@ -96,7 +96,6 @@ public class SingerTypeFragment extends BaseFr {
                     mTextLeft.setText(mSingerName);//显示大类列表名称
                     mNoText.setVisibility(View.GONE);
                     playAdater.notifyDataSetChanged();
-//                    mRecyclerView.requestFocusFromTouch();
                     break;
                 case Search_Music_Failure:
                     playAdater.notifyDataSetChanged();
@@ -335,12 +334,7 @@ public class SingerTypeFragment extends BaseFr {
                 mListText.setText("日 文");
                 break;
         }
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-
+        mRecyclerView.requestFocus();
     }
 
     /**
