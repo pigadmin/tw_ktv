@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ktv.R;
-import com.ktv.adapters.Fragment2Adapter;
 import com.ktv.adapters.base.RecyclerAdapter;
 import com.ktv.adapters.base.SpacesItemDecoration;
 import com.ktv.app.App;
