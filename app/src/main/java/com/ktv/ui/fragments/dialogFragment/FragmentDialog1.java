@@ -29,9 +29,9 @@ import com.ktv.ui.fragments.dialogFragment.disubFragments.SingerFragmentDialog;
 /**
  * (搜索) (1级) FragmentDialog
  */
-public class FragmentDialog1 extends BaseFr implements View.OnFocusChangeListener{
+public class FragmentDialog1 extends BaseFr implements View.OnFocusChangeListener {
 
-    private static final String TAG="FragmentDialog1";
+    private static final String TAG = "FragmentDialog1";
 
     private TextView mUltinomialSerach;
     private EditText mSerchLanguageEdt;//输入歌曲名称、歌星、即可搜索
@@ -76,14 +76,14 @@ public class FragmentDialog1 extends BaseFr implements View.OnFocusChangeListene
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        String content= mSerchLanguageEdt.getText().toString().trim();
+        String content = mSerchLanguageEdt.getText().toString().trim();
         outState.putString("inputCon", content);
     }
 
     @Override
     public void onViewStateRestored(Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
-        if(savedInstanceState != null){
+        if (savedInstanceState != null) {
             mSerchLanguageEdt.setText(savedInstanceState.getString("inputCon", ""));
         }
     }
@@ -121,7 +121,7 @@ public class FragmentDialog1 extends BaseFr implements View.OnFocusChangeListene
         mUltinomialSerach.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String serach=mSerchLanguageEdt.getText().toString().trim();
+                String serach = mSerchLanguageEdt.getText().toString().trim();
 //                if (TextUtils.isEmpty(serach)){
 //                    ToastUtils.showShortToast(mContext,"请先填写关键字");
 //                    return;
@@ -302,7 +302,7 @@ public class FragmentDialog1 extends BaseFr implements View.OnFocusChangeListene
         bundle.putInt("mIndex", mIndex);
         bundle.putString("searchContent", mSerchLanguageEdt.getText().toString().trim());
         ft = manager.beginTransaction();
-        ft.setCustomAnimations(R.anim.push_left_in,R.anim.push_left_out,R.anim.back_left_in,R.anim.back_right_out);//翻转来回
+        ft.setCustomAnimations(R.anim.push_left_in, R.anim.push_left_out, R.anim.back_left_in, R.anim.back_right_out);//翻转来回
         if (isMusicState) {
             MusicFragmentDialog mufrt = new MusicFragmentDialog();
             ft.replace(R.id.main_popudows, mufrt);

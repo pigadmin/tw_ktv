@@ -15,7 +15,7 @@ public class CustomAdater extends BaseAdapter {
     private String[] articles;
 
     public CustomAdater(Context context, String[] articles) {
-        mInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.articles = articles;
     }
 
@@ -36,21 +36,29 @@ public class CustomAdater extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View view = convertView;
-        ViewHolder holder;
+        View view = null;
+        try {
+            view = convertView;
+            ViewHolder holder;
 
-        if (view == null) {
-            view = mInflater.inflate(R.layout.grid_item_x, parent, false);
 
-            holder = new ViewHolder();
-            holder.tv = view.findViewById(R.id.mytext);
+            if (view == null) {
+                view = mInflater.inflate(R.layout.grid_item_x, parent, false);
 
-            view.setTag(holder);
-        } else {
-            holder = (ViewHolder)view.getTag();
+
+                holder = new ViewHolder();
+                holder.tv = view.findViewById(R.id.mytext);
+
+
+                view.setTag(holder);
+            } else {
+                holder = (ViewHolder) view.getTag();
+            }
+
+            holder.tv.setText(articles[position]);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
-        holder.tv.setText(articles[position]);
 
         return view;
     }
@@ -59,7 +67,8 @@ public class CustomAdater extends BaseAdapter {
         public TextView tv;
     }
 
-    public void setData(String[] articles){
+
+    public void setData(String[] articles) {
         this.articles = articles;
     }
 }
