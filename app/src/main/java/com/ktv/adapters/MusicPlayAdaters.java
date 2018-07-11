@@ -3,7 +3,9 @@ package com.ktv.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.ktv.R;
@@ -15,20 +17,21 @@ import com.ktv.ui.PlayerActivity;
 
 import org.xutils.DbManager;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * 歌曲Adater
  */
-public class MusicPlayAdaters extends android.widget.BaseAdapter {
+public class MusicPlayAdaters extends BaseAdapter {
+    private static final String TAG="MusicPlayAdaters";
 
-
-    Context mContext;
-
+    private Context mContext;
     private DbManager mDb;
-    int layoutId;
-    private List<MusicPlayBean> list = new java.util.ArrayList<>();
+    private int layoutId;
+    private List<MusicPlayBean> list = new ArrayList<>();
     private List<MusicPlayBean> playlist;
+
     public MusicPlayAdaters(Context context, int layoutId, List<MusicPlayBean> list, DbManager mDb) {
         this.mContext = context;
         this.mDb = mDb;
@@ -37,11 +40,9 @@ public class MusicPlayAdaters extends android.widget.BaseAdapter {
         try {
             playlist = mDb.selector(MusicPlayBean.class).orderBy("localTime", true).findAll();
         } catch (Exception e) {
+
         }
     }
-
-    private static final String TAG="MusicPlayAdater";
-
 
     @Override
     public int getCount() {
@@ -59,7 +60,7 @@ public class MusicPlayAdaters extends android.widget.BaseAdapter {
     }
     @Override
     public View getView(int position, View view2, android.view.ViewGroup viewGroup) {
-        View view = android.view.LayoutInflater.from(mContext).inflate(layoutId, null);
+        View view = LayoutInflater.from(mContext).inflate(layoutId, null);
         TextView singertitle = view.findViewById(R.id.singername);//歌手名称
         TextView singername = view.findViewById(R.id.songname);//歌曲名称
         TextView playType = view.findViewById(R.id.playType);// 标识HD or 演唱会
@@ -67,7 +68,7 @@ public class MusicPlayAdaters extends android.widget.BaseAdapter {
         final TextView play = view.findViewById(R.id.play);//播放
         final TextView addPlay = view.findViewById(R.id.addPlay);//添加
 
-   final MusicPlayBean playBean= list.get(position);
+        final MusicPlayBean playBean= list.get(position);
 
         StringBuilder sb = new StringBuilder();
 
@@ -123,7 +124,6 @@ public class MusicPlayAdaters extends android.widget.BaseAdapter {
 
         return view;
     }
-
 
     private void saveData(MusicPlayBean playBean,boolean isInfo){
         String [] str= (playBean.id).split("\\.0");
