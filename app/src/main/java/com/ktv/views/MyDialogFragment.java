@@ -113,10 +113,10 @@ public class MyDialogFragment extends DialogFragment implements View.OnClickList
     }
 
     private void initView() {
-        radioMenu1 = strView.findViewById(R.id.rdb1_top_menu);
-        radioMenu2 = strView.findViewById(R.id.rdb2_top_menu);
-        radioMenu3 = strView.findViewById(R.id.rdb3_top_menu);
-        radioMenu4 = strView.findViewById(R.id.rdb4_top_menu);
+        radioMenu1 = strView.findViewById(R.id.rdb1_top_menu_dialog);
+        radioMenu2 = strView.findViewById(R.id.rdb2_top_menu_dialog);
+        radioMenu3 = strView.findViewById(R.id.rdb3_top_menu_dialog);
+        radioMenu4 = strView.findViewById(R.id.rdb4_top_menu_dialog);
 
         radioMenu1.setOnClickListener(this);
         radioMenu2.setOnClickListener(this);
@@ -144,16 +144,16 @@ public class MyDialogFragment extends DialogFragment implements View.OnClickList
             getChildFragmentManager().popBackStack();
         }
         switch (v.getId()) {
-            case R.id.rdb1_top_menu:
+            case R.id.rdb1_top_menu_dialog:
                 transaction.replace(R.id.main_popudows, new FragmentDialog1());
                 break;
-            case R.id.rdb2_top_menu:
+            case R.id.rdb2_top_menu_dialog:
                 transaction.replace(R.id.main_popudows, new FragmentDialog2());
                 break;
-            case R.id.rdb3_top_menu:
+            case R.id.rdb3_top_menu_dialog:
                 transaction.replace(R.id.main_popudows, new FragmentDialog3());
                 break;
-            case R.id.rdb4_top_menu:
+            case R.id.rdb4_top_menu_dialog:
                 transaction.replace(R.id.main_popudows, new FragmentDialog4());
                 break;
 
@@ -162,5 +162,16 @@ public class MyDialogFragment extends DialogFragment implements View.OnClickList
         }
 //		transaction.addToBackStack(null);
         transaction.commit();
+    }
+
+    public void cleanFocus(boolean focus){
+        radioMenu1.setFocusable(focus);
+        radioMenu1.setFocusableInTouchMode(focus);
+        radioMenu2.setFocusable(focus);
+        radioMenu2.setFocusableInTouchMode(focus);
+        radioMenu3.setFocusable(focus);
+        radioMenu3.setFocusableInTouchMode(focus);
+        radioMenu4.setFocusable(focus);
+        radioMenu4.setFocusableInTouchMode(focus);
     }
 }

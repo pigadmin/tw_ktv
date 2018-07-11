@@ -33,7 +33,7 @@ public class Fragment2Adapter extends RecyclerAdapter<SongNumBean.SongLargeBean>
             icon.setImageResource(R.mipmap.station_src);
         } else {
             String srcPath = PicassoUtil.utf8Togb2312(item.ngPath);
-            PicassoUtil.picassoAdvanced(context, srcPath, R.mipmap.station_src, R.mipmap.error_src, icon);
+            PicassoUtil.picassoAdvanced(context, srcPath, R.mipmap.station_src, R.mipmap.error_src_1, icon);
         }
     }
 }
