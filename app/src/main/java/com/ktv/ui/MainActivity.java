@@ -283,12 +283,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private void initView() {
         mContext = MainActivity.this;
 
-        radioMenu1 = findViewById(R.id.rdb1_top_menu);
-        radioMenu2 = findViewById(R.id.rdb2_top_menu);
-        radioMenu3 = findViewById(R.id.rdb3_top_menu);
-        radioMenu4 = findViewById(R.id.rdb4_top_menu);
-        radioMenu5 = findViewById(R.id.rdb5_top_menu);
-        radioMenu6 = findViewById(R.id.rdb6_top_menu);
+        radioMenu1 = findViewById(R.id.rdb1_top_menu_main);
+        radioMenu2 = findViewById(R.id.rdb2_top_menu_main);
+        radioMenu3 = findViewById(R.id.rdb3_top_menu_main);
+        radioMenu4 = findViewById(R.id.rdb4_top_menu_main);
+        radioMenu5 = findViewById(R.id.rdb5_top_menu_main);
+        radioMenu6 = findViewById(R.id.rdb6_top_menu_main);
 
 
         ad_left = findViewById(R.id.ad_left);
@@ -587,24 +587,24 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             getFragmentManager().popBackStack();
         }
         switch (v.getId()) {
-            case R.id.rdb1_top_menu:
+            case R.id.rdb1_top_menu_main:
                 transaction.replace(R.id.main, new Fragment1());
                 break;
-            case R.id.rdb2_top_menu:
+            case R.id.rdb2_top_menu_main:
                 transaction.replace(R.id.main, new Fragment2());
                 break;
 
-            case R.id.rdb3_top_menu:
+            case R.id.rdb3_top_menu_main:
                 transaction.replace(R.id.main, new Fragment3());
                 break;
 
-            case R.id.rdb4_top_menu:
+            case R.id.rdb4_top_menu_main:
                 transaction.replace(R.id.main, new Fragment4());
                 break;
-            case R.id.rdb5_top_menu:
+            case R.id.rdb5_top_menu_main:
                 transaction.replace(R.id.main, new Fragment5());
                 break;
-            case R.id.rdb6_top_menu:
+            case R.id.rdb6_top_menu_main:
                 transaction.replace(R.id.main, new Fragment6());
                 break;
         }

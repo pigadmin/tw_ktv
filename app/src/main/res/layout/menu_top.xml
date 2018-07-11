@@ -13,7 +13,7 @@
         android:orientation="horizontal">
 
         <RadioButton
-            android:id="@+id/rdb1_top_menu"
+            android:id="@+id/rdb1_top_menu_main"
             android:layout_width="match_parent"
             android:layout_height="80dp"
             android:layout_weight="1"
@@ -25,7 +25,7 @@
             android:textSize="30sp" />
 
         <RadioButton
-            android:id="@+id/rdb2_top_menu"
+            android:id="@+id/rdb2_top_menu_main"
             android:layout_width="match_parent"
             android:layout_height="80dp"
             android:layout_weight="1"
@@ -38,7 +38,7 @@
             android:textSize="30sp" />
 
         <RadioButton
-            android:id="@+id/rdb3_top_menu"
+            android:id="@+id/rdb3_top_menu_main"
             android:layout_width="match_parent"
             android:layout_height="80dp"
             android:layout_weight="1"
@@ -50,7 +50,7 @@
             android:textSize="30sp" />
 
         <RadioButton
-            android:id="@+id/rdb4_top_menu"
+            android:id="@+id/rdb4_top_menu_main"
             android:layout_width="match_parent"
             android:layout_height="80dp"
             android:layout_weight="1"
@@ -62,7 +62,7 @@
             android:textSize="30sp" />
 
         <RadioButton
-            android:id="@+id/rdb5_top_menu"
+            android:id="@+id/rdb5_top_menu_main"
             android:layout_width="match_parent"
             android:layout_height="80dp"
             android:layout_weight="1"
@@ -74,7 +74,7 @@
             android:textSize="30sp" />
 
         <RadioButton
-            android:id="@+id/rdb6_top_menu"
+            android:id="@+id/rdb6_top_menu_main"
             android:layout_width="match_parent"
             android:layout_height="80dp"
             android:layout_weight="1"
