@@ -100,8 +100,8 @@ public class App extends Application {
     private void getip() {
         String tmp = config.getString("ip", "");
         if (!tmp.equals("")) {
-            headurl = "http://" + tmp + ":8109/ktv/api/";
-//            headurl = "http://" + tmp + ":8080/ktv/api/";
+//            headurl = "http://" + tmp + ":8109/ktv/api/";
+            headurl = "http://" + tmp + ":8080/ktv/api/";
             Log.d("host", "---headurl---\n" + headurl);
             socketurl = "http://" + tmp + ":8000/tv";
             Log.d("host", "---socketurl---\n" + socketurl);
