@@ -28,6 +28,7 @@ import com.ktv.event.DataMessage;
 import com.ktv.net.Req;
 import com.ktv.tools.ToastUtils;
 import com.ktv.ui.BaseFr;
+import com.ktv.ui.MainActivity;
 import com.ktv.ui.play.PlayerActivity;
 
 import org.xutils.DbManager;
@@ -51,6 +52,8 @@ public class RankList extends BaseFr implements RecyclerAdapter.OnItemClickListe
         activity = getActivity();
         app = (App) activity.getApplication();
 
+        ((MainActivity)getActivity()).cleanFocus(false);
+
         DbManager.DaoConfig daoConfig = new DbManager.DaoConfig();
         mDb = x.getDb(daoConfig);
 
@@ -65,7 +68,6 @@ public class RankList extends BaseFr implements RecyclerAdapter.OnItemClickListe
 
         if (page == 1) {
             playAdater.notifyDataSetChanged();
-            lists.requestFocusFromTouch();
         }
     }
 
