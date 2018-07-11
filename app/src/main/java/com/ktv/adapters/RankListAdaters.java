@@ -23,7 +23,7 @@ import java.util.List;
 
 public class RankListAdaters extends BaseAdapter {
 
-    private static final String TAG = "RankListAdapter";
+    private static final String TAG = "RankListAdaters";
 
     Context mContext;
 
