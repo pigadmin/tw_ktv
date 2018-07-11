@@ -61,8 +61,8 @@ public class RankList extends BaseFr implements RecyclerAdapter.OnItemClickListe
         return view;
     }
 
-    private RankListAdapter playAdater;
-
+//    private RankListAdapter playAdater;
+com.ktv.adapters.RankListAdaters playAdater;
     private void init() {
         number.setText("/" + list.size() + "首");
 
@@ -97,7 +97,8 @@ public class RankList extends BaseFr implements RecyclerAdapter.OnItemClickListe
 //            layoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
 //            grids.setLayoutManager(layoutManager);
 
-            playAdater = new RankListAdapter(activity, R.layout.adapter_list, list, mDb);
+//            playAdater = new RankListAdapter(activity, R.layout.adapter_list, list, mDb);
+            playAdater = new com.ktv.adapters.RankListAdaters(activity, R.layout.adapter_list, list, mDb);
             lists.setAdapter(playAdater);
             lists.setOnItemSelectedListener(this);
 
