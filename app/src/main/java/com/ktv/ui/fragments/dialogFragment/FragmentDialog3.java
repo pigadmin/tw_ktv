@@ -39,7 +39,7 @@ public class FragmentDialog3 extends BaseFr {
     private TextView mNofoundText;
 
     private ListView listView;
-    private Fragment3Adater playAdater;
+    private com.ktv.adapters.Fragment3Adater_mini playAdater;
     private List<MusicPlayBean> musicPlayBeans;
 
     public static final int Search_Music_Success = 100;//查找歌曲歌曲成功
@@ -110,7 +110,7 @@ public class FragmentDialog3 extends BaseFr {
         listView = view.findViewById(R.id.listview);
         listView.setItemsCanFocus(true);//设置item项的子控件能够获得焦点（默认为false，即默认item项的子空间是不能获得焦点的）
 
-        playAdater = new Fragment3Adater(listView, getActivity(), R.layout.fragment3_item_dialog, musicPlayBeans, mDb,mSerachText,mNofoundText);
+        playAdater = new com.ktv.adapters.Fragment3Adater_mini(listView, getActivity(), R.layout.fragment3_item_dialog, musicPlayBeans, mDb,mSerachText,mNofoundText);
         listView.setAdapter(playAdater);
     }
 

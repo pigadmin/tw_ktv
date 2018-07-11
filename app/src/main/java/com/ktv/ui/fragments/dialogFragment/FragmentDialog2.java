@@ -44,7 +44,7 @@ public class FragmentDialog2 extends BaseFr {
     private Context mContext;
 
     private RecyclerView mRecyclerView;
-    private Fragment2Adapter playAdater;
+    private com.ktv.adapters.Fragment2Adapter_mini playAdater;
     private List<SongNumBean.SongLargeBean> mItemList;
 
     private WeakHashMap<String, String> weakHashMap = new WeakHashMap<>();
@@ -112,7 +112,7 @@ public class FragmentDialog2 extends BaseFr {
         mRecyclerView = view.findViewById(R.id.recyview);
 
 
-        playAdater = new Fragment2Adapter(getActivity(), R.layout.adapter_grid_dialog, mItemList);
+        playAdater = new com.ktv.adapters.Fragment2Adapter_mini(getActivity(), R.layout.adapter_grid_dialog, mItemList);
         mRecyclerView.setAdapter(playAdater);
 
 

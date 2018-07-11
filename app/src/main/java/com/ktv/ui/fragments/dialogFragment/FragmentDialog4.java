@@ -44,7 +44,7 @@ public class FragmentDialog4 extends BaseFr {
     private Context mContext;
 
     private RecyclerView mRecyclerView;
-    private RankGridAdapter playAdater;
+    private com.ktv.adapters.RankGridAdapter_mini playAdater;
     private List<GridItem> mItemList;
 
     public static final int Search_Music_Success = 100;//查找歌曲歌曲成功
@@ -103,7 +103,7 @@ public class FragmentDialog4 extends BaseFr {
         mNoText = view.findViewById(R.id.no_tvw);
         mRecyclerView = view.findViewById(R.id.grids);
 
-        playAdater = new RankGridAdapter(getActivity(), R.layout.adapter_grid_dialog, mItemList);
+        playAdater = new com.ktv.adapters.RankGridAdapter_mini(getActivity(), R.layout.adapter_grid_dialog, mItemList);
         mRecyclerView.setAdapter(playAdater);
 
         mRecyclerView.addItemDecoration(new SpacesItemDecoration(0, 30, 0, 40));
