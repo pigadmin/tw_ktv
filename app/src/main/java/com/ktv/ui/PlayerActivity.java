@@ -1,4 +1,4 @@
-package com.ktv.ui.play;
+package com.ktv.ui;
 
 import android.app.AlertDialog;
 import android.app.FragmentManager;
@@ -41,8 +41,6 @@ import com.ktv.tools.FULL;
 import com.ktv.tools.Logger;
 import com.ktv.tools.LtoDate;
 import com.ktv.tools.ToastUtils;
-import com.ktv.ui.BaseActivity;
-import com.ktv.ui.diy.Tips;
 import com.ktv.views.MyDialogFragment;
 import com.squareup.picasso.Picasso;
 

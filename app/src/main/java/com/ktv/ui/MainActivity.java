@@ -29,7 +29,6 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.ktv.R;
 import com.ktv.app.App;
@@ -54,8 +53,6 @@ import com.ktv.ui.fragments.Fragment3;
 import com.ktv.ui.fragments.Fragment4;
 import com.ktv.ui.fragments.Fragment5;
 import com.ktv.ui.fragments.Fragment6;
-import com.ktv.ui.play.PlayerActivity;
-import com.ktv.views.MyDialogFragment;
 import com.squareup.picasso.Picasso;
 
 import org.xutils.DbManager;

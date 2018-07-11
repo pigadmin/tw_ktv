@@ -39,6 +39,7 @@ import com.ktv.tools.Logger;
 import com.ktv.tools.SoftKeyboard;
 import com.ktv.tools.ToastUtils;
 import com.ktv.ui.BaseFr;
+import com.ktv.views.MyDialogFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -113,6 +114,9 @@ public class SingerListFragmentDialog extends BaseFr {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_dialog2, container, false);
         mContext=getActivity();
+
+        MyDialogFragment.cleanFocus(false);
+
         getIntentData();
         initView();
         initLiter();

@@ -25,6 +25,7 @@ import com.ktv.tools.GsonJsonUtils;
 import com.ktv.tools.Logger;
 import com.ktv.tools.ToastUtils;
 import com.ktv.ui.BaseFr;
+import com.ktv.views.MyDialogFragment;
 
 import org.xutils.DbManager;
 import org.xutils.x;
@@ -88,6 +89,9 @@ public class MusicFragmentDialog extends BaseFr {
         view = inflater.inflate(R.layout.music_fragment_dialog, container, false);
         getIntentData();
         mContext=getActivity();
+
+        MyDialogFragment.cleanFocus(false);
+
         initView();
         initLiter();
         return view;

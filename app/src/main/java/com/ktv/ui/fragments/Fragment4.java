@@ -29,7 +29,7 @@ import com.ktv.tools.GsonJsonUtils;
 import com.ktv.tools.Logger;
 import com.ktv.ui.BaseFr;
 import com.ktv.ui.MainActivity;
-import com.ktv.ui.rank.RankList;
+import com.ktv.ui.fragments.subFragments.RankList;
 
 import java.util.ArrayList;
 import java.util.List;
