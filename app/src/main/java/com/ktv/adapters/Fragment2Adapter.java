@@ -13,9 +13,9 @@ import com.ktv.tools.PicassoUtil;
 
 import java.util.List;
 
-public class Fragment2Adapter extends RecyclerAdapter<SongNumBean.SongLargeBean>  {
+public class Fragment2Adapter extends RecyclerAdapter<SongNumBean.SongLargeBean> {
 
-    private static final String TAG="Fragment2Adapter";
+    private static final String TAG = "Fragment2Adapter";
 
     public Fragment2Adapter(Context context, int layoutId, List datas) {
         super(context, layoutId, datas);
@@ -23,16 +23,17 @@ public class Fragment2Adapter extends RecyclerAdapter<SongNumBean.SongLargeBean>
 
     @Override
     public void convert(ViewHolders holder, SongNumBean.SongLargeBean item) {
+        holder.itemView.setNextFocusUpId(R.id.rdb2_top_menu_main);
         ImageView icon = holder.itemView.findViewById(R.id.icon);//图片
         TextView name = holder.itemView.findViewById(R.id.name);//名称
 
         name.setText(item.name);
 
-        if (TextUtils.isEmpty(item.ngPath)){
+        if (TextUtils.isEmpty(item.ngPath)) {
             icon.setImageResource(R.mipmap.station_src);
         } else {
-           String srcPath= PicassoUtil.utf8Togb2312(item.ngPath);
-           PicassoUtil.picassoAdvanced(context,srcPath,R.mipmap.station_src,R.mipmap.error_src,icon);
+            String srcPath = PicassoUtil.utf8Togb2312(item.ngPath);
+            PicassoUtil.picassoAdvanced(context, srcPath, R.mipmap.station_src, R.mipmap.error_src, icon);
         }
     }
 }

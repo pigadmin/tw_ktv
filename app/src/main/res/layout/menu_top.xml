@@ -20,6 +20,7 @@
             android:background="@drawable/selected_btn_textcolor_luck28"
             android:button="@null"
             android:gravity="center"
+            android:nextFocusLeft="@id/rdb6_top_menu_main"
             android:text="搜索"
             android:textColor="@color/white"
             android:textSize="30sp" />
@@ -30,8 +31,8 @@
             android:layout_height="80dp"
             android:layout_weight="1"
             android:background="@drawable/selected_btn_textcolor_luck28"
-            android:checked="true"
             android:button="@null"
+            android:checked="true"
             android:gravity="center"
             android:text="點歌台"
             android:textColor="@color/white"
@@ -81,6 +82,7 @@
             android:background="@drawable/selected_btn_textcolor_luck28"
             android:button="@null"
             android:gravity="center"
+            android:nextFocusRight="@id/rdb1_top_menu_main"
             android:text="設置"
             android:textColor="@color/white"
             android:textSize="30sp" />
