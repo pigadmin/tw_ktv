@@ -38,10 +38,10 @@ public class MyDialogFragment extends DialogFragment implements View.OnClickList
 
     Context mContext;
 
-    private RadioButton radioMenu1;
-    private RadioButton radioMenu2;
-    private RadioButton radioMenu3;
-    private RadioButton radioMenu4;
+    private static RadioButton radioMenu1;
+    private static RadioButton radioMenu2;
+    private static RadioButton radioMenu3;
+    private static RadioButton radioMenu4;
 
     private boolean PoDisplay = false;
 
@@ -164,7 +164,7 @@ public class MyDialogFragment extends DialogFragment implements View.OnClickList
         transaction.commit();
     }
 
-    public void cleanFocus(boolean focus){
+    public static void cleanFocus(boolean focus){
         radioMenu1.setFocusable(focus);
         radioMenu1.setFocusableInTouchMode(focus);
         radioMenu2.setFocusable(focus);

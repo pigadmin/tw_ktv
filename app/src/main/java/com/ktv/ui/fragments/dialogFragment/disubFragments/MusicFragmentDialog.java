@@ -25,6 +25,7 @@ import com.ktv.tools.GsonJsonUtils;
 import com.ktv.tools.Logger;
 import com.ktv.tools.ToastUtils;
 import com.ktv.ui.BaseFr;
+import com.ktv.views.MyDialogFragment;
 
 import org.xutils.DbManager;
 import org.xutils.x;
@@ -71,7 +72,6 @@ public class MusicFragmentDialog extends BaseFr {
                 case Search_Music_Success:
                     mNofoundText.setVisibility(View.GONE);
                     playAdater.notifyDataSetChanged();
-                    listView.requestFocusFromTouch();
                     mSerachText.setText("搜索到歌曲 "+musicPlayBeans.size()+" 首");
                     break;
                 case Search_Music_Failure:
@@ -88,6 +88,9 @@ public class MusicFragmentDialog extends BaseFr {
         view = inflater.inflate(R.layout.music_fragment_dialog, container, false);
         getIntentData();
         mContext=getActivity();
+
+        MyDialogFragment.cleanFocus(false);
+
         initView();
         initLiter();
         return view;
@@ -97,7 +100,6 @@ public class MusicFragmentDialog extends BaseFr {
     public void onResume() {
         super.onResume();
         playAdater.notifyDataSetChanged();
-        listView.requestFocusFromTouch();
     }
 
     /**

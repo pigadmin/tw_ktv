@@ -1,4 +1,4 @@
-package com.ktv.ui.rank;
+package com.ktv.ui.fragments.subFragments;
 
 
 import android.app.Activity;
@@ -30,7 +30,7 @@ import com.ktv.net.Req;
 import com.ktv.tools.ToastUtils;
 import com.ktv.ui.BaseFr;
 import com.ktv.ui.MainActivity;
-import com.ktv.ui.play.PlayerActivity;
+import com.ktv.ui.PlayerActivity;
 
 import org.xutils.DbManager;
 import org.xutils.x;

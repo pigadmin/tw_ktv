@@ -55,7 +55,7 @@
         <activity
             android:name=".ui.MainActivity"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
-        <activity android:name=".ui.play.PlayerActivity"></activity>
+        <activity android:name=".ui.PlayerActivity"></activity>
 
         <activity android:name=".ui.BaseActivity" />
 

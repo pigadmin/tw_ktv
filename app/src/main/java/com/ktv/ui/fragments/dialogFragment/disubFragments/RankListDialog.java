@@ -2,7 +2,6 @@ package com.ktv.ui.fragments.dialogFragment.disubFragments;
 
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
@@ -28,7 +27,7 @@ import com.ktv.event.DataMessage;
 import com.ktv.net.Req;
 import com.ktv.tools.ToastUtils;
 import com.ktv.ui.BaseFr;
-import com.ktv.ui.play.PlayerActivity;
+import com.ktv.views.MyDialogFragment;
 
 import org.xutils.DbManager;
 import org.xutils.x;
@@ -54,6 +53,9 @@ public class RankListDialog extends BaseFr implements RecyclerAdapter.OnItemClic
         activity = getActivity();
         app = (App) activity.getApplication();
 
+        MyDialogFragment.cleanFocus(false);
+
+
         DbManager.DaoConfig daoConfig = new DbManager.DaoConfig();
         mDb = x.getDb(daoConfig);
 
@@ -68,7 +70,6 @@ public class RankListDialog extends BaseFr implements RecyclerAdapter.OnItemClic
 
         if (page == 1) {
             playAdater.notifyDataSetChanged();
-            lists.requestFocusFromTouch();
         }
     }
 

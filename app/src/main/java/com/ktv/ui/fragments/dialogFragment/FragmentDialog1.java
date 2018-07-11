@@ -25,6 +25,7 @@ import com.ktv.tools.ToastUtils;
 import com.ktv.ui.BaseFr;
 import com.ktv.ui.fragments.dialogFragment.disubFragments.MusicFragmentDialog;
 import com.ktv.ui.fragments.dialogFragment.disubFragments.SingerFragmentDialog;
+import com.ktv.views.MyDialogFragment;
 
 /**
  * (搜索) (1级) FragmentDialog
@@ -67,6 +68,9 @@ public class FragmentDialog1 extends BaseFr implements View.OnFocusChangeListene
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_dialog1, container, false);
         mContext = getActivity();
+
+        MyDialogFragment.cleanFocus(true);
+
         initPart1();
         initPart2();
         initPart3();

@@ -11,7 +11,7 @@ import com.ktv.bean.MusicPlayBean;
 import com.ktv.tools.CustomAnimatUtils;
 import com.ktv.tools.Logger;
 import com.ktv.tools.ToastUtils;
-import com.ktv.ui.play.PlayerActivity;
+import com.ktv.ui.PlayerActivity;
 
 import org.xutils.DbManager;
 

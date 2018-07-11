@@ -29,6 +29,7 @@ import com.ktv.tools.GsonJsonUtils;
 import com.ktv.tools.Logger;
 import com.ktv.ui.BaseFr;
 import com.ktv.ui.fragments.dialogFragment.disubFragments.RankListDialog;
+import com.ktv.views.MyDialogFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,6 +79,9 @@ public class FragmentDialog4 extends BaseFr {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.grids_dialog, container, false);
         mContext = getActivity();
+
+        MyDialogFragment.cleanFocus(true);
+
         getMusicServer();
         initView();
         initLiter();

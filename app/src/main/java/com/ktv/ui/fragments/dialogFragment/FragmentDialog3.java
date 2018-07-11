@@ -2,7 +2,6 @@ package com.ktv.ui.fragments.dialogFragment;
 
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -18,7 +17,7 @@ import com.ktv.bean.MusicPlayBean;
 import com.ktv.tools.Logger;
 import com.ktv.ui.BaseFr;
 import com.ktv.ui.diy.Tips;
-import com.ktv.ui.play.PlayerActivity;
+import com.ktv.views.MyDialogFragment;
 
 import org.xutils.DbManager;
 import org.xutils.x;
@@ -74,6 +73,9 @@ public class FragmentDialog3 extends BaseFr {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_dialog3, container, false);
         mContext = getActivity();
+
+        MyDialogFragment.cleanFocus(true);
+
         initView();
         initLiter();
         return view;
