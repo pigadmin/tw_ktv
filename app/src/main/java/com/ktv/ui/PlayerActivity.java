@@ -37,6 +37,8 @@ import com.ktv.bean.AdList;
 import com.ktv.bean.MusicPlayBean;
 import com.ktv.event.DataMessage;
 import com.ktv.net.Req;
+import com.ktv.tools.AlertDialogHelper;
+import com.ktv.tools.BtmDialog;
 import com.ktv.tools.FULL;
 import com.ktv.tools.Logger;
 import com.ktv.tools.LtoDate;
@@ -462,19 +464,14 @@ public class PlayerActivity extends BaseActivity implements MediaPlayer.OnPrepar
     }
 
     private void exit() {
-        AlertDialog dialog = new AlertDialog.Builder(this).setTitle(R.string.tip_title).setMessage(R.string.tip_exit)
-                .setIcon(android.R.drawable.ic_dialog_info)
-                .setNegativeButton(R.string.cancle, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
-                    }
-                }).show();
+        final BtmDialog dialog = new BtmDialog(PlayerActivity.this,"溫馨提醒","視頻正在播放中,是否確定退出?");
+        AlertDialogHelper.BtmDialogDerive1(dialog, false,true, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+                dialog.dismiss();
+            }
+        },null);
     }
 
     @Override
@@ -598,8 +595,6 @@ public class PlayerActivity extends BaseActivity implements MediaPlayer.OnPrepar
 //                showtyt();
                 ToastUtils.showShortToast(PlayerActivity.this, "此功能暫未開放！");
                 break;
-
-
         }
     }
 
@@ -615,8 +610,6 @@ public class PlayerActivity extends BaseActivity implements MediaPlayer.OnPrepar
         popupWindow.setOutsideTouchable(false);
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.GRAY));
         popupWindow.showAtLocation(getWindow().getDecorView(), Gravity.CENTER, 0, 0);
-
-
     }
 
     private void showDialogFragment(boolean PoDisplay) {
@@ -626,9 +619,5 @@ public class PlayerActivity extends BaseActivity implements MediaPlayer.OnPrepar
         bundle.putBoolean("PoDisplay", PoDisplay);
         dialogFragment.setArguments(bundle);
         dialogFragment.show(fm, tag);
-
-
     }
-
-
 }

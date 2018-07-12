@@ -17,21 +17,24 @@ public class BtmDialog extends Dialog {
     public TextView cancel;
     public TextView confirm;
     public TextView mTitle;
+    public TextView mMessage;
 
 
-    public BtmDialog(Context context, String title) {
+    public BtmDialog(Context context,String title,String message) {
         super(context, R.style.CustomDialog);
         setContentView(R.layout.custom_alertdiaog);
         getWindow().setGravity(Gravity.CENTER);
         getWindow().setLayout(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        initView(title);
+        initView(title,message);
     }
 
-    private void initView(String title) {
-        cancel = (TextView) findViewById(R.id.cancel);
-        confirm = (TextView) findViewById(R.id.confirm);
-        mTitle = (TextView) findViewById(R.id.title);
+    private void initView(String title,String message) {
+        cancel = findViewById(R.id.cancel);
+        confirm = findViewById(R.id.confirm);
+        mTitle = findViewById(R.id.title_tv);
+        mMessage = findViewById(R.id.message_tv);
         mTitle.setText(title);
+        mMessage.setText(message);
     }
 
     public BtmDialog(Context context, int themeResId) {

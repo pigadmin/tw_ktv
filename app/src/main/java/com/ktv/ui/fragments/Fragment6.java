@@ -131,8 +131,8 @@ public class Fragment6 extends BaseFr {
 
     private void showDiaog(List<MusicPlayBean> playBeans){
         String text="当前缓存 "+playBeans.size()+" 首歌曲,是否清空缓存歌曲?";
-        final BtmDialog dialog = new BtmDialog(mContext,text);
-        setPan(dialog.mTitle,text,playBeans);
+        final BtmDialog dialog = new BtmDialog(mContext,"溫馨提醒",text);
+        setPan(dialog.mMessage,text,playBeans);
         AlertDialogHelper.BtmDialogDerive1(dialog, true,true, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
