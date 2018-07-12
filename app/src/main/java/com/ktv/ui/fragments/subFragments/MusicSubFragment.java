@@ -63,6 +63,8 @@ public class MusicSubFragment extends BaseFr {
     private int mLimit = App.limit;//页码量
     private int mPage = 1;//第几页
 
+    public int totalCount=0;
+
     public Handler handler=new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -71,7 +73,7 @@ public class MusicSubFragment extends BaseFr {
                 case Search_Music_Success:
                     mNofoundText.setVisibility(View.GONE);
                     playAdater.notifyDataSetChanged();
-                    mSerachText.setText("搜索到 "+mSName+" 的歌曲"+musicPlayBeans.size()+"首");
+                    mSerachText.setText("搜索到 "+mSName+" 的歌曲"+totalCount+"首");
                     break;
                 case Search_Music_Failure:
                     mNofoundText.setVisibility(View.VISIBLE);
@@ -186,7 +188,20 @@ public class MusicSubFragment extends BaseFr {
                 AJson aJsons=  GsonJsonUtils.parseJson2Obj(event.getData(),AJson.class);
                 String s=  GsonJsonUtils.parseObj2Json(aJsons.getData());
                 MusicNumBean numBean= GsonJsonUtils.parseJson2Obj(s,MusicNumBean.class);
+                setState(numBean.totalCount);
                 isMusicStateList(numBean.list);
+            }
+        }
+    }
+
+    public void setState(String s){
+        Logger.i(TAG,"s.."+s);
+        if (!TextUtils.isEmpty(s)){
+            String [] str= (s).split("\\.0");
+            try {
+                totalCount=Integer.parseInt(str[0]);
+            } catch (NumberFormatException e){
+                e.printStackTrace();
             }
         }
     }
