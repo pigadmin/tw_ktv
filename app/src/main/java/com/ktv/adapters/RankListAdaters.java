@@ -37,10 +37,7 @@ public class RankListAdaters extends BaseAdapter {
         this.mDb = mDb;
         this.layoutId = layoutId;
         this.list = list;
-        try {
-            playlist = mDb.selector(MusicPlayBean.class).orderBy("localTime", true).findAll();
-        } catch (Exception e) {
-        }
+        research();
     }
 
 
@@ -108,8 +105,12 @@ public class RankListAdaters extends BaseAdapter {
         String[] str = (playBean.id).split("\\.0");
         if (playlist != null && !playlist.isEmpty()) {
             for (MusicPlayBean music : playlist) {
-                if (str[0].equals(music.id)) {
+                Logger.d("eeeeeeeeeeeeeeee", music.name + "-----" + music.id + "-------" + str[0]);
+                if (playBean.name.equals(music.name)) {
                     pointText.setText(R.string.yd);
+                    break;
+                } else {
+
                 }
             }
         }
@@ -121,9 +122,9 @@ public class RankListAdaters extends BaseAdapter {
             public void onClick(View v) {
                 CustomAnimatUtils.showStyle1(play, mContext, R.anim.play_top_1, true);
                 saveData(playBean, false);
-
                 Intent intent = new Intent(mContext, com.ktv.ui.PlayerActivity.class);
                 mContext.startActivity(intent);
+                research();
                 pointText.setText(R.string.yd);
             }
         });
@@ -134,9 +135,19 @@ public class RankListAdaters extends BaseAdapter {
             public void onClick(View v) {
                 saveData(playBean, true);
                 CustomAnimatUtils.showStyle1(addPlay, mContext, R.anim.addplay_top_1, false);
+                research();
                 pointText.setText(R.string.yd);
             }
         });
         return view;
     }
+
+    private void research() {
+        try {
+            playlist = mDb.selector(MusicPlayBean.class).orderBy("localTime", true).findAll();
+        } catch (Exception e) {
+        }
+    }
+
+
 }

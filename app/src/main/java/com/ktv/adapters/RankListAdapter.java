@@ -19,7 +19,7 @@ import org.xutils.DbManager;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RankListAdapter extends BAdapter<ListItem> {
+public class RankListAdapter extends BAdapter<MusicPlayBean> {
 
     private static final String TAG = "RankListAdapter";
 
@@ -27,10 +27,14 @@ public class RankListAdapter extends BAdapter<ListItem> {
 
     private DbManager mDb;
 
-    public RankListAdapter(Context context, int layoutId, List<ListItem> list, DbManager mDb) {
+    public RankListAdapter(Context context, int layoutId, List<MusicPlayBean> list, DbManager mDb) {
         super(context, layoutId, list);
         this.mContext = context;
         this.mDb = mDb;
+        research();
+    }
+
+    private void research() {
         try {
             playlist = mDb.selector(MusicPlayBean.class).orderBy("localTime", true).findAll();
         } catch (Exception e) {
@@ -48,34 +52,22 @@ public class RankListAdapter extends BAdapter<ListItem> {
         final TextView play = get(convertView, R.id.play);//播放
         final TextView addPlay = get(convertView, R.id.addPlay);//添加
 
-        final ListItem playBean = getItem(position);
+        final MusicPlayBean playBean = getItem(position);
 
-        final MusicPlayBean musicPlayBean = new MusicPlayBean();
-        musicPlayBean.id = playBean.getId() + "";
-        musicPlayBean.songnumber = playBean.getSongnumber();
-        musicPlayBean.singerid = playBean.getSingerid() + "";
-        musicPlayBean.name = playBean.getName();
-        musicPlayBean.path = playBean.getPath();
-        musicPlayBean.lanId = playBean.getLanId() + "";
-        musicPlayBean.label = playBean.getLabel();
-        musicPlayBean.singerName = playBean.getSingerName();
-        musicPlayBean.lanName = playBean.getLanName();
+        singertitle.setText(playBean.singerName);
+        singername.setText(playBean.name);
 
-        singertitle.setText(playBean.getSingerName());
-        singername.setText(playBean.getName());
-
-        if (TextUtils.isEmpty(playBean.getLabel())) {
+        if (TextUtils.isEmpty(playBean.label)) {
             playType.setVisibility(View.GONE);
         } else {
             playType.setVisibility(View.VISIBLE);
-            playType.setText(playBean.getLabel());
+            playType.setText(playBean.label);
         }
 
-        String id = musicPlayBean.id;
+        String[] str = (playBean.id).split("\\.0");
         if (playlist != null && !playlist.isEmpty()) {
-            Logger.i(TAG, "playlist." + playlist.size());
             for (MusicPlayBean music : playlist) {
-                if (id.equals(music.id)) {
+                if (str[0].equals(music.id)) {
                     pointText.setText(R.string.yd);
                     break;
                 }
@@ -88,11 +80,11 @@ public class RankListAdapter extends BAdapter<ListItem> {
             @Override
             public void onClick(View v) {
                 CustomAnimatUtils.showStyle1(play, mContext, R.anim.play_top_1, true);
-                saveData(musicPlayBean, false);
-
+                saveData(playBean, false);
                 Intent intent = new Intent(mContext, PlayerActivity.class);
                 mContext.startActivity(intent);
                 pointText.setText(R.string.yd);
+                research();
             }
         });
 
@@ -100,9 +92,10 @@ public class RankListAdapter extends BAdapter<ListItem> {
         addPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveData(musicPlayBean, true);
+                saveData(playBean, true);
                 CustomAnimatUtils.showStyle1(addPlay, mContext, R.anim.addplay_top_1, false);
                 pointText.setText(R.string.yd);
+                research();
             }
         });
     }
@@ -120,4 +113,6 @@ public class RankListAdapter extends BAdapter<ListItem> {
             }
         }
     }
+
+
 }
