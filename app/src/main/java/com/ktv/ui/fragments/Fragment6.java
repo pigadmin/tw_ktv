@@ -97,14 +97,14 @@ public class Fragment6 extends BaseFr {
         mSetup1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ToastUtils.showShortToast(mContext,"连接手机");
+
             }
         });
 
         mSetup2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ToastUtils.showShortToast(mContext,"MV清晰度选择");
+
             }
         });
 
@@ -133,7 +133,7 @@ public class Fragment6 extends BaseFr {
         String text="当前缓存 "+playBeans.size()+" 首歌曲,是否清空缓存歌曲?";
         final BtmDialog dialog = new BtmDialog(mContext,text);
         setPan(dialog.mTitle,text,playBeans);
-        AlertDialogHelper.BtmDialogDerive1(dialog, true, new View.OnClickListener() {
+        AlertDialogHelper.BtmDialogDerive1(dialog, true,true, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
