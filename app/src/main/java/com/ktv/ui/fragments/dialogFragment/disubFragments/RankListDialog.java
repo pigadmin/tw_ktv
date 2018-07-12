@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,9 +23,11 @@ import com.ktv.app.App;
 import com.ktv.bean.AJson;
 import com.ktv.bean.GridItem;
 import com.ktv.bean.ListItem;
+import com.ktv.bean.MusicNumBean;
 import com.ktv.bean.MusicPlayBean;
 import com.ktv.event.DataMessage;
 import com.ktv.net.Req;
+import com.ktv.tools.GsonJsonUtils;
 import com.ktv.tools.ToastUtils;
 import com.ktv.ui.BaseFr;
 import com.ktv.views.MyDialogFragment;
@@ -67,7 +70,7 @@ public class RankListDialog extends BaseFr implements RecyclerAdapter.OnItemClic
     RankListDialogAdapters playAdater;
 
     private void init() {
-        number.setText("/" + list.size() + "首");
+        number.setText("/" + numBean.totalCount + "首");
 
         if (page == 1) {
             playAdater.notifyDataSetChanged();
@@ -140,22 +143,23 @@ public class RankListDialog extends BaseFr implements RecyclerAdapter.OnItemClic
 
 
     private String tag = "RankList";
-    private List<ListItem> list = new ArrayList<>();
-
+    private List<MusicPlayBean> list = new ArrayList<>();
+    private MusicNumBean numBean;
 
     public void onEvent(DataMessage event) {
         if (event.gettag().equals(tag)) {
-            AJson<List<ListItem>> data = App.gson.fromJson(
-                    event.getData(), new TypeToken<AJson<List<ListItem>>>() {
-                    }.getType());
-            list.addAll(data.getData());
-
-            handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    init();
-                }
-            });
+            if (!TextUtils.isEmpty(event.getData())) {
+                AJson aJsons = GsonJsonUtils.parseJson2Obj(event.getData(), AJson.class);
+                String s = GsonJsonUtils.parseObj2Json(aJsons.getData());
+                numBean = GsonJsonUtils.parseJson2Obj(s, MusicNumBean.class);
+                list.addAll(numBean.list);
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        init();
+                    }
+                });
+            }
 
         }
 
@@ -184,24 +188,12 @@ public class RankListDialog extends BaseFr implements RecyclerAdapter.OnItemClic
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.rank_add:
-                for (ListItem playBean : list) {
-                    MusicPlayBean musicPlayBean = new MusicPlayBean();
-                    musicPlayBean.id = playBean.getId() + "";
-                    musicPlayBean.songnumber = playBean.getSongnumber();
-                    musicPlayBean.singerid = playBean.getSingerid() + "";
-                    musicPlayBean.name = playBean.getName();
-                    musicPlayBean.path = playBean.getPath();
-                    musicPlayBean.lanId = playBean.getLanId() + "";
-                    musicPlayBean.label = playBean.getLabel();
-                    musicPlayBean.singerName = playBean.getSingerName();
-                    musicPlayBean.lanName = playBean.getLanName();
-
+                for (MusicPlayBean playBean : list) {
                     try {
-                        mDb.save(musicPlayBean);
+                        mDb.save(playBean);
                     } catch (Exception e) {
                         ToastUtils.showShortToast(activity, "部分重複歌曲未被添加");
                     }
-
                 }
                 ToastUtils.showShortToast(activity, "歌曲添加成功");
 //                Intent intent = new Intent(activity, PlayerActivity.class);

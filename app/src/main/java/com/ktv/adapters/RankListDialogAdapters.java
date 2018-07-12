@@ -26,14 +26,15 @@ public class RankListDialogAdapters extends BaseAdapter {
 
     private static final String TAG = "RankListDialogAdapter";
 
-    Context mContext;;
+    Context mContext;
+    ;
 
     private DbManager mDb;
-    List<ListItem> list = new ArrayList<>();
+    List<MusicPlayBean> list = new ArrayList<>();
     private List<MusicPlayBean> playlist = new ArrayList<>();
     int layoutId;
 
-    public RankListDialogAdapters(Context context, int layoutId, List<ListItem> list, DbManager mDb) {
+    public RankListDialogAdapters(Context context, int layoutId, List<MusicPlayBean> list, DbManager mDb) {
         this.mContext = context;
         this.list = list;
         this.layoutId = layoutId;
@@ -70,35 +71,33 @@ public class RankListDialogAdapters extends BaseAdapter {
         play.setVisibility(View.GONE);
         final TextView addPlay = view.findViewById(R.id.addPlay);//添加
 
-        ListItem playBean = list.get(position);
+        final MusicPlayBean playBean = list.get(position);
 
-        final MusicPlayBean musicPlayBean = new MusicPlayBean();
-        musicPlayBean.id = playBean.getId() + "";
-        musicPlayBean.songnumber = playBean.getSongnumber();
-        musicPlayBean.singerid = playBean.getSingerid() + "";
-        musicPlayBean.name = playBean.getName();
-        musicPlayBean.path = playBean.getPath();
-        musicPlayBean.lanId = playBean.getLanId() + "";
-        musicPlayBean.label = playBean.getLabel();
-        musicPlayBean.singerName = playBean.getSingerName();
-        musicPlayBean.lanName = playBean.getLanName();
+        StringBuilder sb = new StringBuilder();
 
-        singertitle.setText(playBean.getSingerName());
-        singername.setText(playBean.getName());
+        if (playBean.singerName.length() == 2) {
+            sb.append(playBean.singerName).insert(1, "\t\t");
+            singertitle.setText(sb.toString());
+        } else {
+            singertitle.setText(playBean.singerName);
+        }
 
-        if (TextUtils.isEmpty(playBean.getLabel())) {
+        singername.setText(playBean.name);
+
+        if (TextUtils.isEmpty(playBean.label)) {
             playType.setVisibility(View.GONE);
         } else {
             playType.setVisibility(View.VISIBLE);
-            playType.setText(playBean.getLabel());
+            playType.setText(playBean.label);
         }
 
-
-        String id = musicPlayBean.id;
-        for (MusicPlayBean music : playlist) {
-            if (id.equals(music.id)) {
-                pointText.setText(R.string.yd);
-                break;
+        String[] str = (playBean.id).split("\\.0");
+        if (playlist != null && !playlist.isEmpty()) {
+            for (MusicPlayBean music : playlist) {
+                if (str[0].equals(music.id)) {
+                    pointText.setText(R.string.yd);
+                    break;
+                }
             }
         }
 
@@ -107,7 +106,7 @@ public class RankListDialogAdapters extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 CustomAnimatUtils.showStyle1(play, mContext, R.anim.play_top_1, true);
-                saveData(musicPlayBean, false);
+                saveData(playBean, false);
 
                 Intent intent = new Intent(mContext, PlayerActivity.class);
                 mContext.startActivity(intent);
@@ -119,7 +118,7 @@ public class RankListDialogAdapters extends BaseAdapter {
         addPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveData(musicPlayBean, true);
+                saveData(playBean, true);
                 CustomAnimatUtils.showStyle1(addPlay, mContext, R.anim.addplay_top_1, false);
                 pointText.setText(R.string.yd);
             }
