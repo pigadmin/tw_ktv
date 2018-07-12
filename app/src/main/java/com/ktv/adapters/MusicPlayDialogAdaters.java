@@ -23,8 +23,9 @@ import java.util.List;
 /**
  * 歌曲Adater
  */
-public class MusicPlayAdaters extends BaseAdapter {
-    private static final String TAG="MusicPlayAdaters";
+public class MusicPlayDialogAdaters extends BaseAdapter {
+
+    private static final String TAG = "MusicPlayDialogAdater";
 
     private Context mContext;
     private DbManager mDb;
@@ -32,7 +33,7 @@ public class MusicPlayAdaters extends BaseAdapter {
     private List<MusicPlayBean> list = new ArrayList<>();
     private List<MusicPlayBean> playlist;
 
-    public MusicPlayAdaters(Context context, int layoutId, List<MusicPlayBean> list, DbManager mDb) {
+    public MusicPlayDialogAdaters(Context context, int layoutId, List<MusicPlayBean> list, DbManager mDb) {
         this.mContext = context;
         this.mDb = mDb;
         this.layoutId = layoutId;
@@ -66,6 +67,7 @@ public class MusicPlayAdaters extends BaseAdapter {
         TextView playType = view.findViewById(R.id.playType);// 标识HD or 演唱会
         final TextView pointText = view.findViewById(R.id.pointText);//未点
         final TextView play = view.findViewById(R.id.play);//播放
+        play.setVisibility(View.GONE);
         final TextView addPlay = view.findViewById(R.id.addPlay);//添加
 
         final MusicPlayBean playBean= list.get(position);
