@@ -79,7 +79,7 @@ public class MusicPlayDialogAdaters extends BaseAdapter {
         StringBuilder sb = new StringBuilder();
 
         if (playBean.singerName.length() == 2) {
-            sb.append(playBean.singerName).insert(1, "\t\t");
+            sb.append(playBean.singerName).insert(1, "\t");
             singertitle.setText(sb.toString());
         } else {
             singertitle.setText(playBean.singerName);
