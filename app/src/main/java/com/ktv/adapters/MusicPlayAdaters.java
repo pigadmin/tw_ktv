@@ -105,7 +105,7 @@ public class MusicPlayAdaters extends BaseAdapter {
                 CustomAnimatUtils.showStyle1(play,mContext,R.anim.play_top_1,true);
 
                 saveData(playBean,false);
-
+                research();
                 Intent intent=new Intent(mContext, PlayerActivity.class);
                 mContext.startActivity(intent);
                 pointText.setText(R.string.yd);
@@ -117,6 +117,7 @@ public class MusicPlayAdaters extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 saveData(playBean,true);
+                research();
                 CustomAnimatUtils.showStyle1(addPlay,mContext,R.anim.addplay_top_1,false);
                 pointText.setText(R.string.yd);
             }
@@ -138,6 +139,13 @@ public class MusicPlayAdaters extends BaseAdapter {
             if (isInfo){
                 ToastUtils.showShortToast(mContext,"此歌曲已被添加");
             }
+        }
+    }
+
+    private void research() {
+        try {
+            playlist = mDb.selector(MusicPlayBean.class).orderBy("localTime", true).findAll();
+        } catch (Exception e) {
         }
     }
 }
