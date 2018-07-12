@@ -41,8 +41,6 @@ public class Fragment3Adater_mini extends BAdapter<MusicPlayBean> {
     @Override
     public void onInitView(View convertView, final int position) {
         try {
-
-
             TextView singertitle = get(convertView, R.id.singername);//歌手名称
             TextView singername = get(convertView, R.id.songname);//歌曲名称
             TextView playType = get(convertView, R.id.playType);// 标识HD or 演唱会
