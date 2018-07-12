@@ -282,27 +282,27 @@ public class SingerTypeFragment extends BaseFr {
      */
     private void showInputPown() {
         weakHashMap.clear();
-        int y = -78;
+        int y = -84;
 
         switch (mSetTextName) {
             case Constant.InputNameMethod.InputNameOne:
-                y = -78;
+                y = -84;
                 arrays = Constant.LanguageType.PhoneticNotation;
                 break;
             case Constant.InputNameMethod.InputNameTwo:
-                y = -98;
+                y = -105;
                 arrays = Constant.LanguageType.PinYin;
                 break;
             case Constant.InputNameMethod.InputNameThree:
-                y = -138;
+                y = -145;
                 arrays = Constant.LanguageType.Number;
                 break;
             case Constant.InputNameMethod.InputNameFour:
-                y = -98;
+                y = -104;
                 arrays = Constant.LanguageType.Vietnam;
                 break;
             case Constant.InputNameMethod.InputNameFive:
-                y = -58;
+                y = -65;
                 arrays = Constant.LanguageType.Japanese;
                 break;
         }
