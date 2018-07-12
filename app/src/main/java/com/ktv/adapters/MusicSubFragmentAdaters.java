@@ -38,13 +38,15 @@ public class MusicSubFragmentAdaters extends BaseAdapter {
         this.mDb = mDb;
         this.layoutId = layoutId;
         this.list = list;
+
+        research();
+    }
+    private void research() {
         try {
             playlist = mDb.selector(MusicPlayBean.class).orderBy("localTime", true).findAll();
         } catch (Exception e) {
-            Logger.i(TAG,"e.."+e.getMessage());
         }
     }
-
     @Override
     public int getCount() {
         return list.size();
@@ -102,6 +104,7 @@ public class MusicSubFragmentAdaters extends BaseAdapter {
                 Intent intent=new Intent(mContext, PlayerActivity.class);
                 mContext.startActivity(intent);
                 pointText.setText(R.string.yd);
+                research();
             }
         });
 
@@ -112,6 +115,7 @@ public class MusicSubFragmentAdaters extends BaseAdapter {
                 saveData(playBean,true);
                 CustomAnimatUtils.showStyle1(addPlay,mContext,R.anim.addplay_top_1,false);
                 pointText.setText(R.string.yd);
+                research();
             }
         });
 

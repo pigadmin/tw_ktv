@@ -38,10 +38,13 @@ public class MusicPlayDialogAdaters extends BaseAdapter {
         this.mDb = mDb;
         this.layoutId = layoutId;
         this.list = list;
+        research();
+    }
+
+    private void research() {
         try {
             playlist = mDb.selector(MusicPlayBean.class).orderBy("localTime", true).findAll();
         } catch (Exception e) {
-            Logger.i(TAG,"e.."+e.getMessage());
         }
     }
 
@@ -59,6 +62,7 @@ public class MusicPlayDialogAdaters extends BaseAdapter {
     public long getItemId(int i) {
         return i;
     }
+
     @Override
     public View getView(int position, View view2, android.view.ViewGroup viewGroup) {
         View view = LayoutInflater.from(mContext).inflate(layoutId, null);
@@ -70,12 +74,12 @@ public class MusicPlayDialogAdaters extends BaseAdapter {
         play.setVisibility(View.GONE);
         final TextView addPlay = view.findViewById(R.id.addPlay);//添加
 
-        final MusicPlayBean playBean= list.get(position);
+        final MusicPlayBean playBean = list.get(position);
 
         StringBuilder sb = new StringBuilder();
 
-        if (playBean.singerName.length()==2){
-            sb.append(playBean.singerName).insert(1,"\t\t");
+        if (playBean.singerName.length() == 2) {
+            sb.append(playBean.singerName).insert(1, "\t\t");
             singertitle.setText(sb.toString());
         } else {
             singertitle.setText(playBean.singerName);
@@ -83,15 +87,15 @@ public class MusicPlayDialogAdaters extends BaseAdapter {
 
         singername.setText(playBean.name);
 
-        if (TextUtils.isEmpty(playBean.label)){
+        if (TextUtils.isEmpty(playBean.label)) {
             playType.setVisibility(View.GONE);
         } else {
             playType.setVisibility(View.VISIBLE);
             playType.setText(playBean.label);
         }
 
-        String [] str= (playBean.id).split("\\.0");
-        if (playlist!=null&&!playlist.isEmpty()){
+        String[] str = (playBean.id).split("\\.0");
+        if (playlist != null && !playlist.isEmpty()) {
             for (MusicPlayBean music : playlist) {
                 if (str[0].equals(music.id)) {
                     pointText.setText(R.string.yd);
@@ -104,13 +108,14 @@ public class MusicPlayDialogAdaters extends BaseAdapter {
         play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CustomAnimatUtils.showStyle1(play,mContext,R.anim.play_top_1,true);
+                CustomAnimatUtils.showStyle1(play, mContext, R.anim.play_top_1, true);
 
-                saveData(playBean,false);
+                saveData(playBean, false);
 
-                Intent intent=new Intent(mContext, PlayerActivity.class);
+                Intent intent = new Intent(mContext, PlayerActivity.class);
                 mContext.startActivity(intent);
                 pointText.setText(R.string.yd);
+                research();
             }
         });
 
@@ -118,27 +123,28 @@ public class MusicPlayDialogAdaters extends BaseAdapter {
         addPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveData(playBean,true);
-                CustomAnimatUtils.showStyle1(addPlay,mContext,R.anim.addplay_top_1,false);
+                saveData(playBean, true);
+                CustomAnimatUtils.showStyle1(addPlay, mContext, R.anim.addplay_top_1, false);
                 pointText.setText(R.string.yd);
+                research();
             }
         });
 
         return view;
     }
 
-    private void saveData(MusicPlayBean playBean,boolean isInfo){
-        String [] str= (playBean.id).split("\\.0");
+    private void saveData(MusicPlayBean playBean, boolean isInfo) {
+        String[] str = (playBean.id).split("\\.0");
         try {
-            playBean.id=str[0];
+            playBean.id = str[0];
             mDb.save(playBean);
-            if (isInfo){
-                ToastUtils.showShortToast(mContext,playBean.singerName+" 的 "+playBean.name+" 歌曲添加成功");
+            if (isInfo) {
+                ToastUtils.showShortToast(mContext, playBean.singerName + " 的 " + playBean.name + " 歌曲添加成功");
             }
-        } catch (Exception e){
-            Logger.i(TAG,"保存数据异常.."+e.getMessage());
-            if (isInfo){
-                ToastUtils.showShortToast(mContext,"此歌曲已被添加");
+        } catch (Exception e) {
+            Logger.i(TAG, "保存数据异常.." + e.getMessage());
+            if (isInfo) {
+                ToastUtils.showShortToast(mContext, "此歌曲已被添加");
             }
         }
     }
