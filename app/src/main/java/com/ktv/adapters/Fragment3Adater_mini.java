@@ -50,6 +50,8 @@ public class Fragment3Adater_mini extends BAdapter<MusicPlayBean> {
             final TextView addPlay = get(convertView, R.id.addPlay);//删除
             addPlay.setNextFocusUpId(R.id.rdb3_top_menu_dialog);
 
+            addPlay.setVisibility(position==0?View.INVISIBLE:View.VISIBLE);
+
             final MusicPlayBean playBean = getItem(position);
 
             StringBuilder sb = new StringBuilder();
