@@ -110,7 +110,6 @@ public class RankListAdaters extends BaseAdapter {
             for (MusicPlayBean music : playlist) {
                 if (str[0].equals(music.id)) {
                     pointText.setText(R.string.yd);
-                    break;
                 }
             }
         }

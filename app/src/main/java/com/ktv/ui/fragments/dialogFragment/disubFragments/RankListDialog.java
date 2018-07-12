@@ -70,7 +70,7 @@ public class RankListDialog extends BaseFr implements RecyclerAdapter.OnItemClic
     RankListDialogAdapters playAdater;
 
     private void init() {
-        number.setText("/" + numBean.totalCount + "首");
+        number.setText("/" + numBean.totalCount.split("\\.0")[0] + "首");
 
         if (page == 1) {
             playAdater.notifyDataSetChanged();

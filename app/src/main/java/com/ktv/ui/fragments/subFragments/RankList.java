@@ -68,7 +68,8 @@ public class RankList extends BaseFr implements RecyclerAdapter.OnItemClickListe
     private RankListAdaters playAdater;
 
     private void init() {
-        number.setText("/" + numBean.totalCount + "首");
+
+        number.setText("/" + numBean.totalCount.split("\\.0")[0] + "首");
 
         if (page == 1) {
             playAdater.notifyDataSetChanged();
@@ -202,10 +203,10 @@ public class RankList extends BaseFr implements RecyclerAdapter.OnItemClickListe
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         System.out.println(page * limit + "----------------------" + (position + 1));
-//        if (page * limit == (position + 1)) {
-//            page++;
-//            ReList();
-//        }
+        if (page * limit == (position + 1)) {
+            page++;
+            ReList();
+        }
     }
 
     @Override
