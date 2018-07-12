@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.google.gson.reflect.TypeToken;
 import com.ktv.R;
 import com.ktv.adapters.RankListDialogAdapter;
+import com.ktv.adapters.RankListDialogAdapters;
 import com.ktv.adapters.base.RecyclerAdapter;
 import com.ktv.app.App;
 import com.ktv.bean.AJson;
@@ -40,7 +41,7 @@ import java.util.List;
  */
 public class RankListDialog extends BaseFr implements RecyclerAdapter.OnItemClickListener, RecyclerAdapter.OnItemSelectedListener, View.OnClickListener, AdapterView.OnItemSelectedListener {
 
-    private static final String TAG="RankListDialog";
+    private static final String TAG = "RankListDialog";
 
     private View view;
     private Activity activity;
@@ -63,7 +64,8 @@ public class RankListDialog extends BaseFr implements RecyclerAdapter.OnItemClic
         return view;
     }
 
-    private RankListDialogAdapter playAdater;
+    //    private RankListDialogAdapter playAdater;
+    RankListDialogAdapters playAdater;
 
     private void init() {
         number.setText("/" + list.size() + "首");
@@ -100,7 +102,8 @@ public class RankListDialog extends BaseFr implements RecyclerAdapter.OnItemClic
 //            layoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
 //            grids.setLayoutManager(layoutManager);
 
-            playAdater = new RankListDialogAdapter(activity, R.layout.music_play_item_dialog, list, mDb);
+//            playAdater = new RankListDialogAdapter(activity, R.layout.music_play_item_dialog, list, mDb);
+            playAdater = new RankListDialogAdapters(activity, R.layout.music_play_item_dialog, list, mDb);
             lists.setAdapter(playAdater);
             lists.setOnItemSelectedListener(this);
 
@@ -112,6 +115,7 @@ public class RankListDialog extends BaseFr implements RecyclerAdapter.OnItemClic
             e.printStackTrace();
         }
     }
+
     private View v = null;
 
     @Override
@@ -129,6 +133,7 @@ public class RankListDialog extends BaseFr implements RecyclerAdapter.OnItemClic
         super.onDestroyView();
         v = getActivity().getCurrentFocus();
     }
+
     private void ReList() {
         String url = App.headurl + "song/getRangeSong?mac=" + App.mac + "&STBtype=2" + "&rangId=" + item.getId() + "&page=" + page + "&limit=" + limit;
         Req.get(tag, url);
@@ -183,14 +188,14 @@ public class RankListDialog extends BaseFr implements RecyclerAdapter.OnItemClic
                 for (ListItem playBean : list) {
                     MusicPlayBean musicPlayBean = new MusicPlayBean();
                     musicPlayBean.id = playBean.getId() + "";
-                    musicPlayBean.songnumber=playBean.getSongnumber();
-                    musicPlayBean.singerid=playBean.getSingerid()+"";
+                    musicPlayBean.songnumber = playBean.getSongnumber();
+                    musicPlayBean.singerid = playBean.getSingerid() + "";
                     musicPlayBean.name = playBean.getName();
                     musicPlayBean.path = playBean.getPath();
-                    musicPlayBean.lanId=playBean.getLanId()+"";
-                    musicPlayBean.label=playBean.getLabel();
+                    musicPlayBean.lanId = playBean.getLanId() + "";
+                    musicPlayBean.label = playBean.getLabel();
                     musicPlayBean.singerName = playBean.getSingerName();
-                    musicPlayBean.lanName=playBean.getLanName();
+                    musicPlayBean.lanName = playBean.getLanName();
 
                     try {
                         mDb.save(musicPlayBean);
