@@ -101,9 +101,10 @@ public class SingerListFragment extends BaseFr {
                     playAdater.notifyDataSetChanged();
                     break;
                 case Search_Music_Failure:
+                    mTextLeft.setText(mSingerTypeName);//显示大类列表名称
                     playAdater.notifyDataSetChanged();
                     mNoText.setVisibility(View.VISIBLE);
-                    mNoText.setText("当前无数据");
+                    mNoText.setText("當前無歌星列表");
                     break;
             }
         }
@@ -116,9 +117,9 @@ public class SingerListFragment extends BaseFr {
 
         ((MainActivity)getActivity()).cleanFocus(false);
 
-        getIntentData();
         initView();
         initLiter();
+        getIntentData();
         return view;
     }
 
@@ -138,7 +139,7 @@ public class SingerListFragment extends BaseFr {
         Logger.i(TAG,"mSingerTypeId..."+mSingerTypeId+"...mSingerTypeName..."+mSingerTypeName);
 
         mPage=1;
-        getMusicServer(mSingerTypeId);
+        getMusicServer(false);
     }
 
     /**
@@ -197,7 +198,7 @@ public class SingerListFragment extends BaseFr {
                 int index = position+1;
                 if (mPage*mLimit==index){
                     mPage++;
-                    getMusicServer(mSingerTypeId);
+                    getMusicServer(false);
                 }
             }
         });
@@ -249,7 +250,9 @@ public class SingerListFragment extends BaseFr {
                     return;
                 }
                 window.dismiss();
-                serverSeach(mSerch.getText().toString().trim());
+                mSingerTypeId= null;
+                mItemList.clear();
+                getMusicServer(true);
             }
         });
     }
@@ -445,59 +448,43 @@ public class SingerListFragment extends BaseFr {
         }
     }
 
-    /**
-     * 通过歌星分类id,获取歌星
-     */
-    private void getMusicServer(String singerId){
-        isInterfaceType=true;
-
+    public void getMusicServer(boolean isState){
+        String url;
+        weakHashMap.clear();
         weakHashMap.put("mac", App.mac);
-        weakHashMap.put("STBtype","2");
-        weakHashMap.put("singertypeid",singerId);
+        weakHashMap.put("STBtype", "2");
         weakHashMap.put("page", mPage+"");//第几页    不填默认1
         weakHashMap.put("limit", mLimit+"");//页码量   不填默认10，最大限度100
-        String url= App.getRqstUrl(App.headurl+"song/getsongSinger", weakHashMap);
+        weakHashMap.put("singertypeid", mSingerTypeId);//歌手类型id
 
-        Logger.i(TAG,"url.."+url);
-        Req.get(TAG, url);
-    }
-
-    /**
-     * 通过搜索输入法,获取歌星
-     */
-    private void serverSeach(String searchContent){
-        mItemList.clear();
-        isInterfaceType=false;
-
-        weakHashMap.put("mac", App.mac);
-        weakHashMap.put("STBtype","2");
-        weakHashMap.put("page", mPage+"");//第几页    不填默认1
-        weakHashMap.put("limit", mLimit+"");//页码量   不填默认10，最大限度100
-        weakHashMap.put("singertypeid",null);//歌手类型id
-
-        switch (mSetTextName){
-            case Constant.InputNameMethod.InputNameOne:
-                weakHashMap.put("zhuyin",searchContent);//拼音
-                break;
-            case Constant.InputNameMethod.InputNameTwo:
-                weakHashMap.put("pinyin",searchContent);//注音
-                break;
-            case Constant.InputNameMethod.InputNameThree:
-                weakHashMap.put("keyword",searchContent);//keyword 按关键字搜索
-                break;
-            case Constant.InputNameMethod.InputNameFour:
-                weakHashMap.put("vietnam",searchContent);//越南
-                break;
-            case Constant.InputNameMethod.InputNameFive:
-                weakHashMap.put("japanese",searchContent);//日文
-                break;
-            default:
-                weakHashMap.put("keyword",searchContent);//keyword 按关键字搜索
-                break;
+        if (isState){
+            switch (mSetTextName) {
+                case Constant.InputNameMethod.InputNameOne:
+                    weakHashMap.put("zhuyin", mSerch.getText().toString().trim());//拼音
+                    break;
+                case Constant.InputNameMethod.InputNameTwo:
+                    weakHashMap.put("pinyin", mSerch.getText().toString().trim());//注音
+                    break;
+                case Constant.InputNameMethod.InputNameThree:
+                    weakHashMap.put("keyword",mSerch.getText().toString().trim());//keyword 按关键字搜索
+                    break;
+                case Constant.InputNameMethod.InputNameFour:
+                    weakHashMap.put("vietnam", mSerch.getText().toString().trim());//越南
+                    break;
+                case Constant.InputNameMethod.InputNameFive:
+                    weakHashMap.put("japanese", mSerch.getText().toString().trim());//日文
+                    break;
+                default:
+                    weakHashMap.put("keyword",mSerch.getText().toString().trim());//keyword 按关键字搜索
+                    break;
+            }
+            isInterfaceType=false;
+            url= App.getRqstUrl(App.headurl+"song/singer", weakHashMap);
+        } else {
+            isInterfaceType=true;
+            url= App.getRqstUrl(App.headurl+"song/getsongSinger", weakHashMap);
         }
-
-        String url= App.getRqstUrl(App.headurl+"song/singer", weakHashMap);
-        Logger.i(TAG,"通过搜索输入法,获取歌星url.."+url);
+        Logger.i(TAG,"url.."+url);
         Req.get(TAG, url);
     }
 
