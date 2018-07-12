@@ -12,7 +12,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.ktv.R;
-import com.ktv.adapters.Fragment3Adater;
+import com.ktv.adapters.Fragment3Adater_mini;
 import com.ktv.bean.MusicPlayBean;
 import com.ktv.tools.Logger;
 import com.ktv.ui.BaseFr;
@@ -39,7 +39,7 @@ public class FragmentDialog3 extends BaseFr {
     private TextView mNofoundText;
 
     private ListView listView;
-    private com.ktv.adapters.Fragment3Adater_mini playAdater;
+    private Fragment3Adater_mini playAdater;
     private List<MusicPlayBean> musicPlayBeans;
 
     public static final int Search_Music_Success = 100;//查找歌曲歌曲成功
@@ -57,7 +57,6 @@ public class FragmentDialog3 extends BaseFr {
                 case Search_Music_Success:
                     mNofoundText.setVisibility(View.GONE);
                     playAdater.notifyDataSetChanged();
-                    listView.requestFocusFromTouch();
                     mSerachText.setText("當前已點歌曲 " + musicPlayBeans.size() + " 首");
                     break;
                 case Search_Music_Failure:

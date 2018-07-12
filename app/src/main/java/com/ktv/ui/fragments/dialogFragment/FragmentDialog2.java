@@ -70,7 +70,6 @@ public class FragmentDialog2 extends BaseFr {
                 case Search_Music_Success:
                     mNoText.setVisibility(View.GONE);
                     playAdater.notifyDataSetChanged();
-                    mRecyclerView.requestFocusFromTouch();
                     break;
                 case Search_Music_Failure:
                     mNoText.setVisibility(View.VISIBLE);
