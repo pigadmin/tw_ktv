@@ -39,6 +39,7 @@ public class App extends Application {
     public static final String UpdateAdList = "UpdateAdList";
     public static final String DeleteAdList = "DeleteAdList";
     public static final String UpdateMusic = "UpdateMusic";
+    public static final String TIMEOUT = "TIMEOUT";
     public xDBUtils DBUtils;
 
     public static Gson gson;
@@ -100,8 +101,8 @@ public class App extends Application {
     private void getip() {
         String tmp = config.getString("ip", "");
         if (!tmp.equals("")) {
-            headurl = "http://" + tmp + ":8109/ktv/api/";
-//            headurl = "http://" + tmp + ":8080/ktv/api/";
+//            headurl = "http://" + tmp + ":8109/ktv/api/";
+            headurl = "http://" + tmp + ":8080/ktv/api/";
             Log.d("host", "---headurl---\n" + headurl);
             socketurl = "http://" + tmp + ":8000/tv";
             Log.d("host", "---socketurl---\n" + socketurl);

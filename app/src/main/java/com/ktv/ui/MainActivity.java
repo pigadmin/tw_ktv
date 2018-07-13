@@ -336,6 +336,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             exitTime = System.currentTimeMillis();
             Toast.makeText(this, "再按一次退出", Toast.LENGTH_SHORT).show();
         } else {
+            stopService(new Intent(this, MyService.class));
+            finish();
             Process.killProcess(Process.myPid());
         }
     }

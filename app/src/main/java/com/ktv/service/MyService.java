@@ -15,6 +15,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.google.gson.JsonSyntaxException;
@@ -315,6 +316,7 @@ public class MyService extends Service implements Runnable, IScrollState {
 //    发送数据：
 //    warning  String类型（直接显示出来，并且给个确认键让用户确认）
     private AlertDialog.Builder builder;
+    AlertDialog ad;
 
     private void warning(String json) {
 //        Toast.makeText(MyService.this, json, Toast.LENGTH_SHORT).show();
@@ -329,7 +331,9 @@ public class MyService extends Service implements Runnable, IScrollState {
                     }
                 });
 
-        builder.show();
+        ad = builder.create();
+        ad.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+        ad.show();
     }
 
     @Override
