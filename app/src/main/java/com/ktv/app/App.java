@@ -67,8 +67,8 @@ public class App extends Application {
 
     private boolean fstart;
     //        private static String ip = "192.168.2.9";
-//    private static String ip = "192.168.2.25";
-    private static String ip = "192.168.2.180";
+    private static String ip = "192.168.2.25";
+//    private static String ip = "192.168.2.180";
     //        private static String ip = "192.168.2.10";
 //    private static String ip = "192.168.2.7";
 //    private static String socketip = "192.168.2.25:8000/tv";
@@ -100,8 +100,8 @@ public class App extends Application {
     private void getip() {
         String tmp = config.getString("ip", "");
         if (!tmp.equals("")) {
-//            headurl = "http://" + tmp + ":8109/ktv/api/";
-            headurl = "http://" + tmp + ":8080/ktv/api/";
+            headurl = "http://" + tmp + ":8109/ktv/api/";
+//            headurl = "http://" + tmp + ":8080/ktv/api/";
             Log.d("host", "---headurl---\n" + headurl);
             socketurl = "http://" + tmp + ":8000/tv";
             Log.d("host", "---socketurl---\n" + socketurl);

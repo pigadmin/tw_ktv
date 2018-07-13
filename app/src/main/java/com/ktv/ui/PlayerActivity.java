@@ -421,17 +421,17 @@ public class PlayerActivity extends BaseActivity implements MediaPlayer.OnPrepar
 
     private void playover() {
         final BtmDialog dialog = new BtmDialog(PlayerActivity.this, getString(R.string.tip_title), getString(R.string.playlist_none));
-        dialog.cancel.setText(R.string.playlist_dgt);
-        AlertDialogHelper.BtmDialogDerive1(dialog, false, true, new View.OnClickListener() {
+        dialog.confirm.setText(R.string.playlist_dgt);
+        AlertDialogHelper.BtmDialogDerive1(dialog, true, true, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                showDialogFragment(false);
                 dialog.dismiss();
             }
         }, new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 dialog.dismiss();
-                showDialogFragment(false);
             }
         });
     }

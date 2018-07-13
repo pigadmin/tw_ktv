@@ -9,10 +9,12 @@ import com.ktv.R;
  */
 public class AlertDialogHelper {
     /**
-     * @param dialog          dialog
-     * @param isState         方法是否暴露下外部
+     *
+     * @param dialog dialog
+     * @param isState 方法是否暴露下外部
+     * @param canle Dialog显示时,返回键是否生效
      * @param confirmlistener 确定事件
-     * @param cancelistener   取消事件
+     * @param cancelistener 取消事件
      */
     public static void BtmDialogDerive1(final BtmDialog dialog, boolean isState,boolean canle, View.OnClickListener confirmlistener, View.OnClickListener cancelistener) {
         if (isState) {
