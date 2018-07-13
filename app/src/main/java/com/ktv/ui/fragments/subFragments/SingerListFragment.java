@@ -250,7 +250,6 @@ public class SingerListFragment extends BaseFr {
                     return;
                 }
                 window.dismiss();
-                mSingerTypeId= null;
                 mItemList.clear();
                 getMusicServer(true);
             }

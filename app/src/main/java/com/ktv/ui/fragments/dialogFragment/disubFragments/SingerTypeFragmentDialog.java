@@ -98,9 +98,10 @@ public class SingerTypeFragmentDialog extends BaseFr {
                     playAdater.notifyDataSetChanged();
                     break;
                 case Search_Music_Failure:
+                    mTextLeft.setText(mSingerName);//显示大类列表名称
                     playAdater.notifyDataSetChanged();
                     mNoText.setVisibility(View.VISIBLE);
-                    mNoText.setText("當前无数据");
+                    mNoText.setText("當前無歌星分類");
                     break;
             }
         }
@@ -113,9 +114,9 @@ public class SingerTypeFragmentDialog extends BaseFr {
 
         MyDialogFragment.cleanFocus(false);
 
-        getIntentData();
         initView();
         initLiter();
+        getIntentData();
         return view;
     }
 
@@ -134,7 +135,7 @@ public class SingerTypeFragmentDialog extends BaseFr {
 
         Logger.i(TAG, "mSingerId..." + mSingerId + "...mSingerName..." + mSingerName);
         mPage=1;
-        getMusicServer(mSingerId);
+        getMusicServer(false);
     }
 
     /**
@@ -193,7 +194,7 @@ public class SingerTypeFragmentDialog extends BaseFr {
                 int index = position+1;
                 if (mPage*mLimit==index){
                     mPage++;
-                    getMusicServer(mSingerId);
+                    getMusicServer(false);
                 }
             }
         });
@@ -245,7 +246,8 @@ public class SingerTypeFragmentDialog extends BaseFr {
                     return;
                 }
                 window.dismiss();
-                serverSeach(mSerch.getText().toString().trim());
+                mItemList.clear();
+                getMusicServer(true);
             }
         });
     }
@@ -445,56 +447,35 @@ public class SingerTypeFragmentDialog extends BaseFr {
         }
     }
 
-    /**
-     * 通过大类id,获取歌星分类
-     */
-    private void getMusicServer(String singerId) {
-
-        weakHashMap.put("mac", App.mac);
-        weakHashMap.put("STBtype", "2");
-        weakHashMap.put("songtypeid", singerId);
-        weakHashMap.put("zhuyin", null);
-        weakHashMap.put("pinyin", null);
-        weakHashMap.put("japanese", null);
-        weakHashMap.put("vietnam", null);
-        weakHashMap.put("page", mPage+"");//第几页    不填默认1
-        weakHashMap.put("limit", mLimit+"");//页码量   不填默认10，最大限度100
-        String url = App.getRqstUrl(App.headurl + "song/getsongSingerType", weakHashMap);
-
-        Logger.i(TAG, "url.." + url);
-        Req.get(TAG, url);
-    }
-
-    /**
-     * 通过搜索输入法,获取歌星分类
-     */
-    private void serverSeach(String searchContent) {
-        mItemList.clear();
+    public void getMusicServer(boolean isState){
+        weakHashMap.clear();
         weakHashMap.put("mac", App.mac);
         weakHashMap.put("STBtype", "2");
         weakHashMap.put("page", mPage+"");//第几页    不填默认1
         weakHashMap.put("limit", mLimit+"");//页码量   不填默认10，最大限度100
-        weakHashMap.put("songtypeid", null);//歌手类型id
+        weakHashMap.put("songtypeid", mSingerId);//歌手类型id
 
-        switch (mSetTextName) {
-            case Constant.InputNameMethod.InputNameOne:
-                weakHashMap.put("zhuyin", searchContent);//拼音
-                break;
-            case Constant.InputNameMethod.InputNameTwo:
-                weakHashMap.put("pinyin", searchContent);//注音
-                break;
-            case Constant.InputNameMethod.InputNameThree:
-                weakHashMap.put("keyword",searchContent);//keyword 按关键字搜索
-                break;
-            case Constant.InputNameMethod.InputNameFour:
-                weakHashMap.put("vietnam", searchContent);//越南
-                break;
-            case Constant.InputNameMethod.InputNameFive:
-                weakHashMap.put("japanese", searchContent);//日文
-                break;
-            default:
-                weakHashMap.put("keyword",searchContent);//keyword 按关键字搜索
-                break;
+        if (isState){
+            switch (mSetTextName) {
+                case Constant.InputNameMethod.InputNameOne:
+                    weakHashMap.put("zhuyin", mSerch.getText().toString().trim());//拼音
+                    break;
+                case Constant.InputNameMethod.InputNameTwo:
+                    weakHashMap.put("pinyin", mSerch.getText().toString().trim());//注音
+                    break;
+                case Constant.InputNameMethod.InputNameThree:
+                    weakHashMap.put("keyword",mSerch.getText().toString().trim());//keyword 按关键字搜索
+                    break;
+                case Constant.InputNameMethod.InputNameFour:
+                    weakHashMap.put("vietnam", mSerch.getText().toString().trim());//越南
+                    break;
+                case Constant.InputNameMethod.InputNameFive:
+                    weakHashMap.put("japanese", mSerch.getText().toString().trim());//日文
+                    break;
+                default:
+                    weakHashMap.put("keyword",mSerch.getText().toString().trim());//keyword 按关键字搜索
+                    break;
+            }
         }
 
         String url = App.getRqstUrl(App.headurl + "song/getsongSingerType", weakHashMap);
