@@ -91,7 +91,7 @@ public class PlayerActivity extends BaseActivity implements MediaPlayer.OnPrepar
         setContentView(R.layout.activity_player);
         app = (App) getApplication();
         find();
-        init();
+        init("");
 
 
         regad();
@@ -223,7 +223,8 @@ public class PlayerActivity extends BaseActivity implements MediaPlayer.OnPrepar
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals(App.UpdateMusic)) {
-                init();
+                String replay = intent.getStringExtra("key");
+                init(replay);
             } else if (intent.getAction().equals(App.InitAdList) || intent.getAction().equals(App.UpdateAdList)) {
                 adLists = (AdList) intent.getSerializableExtra("key");
                 adEntities = adLists.getAdEntities();
@@ -247,7 +248,7 @@ public class PlayerActivity extends BaseActivity implements MediaPlayer.OnPrepar
 
     private List<MusicPlayBean> musicPlayBeans = new ArrayList<>();
 
-    private void init() {
+    private void init(final String replay) {
         try {
             musicPlayBeans = mDb.selector(MusicPlayBean.class).orderBy("localTime", true).findAll();//数据库查询
             if (musicPlayBeans.isEmpty()) {
@@ -261,7 +262,7 @@ public class PlayerActivity extends BaseActivity implements MediaPlayer.OnPrepar
             handler.post(new Runnable() {
                 @Override
                 public void run() {
-                    if (!player.isPlaying()) {
+                    if (!player.isPlaying() || replay.equals("zhiding")) {
                         play();
                     } else {
                         updateinfo();

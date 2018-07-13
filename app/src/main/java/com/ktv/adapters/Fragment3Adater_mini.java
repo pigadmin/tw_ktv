@@ -90,7 +90,7 @@ public class Fragment3Adater_mini extends BAdapter<MusicPlayBean> {
                         notifyDataSetChanged();
                         listView.requestFocusFromTouch();
                         listView.setSelection(0);
-                        mContext.sendBroadcast(new Intent(App.UpdateMusic));
+                        mContext.sendBroadcast(new Intent(App.UpdateMusic).putExtra("key", "zhiding"));
                     } catch (Exception e) {
                         Logger.i(TAG, "置顶异常e.." + e.getMessage());
                     }
