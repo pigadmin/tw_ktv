@@ -53,7 +53,7 @@ public class MyService extends Service implements Runnable, IScrollState {
     public void onCreate() {
         super.onCreate();
         app = (App) getApplication();
-        websocket();
+        websocket();;;
     }
 
     private Socket socket;
