@@ -9,7 +9,6 @@ import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -87,7 +86,7 @@ public class Fragment3 extends BaseFr {
     public void onResume() {
         super.onResume();
         isMusicStateList();
-        Logger.i(TAG, "当前焦点..." + getActivity().getCurrentFocus());
+        mPlayImme.requestFocus();
     }
 
     @Override
