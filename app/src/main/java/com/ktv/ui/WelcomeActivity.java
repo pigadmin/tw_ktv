@@ -138,6 +138,11 @@ public class WelcomeActivity extends BaseActivity implements MediaPlayer.OnError
         startActivity(new Intent(this, MainActivity.class));
     }
 
+    @Override
+    public void onBackPressed() {
+        // super.onBackPressed();
+    }
+
     private int currentad;
     private WelcomeAd ad;
     private Handler handler = new Handler() {

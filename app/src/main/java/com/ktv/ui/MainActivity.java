@@ -336,23 +336,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             exitTime = System.currentTimeMillis();
             Toast.makeText(this, "再按一次退出", Toast.LENGTH_SHORT).show();
         } else {
-//            String cmd = "am force-stop " + getPackageName();
-//            System.out.println(cmd);
-//            try {
-////                Process process = Runtime.getRuntime().exec(cmd);
-////                ActivityManager am = ((ActivityManager) getSystemService(Context.ACTIVITY_SERVICE));
-////                System.out.println("--------------");
-////                String pakageName = "com.android.BBKClock";
-//                ActivityManager activityMgr;
-//                activityMgr = (ActivityManager) mContext.getSystemService(
-//                        Context.ACTIVITY_SERVICE);
-//                activityMgr.killBackgroundProcesses("com.ktv");
-//
-//            } catch (Exception e) {
-//                System.out.println("--------------2");
-//                Process.killProcess(Process.myPid());
-//            }
-//            System.out.println("-------------3");
             Process.killProcess(Process.myPid());
         }
     }

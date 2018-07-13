@@ -424,22 +424,20 @@ public class PlayerActivity extends BaseActivity implements MediaPlayer.OnPrepar
     }
 
     private void playover() {
-        AlertDialog dialog = new AlertDialog.Builder(PlayerActivity.this).setTitle(getString(R.string.tip_title))
-                .setMessage(getString(R.string.playlist_none))
-                .setIcon(android.R.drawable.ic_dialog_info)
-                .setNegativeButton(R.string.playlist_dgt, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int i) {
-                        dialog.dismiss();
-                        showDialogFragment(false);
-                    }
-                })
-                .setPositiveButton(R.string.cancle, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }).show();
+        final BtmDialog dialog = new BtmDialog(PlayerActivity.this, getString(R.string.tip_title), getString(R.string.playlist_none));
+        dialog.cancel.setText(R.string.playlist_dgt);
+        AlertDialogHelper.BtmDialogDerive1(dialog, false, true, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        }, new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+                showDialogFragment(false);
+            }
+        });
     }
 
     @Override
