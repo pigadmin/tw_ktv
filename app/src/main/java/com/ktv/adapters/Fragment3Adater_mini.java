@@ -52,7 +52,15 @@ public class Fragment3Adater_mini extends BAdapter<MusicPlayBean> {
             final TextView addPlay = get(convertView, R.id.addPlay);//删除
             addPlay.setNextFocusUpId(R.id.rdb3_top_menu_dialog);
 
-            addPlay.setVisibility(position == 0 ? View.INVISIBLE : View.VISIBLE);
+            if (position == 0){
+                play.setVisibility(View.INVISIBLE);
+                addPlay.setVisibility(View.INVISIBLE);
+                pointText.setText("播放中");
+            } else {
+                play.setVisibility(View.VISIBLE);
+                addPlay.setVisibility(View.VISIBLE);
+                pointText.setText(R.string.yd);
+            }
 
             final MusicPlayBean playBean = getItem(position);
 
@@ -73,8 +81,6 @@ public class Fragment3Adater_mini extends BAdapter<MusicPlayBean> {
                 playType.setVisibility(View.VISIBLE);
                 playType.setText(playBean.label);
             }
-
-            pointText.setText(R.string.yd);
 
             //置顶
             play.setOnClickListener(new View.OnClickListener() {
