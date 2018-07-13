@@ -45,7 +45,7 @@ public class Fragment2 extends BaseFr {
 
     private RecyclerView mRecyclerView;
     private Fragment2Adapter playAdater;
-    private List<SongNumBean.SongLargeBean> mItemList;
+    private List<SongNumBean.SongLargeBean> mItemList=new ArrayList<>();
 
     private WeakHashMap<String, String> weakHashMap = new WeakHashMap<>();
 
@@ -67,15 +67,19 @@ public class Fragment2 extends BaseFr {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            switch (msg.what) {
-                case Search_Music_Success:
-                    mNoText.setVisibility(View.GONE);
-                    playAdater.notifyDataSetChanged();
-                    break;
-                case Search_Music_Failure:
-                    mNoText.setVisibility(View.VISIBLE);
-                    mNoText.setText("当前无数据");
-                    break;
+            try {
+                switch (msg.what) {
+                    case Search_Music_Success:
+                        mNoText.setVisibility(View.GONE);
+                        playAdater.notifyDataSetChanged();
+                        break;
+                    case Search_Music_Failure:
+                        mNoText.setVisibility(View.VISIBLE);
+                        mNoText.setText("当前无数据");
+                        break;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     };

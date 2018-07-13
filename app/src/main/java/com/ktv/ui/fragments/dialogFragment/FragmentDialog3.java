@@ -109,7 +109,7 @@ public class FragmentDialog3 extends BaseFr {
         listView = view.findViewById(R.id.listview);
         listView.setItemsCanFocus(true);//设置item项的子控件能够获得焦点（默认为false，即默认item项的子空间是不能获得焦点的）
 
-        playAdater = new com.ktv.adapters.Fragment3Adater_mini(listView, getActivity(), R.layout.fragment3_item_dialog, musicPlayBeans, mDb,mSerachText,mNofoundText);
+        playAdater = new Fragment3Adater_mini(listView, getActivity(), R.layout.fragment3_item_dialog, musicPlayBeans, mDb,mSerachText,mNofoundText);
         listView.setAdapter(playAdater);
     }
 

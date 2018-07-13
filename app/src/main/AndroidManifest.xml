@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.ktv">
-    <!--android:sharedUserId="android.uid.system"-->
+    <!---->
     <!-- 设置权限 -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -20,6 +20,9 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
+
+
     <uses-permission
         android:name="android.permission.INSTALL_PACKAGES"
         tools:ignore="ProtectedPermissions" />
@@ -47,13 +50,11 @@
             </intent-filter>
         </activity>
 
-        <service
-            android:name="com.ktv.service.MyService"
-            android:enabled="true"
-            android:exported="true" />
+        <service android:name="com.ktv.service.MyService"  />
 
         <activity
             android:name=".ui.MainActivity"
+            android:launchMode="singleTask"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
         <activity android:name=".ui.PlayerActivity"></activity>
 

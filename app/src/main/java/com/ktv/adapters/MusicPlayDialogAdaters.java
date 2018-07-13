@@ -93,25 +93,26 @@ public class MusicPlayDialogAdaters extends BaseAdapter {
             playType.setVisibility(View.VISIBLE);
             playType.setText(playBean.label);
         }
+        System.out.println("..............................");
 
         String[] str = (playBean.id).split("\\.0");
         if (playlist != null && !playlist.isEmpty()) {
             for (MusicPlayBean music : playlist) {
-                if (str[0].equals(music.id)) {
+                Logger.d("eeeeeeeeeeeeeeee", music.name + "-----" + music.id + "-------" + str[0]);
+                if (playBean.id.equals(music.id)) {
                     pointText.setText(R.string.yd);
                     break;
                 }
             }
         }
 
+
         //播放
         play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 CustomAnimatUtils.showStyle1(play, mContext, R.anim.play_top_1, true);
-
                 saveData(playBean, false);
-
                 Intent intent = new Intent(mContext, PlayerActivity.class);
                 mContext.startActivity(intent);
                 pointText.setText(R.string.yd);

@@ -251,9 +251,10 @@ public class PlayerActivity extends BaseActivity implements MediaPlayer.OnPrepar
         try {
             musicPlayBeans = mDb.selector(MusicPlayBean.class).orderBy("localTime", true).findAll();//数据库查询
             if (musicPlayBeans.isEmpty()) {
-//                Tips.show(PlayerActivity.this,
-//                        getString(R.string.tip_title),
-//                        getString(R.string.playlist_none));
+                if (player.isPlaying()) {
+                    player.stopPlayback();
+                }
+                playover();
                 return;
             }
             Logger.d(tag, "list长度" + musicPlayBeans.size());
@@ -382,6 +383,7 @@ public class PlayerActivity extends BaseActivity implements MediaPlayer.OnPrepar
         } catch (Exception e) {
             e.printStackTrace();
         }
+
     }
 
     private void record() {
@@ -464,14 +466,14 @@ public class PlayerActivity extends BaseActivity implements MediaPlayer.OnPrepar
     }
 
     private void exit() {
-        final BtmDialog dialog = new BtmDialog(PlayerActivity.this,"溫馨提醒","視頻正在播放中,是否確定退出?");
-        AlertDialogHelper.BtmDialogDerive1(dialog, false,true, new View.OnClickListener() {
+        final BtmDialog dialog = new BtmDialog(PlayerActivity.this, "溫馨提醒", "視頻正在播放中,是否確定退出?");
+        AlertDialogHelper.BtmDialogDerive1(dialog, false, true, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
                 dialog.dismiss();
             }
-        },null);
+        }, null);
     }
 
     @Override

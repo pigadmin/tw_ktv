@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -38,13 +39,11 @@ import io.socket.emitter.Emitter;
 public class MyService extends Service implements Runnable, IScrollState {
     private final String tag = "MyService";
 
-    public MyService() {
-    }
 
+    @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        // TODO: Return the communication channel to the service.
-        throw new UnsupportedOperationException("Not yet implemented");
+        return null;
     }
 
     App app;
@@ -332,14 +331,6 @@ public class MyService extends Service implements Runnable, IScrollState {
 
         builder.show();
     }
-
-    @Override
-    public void onDestroy() {
-        System.out.println("-----");
-        stopService(new Intent(this, MyService.class));
-        super.onDestroy();
-    }
-
 
     @Override
     public void start() {

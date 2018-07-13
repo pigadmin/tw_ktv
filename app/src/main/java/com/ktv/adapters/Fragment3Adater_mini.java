@@ -1,12 +1,14 @@
 package com.ktv.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.ktv.R;
+import com.ktv.app.App;
 import com.ktv.bean.MusicPlayBean;
 import com.ktv.tools.Logger;
 import com.ktv.tools.SyncServerdate;
@@ -34,8 +36,8 @@ public class Fragment3Adater_mini extends BAdapter<MusicPlayBean> {
         this.mContext = context;
         this.mDb = mDb;
         this.listView = listView;
-        this.mSerachText=mSerachText;
-        this.mNofoundText=mNofoundText;
+        this.mSerachText = mSerachText;
+        this.mNofoundText = mNofoundText;
     }
 
     @Override
@@ -50,14 +52,14 @@ public class Fragment3Adater_mini extends BAdapter<MusicPlayBean> {
             final TextView addPlay = get(convertView, R.id.addPlay);//删除
             addPlay.setNextFocusUpId(R.id.rdb3_top_menu_dialog);
 
-            addPlay.setVisibility(position==0?View.INVISIBLE:View.VISIBLE);
+            addPlay.setVisibility(position == 0 ? View.INVISIBLE : View.VISIBLE);
 
             final MusicPlayBean playBean = getItem(position);
 
             StringBuilder sb = new StringBuilder();
 
-            if (playBean.singerName.length()==2){
-                sb.append(playBean.singerName).insert(1,"\t");
+            if (playBean.singerName.length() == 2) {
+                sb.append(playBean.singerName).insert(1, "\t");
                 singertitle.setText(sb.toString());
             } else {
                 singertitle.setText(playBean.singerName);
@@ -88,6 +90,7 @@ public class Fragment3Adater_mini extends BAdapter<MusicPlayBean> {
                         notifyDataSetChanged();
                         listView.requestFocusFromTouch();
                         listView.setSelection(0);
+                        mContext.sendBroadcast(new Intent(App.UpdateMusic));
                     } catch (Exception e) {
                         Logger.i(TAG, "置顶异常e.." + e.getMessage());
                     }
@@ -106,7 +109,7 @@ public class Fragment3Adater_mini extends BAdapter<MusicPlayBean> {
                         notifyDataSetChanged();
                         listView.requestFocusFromTouch();
 
-                        if (getAllData()!=null&&!getAllData().isEmpty()){
+                        if (getAllData() != null && !getAllData().isEmpty()) {
                             mSerachText.setText("當前已點歌曲 " + getAllData().size() + " 首");
                             mNofoundText.setVisibility(View.GONE);
                         } else {
@@ -114,6 +117,7 @@ public class Fragment3Adater_mini extends BAdapter<MusicPlayBean> {
                             mNofoundText.setText("还未添加歌曲,请先点歌!");
                             mNofoundText.setVisibility(View.VISIBLE);
                         }
+                        mContext.sendBroadcast(new Intent(App.UpdateMusic));
                     } catch (Exception e) {
                         Logger.i(TAG, "删除异常e.." + e.getMessage());
                     }

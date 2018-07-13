@@ -1,5 +1,6 @@
 package com.ktv.ui;
 
+import android.app.ActivityManager;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.BroadcastReceiver;
@@ -10,6 +11,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.Process;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -96,24 +98,16 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         app = (App) getApplication();
+        regad();
         DbManager.DaoConfig daoConfig = new DbManager.DaoConfig();
         mDb = x.getDb(daoConfig);
-
         initView();
         initLiter();
         update();
-
-
-        startService(new Intent(this, MyService.class));
         checkad();
-        regad();
+
     }
 
-    @Override
-    public void onAttachedToWindow() {
-        System.out.println("Home");
-        super.onAttachedToWindow();
-    }
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
@@ -300,7 +294,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     @Override
     protected void onResume() {
         super.onResume();
-        radioMenu2.requestFocus();
+        try {
+            radioMenu2.requestFocus();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void initLiter() {
@@ -332,14 +330,30 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private long exitTime = 0;
     private String key_temp = "";
 
+
     private void exit() {
         if (System.currentTimeMillis() - exitTime > 2000) {
             exitTime = System.currentTimeMillis();
             Toast.makeText(this, "再按一次退出", Toast.LENGTH_SHORT).show();
         } else {
-            finish();
-            System.exit(0);
-            android.os.Process.killProcess(android.os.Process.myPid());
+//            String cmd = "am force-stop " + getPackageName();
+//            System.out.println(cmd);
+//            try {
+////                Process process = Runtime.getRuntime().exec(cmd);
+////                ActivityManager am = ((ActivityManager) getSystemService(Context.ACTIVITY_SERVICE));
+////                System.out.println("--------------");
+////                String pakageName = "com.android.BBKClock";
+//                ActivityManager activityMgr;
+//                activityMgr = (ActivityManager) mContext.getSystemService(
+//                        Context.ACTIVITY_SERVICE);
+//                activityMgr.killBackgroundProcesses("com.ktv");
+//
+//            } catch (Exception e) {
+//                System.out.println("--------------2");
+//                Process.killProcess(Process.myPid());
+//            }
+//            System.out.println("-------------3");
+            Process.killProcess(Process.myPid());
         }
     }
 
@@ -389,12 +403,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode >= KeyEvent.KEYCODE_0 && keyCode <= KeyEvent.KEYCODE_9) {
-            handler.removeMessages(0);
-            key_temp += keyCode - 7;
-            handler.sendEmptyMessageDelayed(0, 1 * 1000);
-        }
-        Log.e("fcous", getWindow().getCurrentFocus() + "");
+//        if (keyCode >= KeyEvent.KEYCODE_0 && keyCode <= KeyEvent.KEYCODE_9) {
+//            handler.removeMessages(0);
+//            key_temp += keyCode - 7;
+//            handler.sendEmptyMessageDelayed(0, 1 * 1000);
+//        }
+//        Log.e("fcous", getWindow().getCurrentFocus() + "");
         return super.onKeyDown(keyCode, event);
     }
 
@@ -611,7 +625,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     }
 
-    public void cleanFocus(boolean focus){
+    public void cleanFocus(boolean focus) {
         radioMenu1.setFocusable(focus);
         radioMenu1.setFocusableInTouchMode(focus);
         radioMenu2.setFocusable(focus);
@@ -626,8 +640,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         radioMenu6.setFocusableInTouchMode(focus);
     }
 
-    public void setCheckedMenu(int index){
-        switch (index){
+    public void setCheckedMenu(int index) {
+        switch (index) {
             case 1:
                 radioMenu1.setChecked(true);
                 break;

@@ -52,8 +52,8 @@ public class WelcomeActivity extends BaseActivity implements MediaPlayer.OnError
 
         try {
             mDb.delete(MusicPlayBean.class);
-        } catch (Exception e){
-            Logger.i(TAG,"清理缓存异常"+e.getMessage());
+        } catch (Exception e) {
+            Logger.i(TAG, "清理缓存异常" + e.getMessage());
         }
 
         find();
@@ -134,8 +134,8 @@ public class WelcomeActivity extends BaseActivity implements MediaPlayer.OnError
     }
 
     private void toClass() {
-        startActivity(new Intent(this, MainActivity.class)
-                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
+        finish();
+        startActivity(new Intent(this, MainActivity.class));
     }
 
     private int currentad;
@@ -170,7 +170,10 @@ public class WelcomeActivity extends BaseActivity implements MediaPlayer.OnError
                                     ad_video.setVisibility(View.VISIBLE);
                                 }
                                 videourl = ad.getAd().getPath();
-                                exitmusic();
+//                                if (mediaPlayer.isPlaying()) {
+//                                    mediaPlayer.reset();
+//                                    mediaPlayer.stop();
+//                                }
                                 playvideo();
                                 break;
                             case 2:
