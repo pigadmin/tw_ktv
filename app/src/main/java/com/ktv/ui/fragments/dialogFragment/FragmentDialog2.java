@@ -124,6 +124,9 @@ public class FragmentDialog2 extends BaseFr {
         super.onResume();
         mPage=1;
         getMusicServer();
+        if (mRecyclerView!=null){
+            mRecyclerView.requestFocus();
+        }
     }
 
     @Override
