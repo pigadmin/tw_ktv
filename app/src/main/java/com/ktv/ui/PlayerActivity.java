@@ -1,10 +1,8 @@
 package com.ktv.ui;
 
-import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
@@ -91,7 +89,7 @@ public class PlayerActivity extends BaseActivity implements MediaPlayer.OnPrepar
         setContentView(R.layout.activity_player);
         app = (App) getApplication();
         find();
-        init("");
+        init();
 
 
         regad();
@@ -223,8 +221,7 @@ public class PlayerActivity extends BaseActivity implements MediaPlayer.OnPrepar
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals(App.UpdateMusic)) {
-                String replay = intent.getStringExtra("key");
-                init(replay);
+                init();
             } else if (intent.getAction().equals(App.InitAdList) || intent.getAction().equals(App.UpdateAdList)) {
                 adLists = (AdList) intent.getSerializableExtra("key");
                 adEntities = adLists.getAdEntities();
@@ -248,7 +245,7 @@ public class PlayerActivity extends BaseActivity implements MediaPlayer.OnPrepar
 
     private List<MusicPlayBean> musicPlayBeans = new ArrayList<>();
 
-    private void init(final String replay) {
+    private void init() {
         try {
             musicPlayBeans = mDb.selector(MusicPlayBean.class).orderBy("localTime", true).findAll();//数据库查询
             if (musicPlayBeans.isEmpty()) {
@@ -262,12 +259,10 @@ public class PlayerActivity extends BaseActivity implements MediaPlayer.OnPrepar
             handler.post(new Runnable() {
                 @Override
                 public void run() {
-                    if (!player.isPlaying() || replay.equals("zhiding")) {
+                    updateinfo();
+                    if (!player.isPlaying()) {
                         play();
-                    } else {
-                        updateinfo();
                     }
-
                 }
             });
         } catch (Exception e) {

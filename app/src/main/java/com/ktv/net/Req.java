@@ -40,6 +40,8 @@ public class Req {
     }
 
 
+
+
     public static void img(final String tag, final String url) {
         Log.d(tag, url);
         new Thread(new Runnable() {

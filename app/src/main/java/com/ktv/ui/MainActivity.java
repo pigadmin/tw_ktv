@@ -156,19 +156,23 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(App.InitAdList) || intent.getAction().equals(App.UpdateAdList)) {
-                adLists = (AdList) intent.getSerializableExtra("key");
-                adEntities = adLists.getAdEntities();
-                currentad = 0;
+            try {
+                if (intent.getAction().equals(App.InitAdList) || intent.getAction().equals(App.UpdateAdList)) {
+                    adLists = (AdList) intent.getSerializableExtra("key");
+                    adEntities = adLists.getAdEntities();
+                    currentad = 0;
 
-                adhandler.removeMessages(0);
-                adhandler.sendEmptyMessage(0);
+                    adhandler.removeMessages(0);
+                    adhandler.sendEmptyMessage(0);
 
-                adhandler.removeMessages(1);
-                Log.d(TAG, "广告结束时间" + LtoDate.yMdHmsE(adLists.getEndtime() - System.currentTimeMillis()));
-                adhandler.sendEmptyMessageDelayed(1, adLists.getEndtime() - System.currentTimeMillis());
-            } else if (intent.getAction().equals(App.DeleteAdList)) {
-                adhandler.sendEmptyMessage(1);
+                    adhandler.removeMessages(1);
+                    Log.d(TAG, "广告结束时间" + LtoDate.yMdHmsE(adLists.getEndtime() - System.currentTimeMillis()));
+                    adhandler.sendEmptyMessageDelayed(1, adLists.getEndtime() - System.currentTimeMillis());
+                } else if (intent.getAction().equals(App.DeleteAdList)) {
+                    adhandler.sendEmptyMessage(1);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     };
@@ -288,7 +292,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         ad_bottom = findViewById(R.id.ad_bottom);
 
         Fragments.replace(getFragmentManager(), new Fragment2());
-
     }
 
     @Override
