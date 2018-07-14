@@ -54,7 +54,7 @@ public class MusicPlayBean implements Serializable{
         public String fileName;
 
         @Column(name = "isTop")
-        public boolean isAdd;//是否添加
+        public boolean isTop;//是否添加
 
         @Column(name = "localTime")
         public long localTime;//本地时间
@@ -76,7 +76,7 @@ public class MusicPlayBean implements Serializable{
                         ", singerName='" + singerName + '\'' +
                         ", lanName='" + lanName + '\'' +
                         ", fileName='" + fileName + '\'' +
-                        ", isAdd=" + isAdd +
+                        ", isTop=" + isTop +
                         ", localTime=" + localTime +
                         '}';
         }

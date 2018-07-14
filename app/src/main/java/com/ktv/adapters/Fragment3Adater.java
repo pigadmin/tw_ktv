@@ -77,7 +77,7 @@ public class Fragment3Adater extends BAdapter<MusicPlayBean> {
                     getAllData().remove(playBean);//本地删除对象
                     getAllData().add(0, playBean);//把本地对象添加到第一位
 
-                    playBean.isAdd = true;
+                    playBean.isTop = true;
                     playBean.localTime = SyncServerdate.getLocalTime();
                     mDb.update(playBean);
                     notifyDataSetChanged();
