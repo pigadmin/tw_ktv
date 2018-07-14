@@ -36,4 +36,6 @@
     <string name="playlist_last">不能再切了，已經是最後一首了</string>
     <string name="playlist_dgt">去點歌臺點歌</string>
     <string name="playlist_none">您的播放列表已經空了，請前往點歌臺選歌</string>
+
+    <string name="update_tips">升級成功</string>
 </resources>
