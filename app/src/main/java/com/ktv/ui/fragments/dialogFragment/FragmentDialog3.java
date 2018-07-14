@@ -148,10 +148,6 @@ public class FragmentDialog3 extends BaseFr {
             } else {
                 handler.sendEmptyMessage(Search_Music_Failure);
             }
-
-            for (MusicPlayBean tmp : playBeans) {
-                System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@" + tmp.name + "____" + tmp.localTime);
-            }
         } catch (Exception e) {
             Logger.i(TAG, "DB查询异常.." + e.getMessage());
         }

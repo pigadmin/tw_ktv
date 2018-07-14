@@ -31,7 +31,6 @@ public class Fragment3Adater_mini extends BAdapter<MusicPlayBean> {
     public ListView listView;
     public TextView mSerachText;
     public TextView mNofoundText;
-    private List<MusicPlayBean> list = new ArrayList<>();
 
     public Fragment3Adater_mini(ListView listView, Context context, int layoutId, List<MusicPlayBean> list, DbManager mDb, TextView mSerachText, TextView mNofoundText) {
         super(context, layoutId, list);
@@ -40,7 +39,6 @@ public class Fragment3Adater_mini extends BAdapter<MusicPlayBean> {
         this.listView = listView;
         this.mSerachText = mSerachText;
         this.mNofoundText = mNofoundText;
-        this.list = list;
     }
 
     @Override
@@ -92,12 +90,9 @@ public class Fragment3Adater_mini extends BAdapter<MusicPlayBean> {
                     try {
                         getAllData().remove(playBean);//本地删除对象
                         getAllData().add(1, playBean);//把本地对象添加到第一位
-                        playBean.isTop = true;
 
-                        playBean.localTime = list.get(0).localTime - 1;
-
-//                        playBean.localTime = SyncServerdate.getLocalTime();
-                        mDb.update(playBean);
+                        mDb.delete(MusicPlayBean.class);
+                        mDb.save(getAllData());
                         notifyDataSetChanged();
                         listView.requestFocusFromTouch();
                         listView.setSelection(0);

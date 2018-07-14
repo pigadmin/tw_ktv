@@ -16,14 +16,12 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.google.gson.reflect.TypeToken;
 import com.ktv.R;
 import com.ktv.adapters.RankListAdaters;
 import com.ktv.adapters.base.RecyclerAdapter;
 import com.ktv.app.App;
 import com.ktv.bean.AJson;
 import com.ktv.bean.GridItem;
-import com.ktv.bean.ListItem;
 import com.ktv.bean.MusicNumBean;
 import com.ktv.bean.MusicPlayBean;
 import com.ktv.event.DataMessage;
@@ -189,12 +187,10 @@ public class RankList extends BaseFr implements RecyclerAdapter.OnItemClickListe
                     String [] str= (playBean.id).split("\\.0");
                     try {
                         playBean.id=str[0];
-                        playBean.localTime = System.currentTimeMillis();
                         mDb.save(playBean);
                     } catch (Exception e) {
                         ToastUtils.showShortToast(activity, "部分重複歌曲未被添加");
                     }
-
                 }
                 ToastUtils.showShortToast(activity, "歌曲添加成功，馬上爲您播放。");
                 Intent intent = new Intent(activity, PlayerActivity.class);
