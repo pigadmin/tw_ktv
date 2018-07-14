@@ -15,11 +15,12 @@ import android.widget.TextView;
 import com.ktv.R;
 import com.ktv.adapters.Fragment3Adater;
 import com.ktv.bean.MusicPlayBean;
+import com.ktv.tools.AlertDialogHelper;
+import com.ktv.tools.BtmDialog;
 import com.ktv.tools.Logger;
 import com.ktv.ui.BaseFr;
 import com.ktv.ui.MainActivity;
 import com.ktv.ui.PlayerActivity;
-import com.ktv.ui.diy.Tips;
 
 import org.xutils.DbManager;
 import org.xutils.x;
@@ -128,12 +129,10 @@ public class Fragment3 extends BaseFr {
             @Override
             public void onClick(View v) {
                 if (musicPlayBeans.isEmpty()) {
-                    Tips.show(getActivity(),
-                            getString(R.string.tip_title),
-                            getString(R.string.playlist_none));
+                    final BtmDialog dialog = new BtmDialog(mContext, "溫馨提醒", "當前播放列表無歌曲，請先點歌");
+                    AlertDialogHelper.BtmDialogDerive2(dialog, false, true, null);
                     return;
                 }
-//                    ToastUtils.showShortToast(mContext, "立即播放");
                 Intent intent = new Intent(mContext, PlayerActivity.class);
                 mContext.startActivity(intent);
             }

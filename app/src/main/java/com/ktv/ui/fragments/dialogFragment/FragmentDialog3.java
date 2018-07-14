@@ -5,7 +5,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +16,6 @@ import com.ktv.adapters.Fragment3Adater_mini;
 import com.ktv.bean.MusicPlayBean;
 import com.ktv.tools.Logger;
 import com.ktv.ui.BaseFr;
-import com.ktv.ui.diy.Tips;
 import com.ktv.views.MyDialogFragment;
 
 import org.xutils.DbManager;
@@ -118,20 +116,7 @@ public class FragmentDialog3 extends BaseFr {
      * item事件
      */
     private void initLiter() {
-        mPlayImme.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (musicPlayBeans.isEmpty()) {
-                    Tips.show(getActivity(),
-                            getString(R.string.tip_title),
-                            getString(R.string.playlist_none));
-                    return;
-                }
-//                    ToastUtils.showShortToast(mContext, "立即播放");
-//                Intent intent = new Intent(mContext, PlayerActivity.class);
-//                mContext.startActivity(intent);
-            }
-        });
+
     }
 
     /**
