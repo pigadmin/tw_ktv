@@ -67,11 +67,11 @@ public class App extends Application {
 
     private boolean fstart;
     // private static String ip = "192.168.2.9";
-     private static String ip = "192.168.2.25";
-//    private static String ip = "192.168.2.180";
+    private static String ip = "192.168.2.25";
+    //    private static String ip = "192.168.2.180";
     // private static String ip = "192.168.2.10";
     // private static String ip = "192.168.2.7";
-   // private static String socketip = "192.168.2.25:8000/tv";
+    // private static String socketip = "192.168.2.25:8000/tv";
     public static String version;
 
     private void config() {
@@ -237,5 +237,12 @@ public class App extends Application {
         this.adLists = adLists;
     }
 
+
+    public int getCurrent() {
+        current += 1;
+        return current;
+    }
+
+    int current = 1;
 
 }
