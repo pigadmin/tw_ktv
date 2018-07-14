@@ -157,6 +157,7 @@ public class Fragment4 extends BaseFr {
         mItemList.clear();
         if (playBeans != null && !playBeans.isEmpty()) {
             Logger.d(TAG, "list长度1..." + playBeans.size());
+
             mItemList.addAll(playBeans);
         }
 

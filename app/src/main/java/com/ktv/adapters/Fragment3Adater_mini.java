@@ -16,6 +16,7 @@ import com.ktv.tools.ToastUtils;
 
 import org.xutils.DbManager;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,6 +31,7 @@ public class Fragment3Adater_mini extends BAdapter<MusicPlayBean> {
     public ListView listView;
     public TextView mSerachText;
     public TextView mNofoundText;
+    private List<MusicPlayBean> list = new ArrayList<>();
 
     public Fragment3Adater_mini(ListView listView, Context context, int layoutId, List<MusicPlayBean> list, DbManager mDb, TextView mSerachText, TextView mNofoundText) {
         super(context, layoutId, list);
@@ -38,6 +40,7 @@ public class Fragment3Adater_mini extends BAdapter<MusicPlayBean> {
         this.listView = listView;
         this.mSerachText = mSerachText;
         this.mNofoundText = mNofoundText;
+        this.list = list;
     }
 
     @Override
@@ -52,7 +55,7 @@ public class Fragment3Adater_mini extends BAdapter<MusicPlayBean> {
             final TextView addPlay = get(convertView, R.id.addPlay);//删除
             addPlay.setNextFocusUpId(R.id.rdb3_top_menu_dialog);
 
-            if (position == 0){
+            if (position == 0) {
                 play.setVisibility(View.INVISIBLE);
                 addPlay.setVisibility(View.INVISIBLE);
                 pointText.setText("播放中");
@@ -88,10 +91,12 @@ public class Fragment3Adater_mini extends BAdapter<MusicPlayBean> {
                 public void onClick(final View v) {
                     try {
                         getAllData().remove(playBean);//本地删除对象
-                        getAllData().add(0, playBean);//把本地对象添加到第一位
-
+                        getAllData().add(1, playBean);//把本地对象添加到第一位
                         playBean.isTop = true;
-                        playBean.localTime = SyncServerdate.getLocalTime();
+
+                        playBean.localTime = list.get(0).localTime - 1;
+
+//                        playBean.localTime = SyncServerdate.getLocalTime();
                         mDb.update(playBean);
                         notifyDataSetChanged();
                         listView.requestFocusFromTouch();

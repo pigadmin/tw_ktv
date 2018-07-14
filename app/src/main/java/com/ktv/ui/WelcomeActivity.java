@@ -50,11 +50,11 @@ public class WelcomeActivity extends BaseActivity implements MediaPlayer.OnError
         DbManager.DaoConfig daoConfig = new DbManager.DaoConfig();
         mDb = x.getDb(daoConfig);
 
-//        try {
-//            mDb.delete(MusicPlayBean.class);
-//        } catch (Exception e) {
-//            Logger.i(TAG, "清理缓存异常" + e.getMessage());
-//        }
+        try {
+            mDb.delete(MusicPlayBean.class);
+        } catch (Exception e) {
+            Logger.i(TAG, "清理缓存异常" + e.getMessage());
+        }
 
         find();
         IntentFilter intentFilter = new IntentFilter();

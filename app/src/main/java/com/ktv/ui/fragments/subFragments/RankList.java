@@ -189,6 +189,7 @@ public class RankList extends BaseFr implements RecyclerAdapter.OnItemClickListe
                     String [] str= (playBean.id).split("\\.0");
                     try {
                         playBean.id=str[0];
+                        playBean.localTime = System.currentTimeMillis();
                         mDb.save(playBean);
                     } catch (Exception e) {
                         ToastUtils.showShortToast(activity, "部分重複歌曲未被添加");

@@ -59,6 +59,7 @@ public class MusicPlayBean implements Serializable{
         @Column(name = "localTime")
         public long localTime;//本地时间
 
+
         @Override
         public String toString() {
                 return "MusicPlayBean{" +

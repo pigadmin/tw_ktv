@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.ktv.R;
 import com.ktv.adapters.CustomAdater;
+import com.ktv.net.Req;
 import com.ktv.tools.Constant;
 import com.ktv.tools.SoftKeyboard;
 import com.ktv.tools.ToastUtils;
@@ -80,14 +81,14 @@ public class Fragment1 extends BaseFr implements View.OnFocusChangeListener {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        String content= mSerchLanguageEdt.getText().toString().trim();
+        String content = mSerchLanguageEdt.getText().toString().trim();
         outState.putString("inputCon", content);
     }
 
     @Override
     public void onViewStateRestored(Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
-        if(savedInstanceState != null){
+        if (savedInstanceState != null) {
             mSerchLanguageEdt.setText(savedInstanceState.getString("inputCon", ""));
         }
     }
@@ -125,7 +126,7 @@ public class Fragment1 extends BaseFr implements View.OnFocusChangeListener {
         mUltinomialSerach.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String serach=mSerchLanguageEdt.getText().toString().trim();
+                String serach = mSerchLanguageEdt.getText().toString().trim();
 //                if (TextUtils.isEmpty(serach)){
 //                    ToastUtils.showShortToast(mContext,"请先填写关键字");
 //                    return;
@@ -308,7 +309,7 @@ public class Fragment1 extends BaseFr implements View.OnFocusChangeListener {
         bundle.putInt("mIndex", mIndex);
         bundle.putString("searchContent", mSerchLanguageEdt.getText().toString().trim());
         ft = manager.beginTransaction();
-        ft.setCustomAnimations(R.anim.push_left_in,R.anim.push_left_out,R.anim.back_left_in,R.anim.back_right_out);//翻转来回
+        ft.setCustomAnimations(R.anim.push_left_in, R.anim.push_left_out, R.anim.back_left_in, R.anim.back_right_out);//翻转来回
         if (isMusicState) {
             MusicFragment mufrt = new MusicFragment();
             ft.replace(R.id.main, mufrt);
@@ -321,4 +322,6 @@ public class Fragment1 extends BaseFr implements View.OnFocusChangeListener {
         ft.addToBackStack(null);
         ft.commit();
     }
+
+
 }

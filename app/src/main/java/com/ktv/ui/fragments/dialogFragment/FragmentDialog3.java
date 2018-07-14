@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -109,7 +110,7 @@ public class FragmentDialog3 extends BaseFr {
         listView = view.findViewById(R.id.listview);
         listView.setItemsCanFocus(true);//设置item项的子控件能够获得焦点（默认为false，即默认item项的子空间是不能获得焦点的）
 
-        playAdater = new Fragment3Adater_mini(listView, getActivity(), R.layout.fragment3_item_dialog, musicPlayBeans, mDb,mSerachText,mNofoundText);
+        playAdater = new Fragment3Adater_mini(listView, getActivity(), R.layout.fragment3_item_dialog, musicPlayBeans, mDb, mSerachText, mNofoundText);
         listView.setAdapter(playAdater);
     }
 
@@ -146,6 +147,10 @@ public class FragmentDialog3 extends BaseFr {
                 handler.sendEmptyMessage(Search_Music_Success);
             } else {
                 handler.sendEmptyMessage(Search_Music_Failure);
+            }
+
+            for (MusicPlayBean tmp : playBeans) {
+                System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@" + tmp.name + "____" + tmp.localTime);
             }
         } catch (Exception e) {
             Logger.i(TAG, "DB查询异常.." + e.getMessage());
