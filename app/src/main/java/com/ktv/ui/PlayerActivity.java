@@ -420,20 +420,15 @@ public class PlayerActivity extends BaseActivity implements MediaPlayer.OnPrepar
     }
 
     private void playover() {
-        final BtmDialog dialog = new BtmDialog(PlayerActivity.this, getString(R.string.tip_title), getString(R.string.playlist_none));
+        final BtmDialog dialog = new BtmDialog(PlayerActivity.this, getString(R.string.tip_title), "您的播放庫中已無歌曲,請先點歌!");
         dialog.confirm.setText(R.string.playlist_dgt);
-        AlertDialogHelper.BtmDialogDerive1(dialog, true, true, new View.OnClickListener() {
+        AlertDialogHelper.BtmDialogDerive1(dialog, false, true, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDialogFragment(false);
                 dialog.dismiss();
             }
-        }, new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-            }
-        });
+        }, null);
     }
 
     @Override

@@ -10,13 +10,13 @@ import android.widget.TextView;
 import com.ktv.R;
 import com.ktv.app.App;
 import com.ktv.bean.MusicPlayBean;
+import com.ktv.tools.AlertDialogHelper;
+import com.ktv.tools.BtmDialog;
 import com.ktv.tools.Logger;
-import com.ktv.tools.SyncServerdate;
 import com.ktv.tools.ToastUtils;
 
 import org.xutils.DbManager;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,7 +24,7 @@ import java.util.List;
  */
 public class Fragment3Adater_mini extends BAdapter<MusicPlayBean> {
 
-    private static final String TAG = "Fragment3Adater";
+    private static final String TAG = "Fragment3Adater_mini";
 
     Context mContext;
     public DbManager mDb;
@@ -54,7 +54,7 @@ public class Fragment3Adater_mini extends BAdapter<MusicPlayBean> {
             addPlay.setNextFocusUpId(R.id.rdb3_top_menu_dialog);
 
             if (position == 0) {
-                play.setVisibility(View.INVISIBLE);
+                play.setBackgroundResource(R.mipmap.tou_ming);
                 addPlay.setVisibility(View.INVISIBLE);
                 pointText.setText("播放中");
             } else {
@@ -87,6 +87,14 @@ public class Fragment3Adater_mini extends BAdapter<MusicPlayBean> {
             play.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View v) {
+                    if (position==0){
+                        return;
+                    } else if (position==1){
+                        final BtmDialog dialog = new BtmDialog(mContext, "溫馨提醒", "此歌曲即將播放,無法置頂!");
+                        AlertDialogHelper.BtmDialogDerive2(dialog, false, true, null);
+                        return;
+                    }
+
                     try {
                         getAllData().remove(playBean);//本地删除对象
                         getAllData().add(1, playBean);//把本地对象添加到第一位
