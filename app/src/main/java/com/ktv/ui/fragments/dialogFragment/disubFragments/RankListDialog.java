@@ -189,9 +189,9 @@ public class RankListDialog extends BaseFr implements RecyclerAdapter.OnItemClic
         switch (v.getId()) {
             case R.id.rank_add:
                 for (MusicPlayBean playBean : list) {
-                    String [] str= (playBean.id).split("\\.0");
+                    String[] str = (playBean.id).split("\\.0");
                     try {
-                        playBean.id=str[0];
+                        playBean.id = str[0];
                         mDb.save(playBean);
                     } catch (Exception e) {
                         ToastUtils.showShortToast(activity, "部分重複歌曲未被添加");
@@ -211,6 +211,7 @@ public class RankListDialog extends BaseFr implements RecyclerAdapter.OnItemClic
             page++;
             ReList();
         }
+        lists.setSelectionFromTop(position, view.getHeight() * 5);
     }
 
     @Override

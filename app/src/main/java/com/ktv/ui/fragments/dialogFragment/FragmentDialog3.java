@@ -8,6 +8,7 @@ import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -110,6 +111,17 @@ public class FragmentDialog3 extends BaseFr {
 
         playAdater = new Fragment3Adater_mini(listView, getActivity(), R.layout.fragment3_item_dialog, musicPlayBeans, mDb, mSerachText, mNofoundText);
         listView.setAdapter(playAdater);
+        listView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                listView.setSelectionFromTop(position, view.getHeight() * 5);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
     }
 
     /**
