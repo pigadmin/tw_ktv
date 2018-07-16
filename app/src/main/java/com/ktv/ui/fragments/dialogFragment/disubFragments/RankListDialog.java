@@ -211,7 +211,7 @@ public class RankListDialog extends BaseFr implements RecyclerAdapter.OnItemClic
             page++;
             ReList();
         }
-        lists.setSelectionFromTop(position, view.getHeight() * 5);
+        lists.setSelectionFromTop(position, view.getHeight() * 4);
     }
 
     @Override

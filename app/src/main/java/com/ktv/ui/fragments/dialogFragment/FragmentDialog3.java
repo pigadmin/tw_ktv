@@ -114,7 +114,7 @@ public class FragmentDialog3 extends BaseFr {
         listView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-                listView.setSelectionFromTop(position, view.getHeight() * 5);
+                listView.setSelectionFromTop(position, view.getHeight() * 4);
             }
 
             @Override

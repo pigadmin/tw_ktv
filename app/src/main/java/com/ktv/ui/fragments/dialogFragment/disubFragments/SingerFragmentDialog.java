@@ -200,7 +200,7 @@ public class SingerFragmentDialog extends BaseFr {
                     mPage++;
                     getSingerServer(mIndex,mSearchContent);
                 }
-                listView.setSelectionFromTop(position, view.getHeight() * 5);
+                listView.setSelectionFromTop(position, view.getHeight() * 4);
             }
 
             @Override

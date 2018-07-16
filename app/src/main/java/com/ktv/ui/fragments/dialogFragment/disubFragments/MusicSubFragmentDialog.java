@@ -162,7 +162,7 @@ public class MusicSubFragmentDialog extends BaseFr {
                     mPage++;
                     getMusicServer(mSid, mPage, mLimit);
                 }
-                listView.setSelectionFromTop(position, view.getHeight() * 5);
+                listView.setSelectionFromTop(position, view.getHeight() *4);
             }
 
             @Override

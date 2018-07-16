@@ -158,7 +158,7 @@ public class MusicListFragmentDialog extends BaseFr {
                     mPage++;
                     getMusicServer(mSingerId, mPage, mLimit);
                 }
-                listView.setSelectionFromTop(position, view.getHeight() * 5);
+                listView.setSelectionFromTop(position, view.getHeight() * 4);
             }
 
             @Override
