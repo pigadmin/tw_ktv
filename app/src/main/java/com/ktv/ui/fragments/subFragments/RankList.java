@@ -184,9 +184,9 @@ public class RankList extends BaseFr implements RecyclerAdapter.OnItemClickListe
         switch (v.getId()) {
             case R.id.rank_add:
                 for (MusicPlayBean playBean : list) {
-                    String [] str= (playBean.id).split("\\.0");
+                    String[] str = (playBean.id).split("\\.0");
                     try {
-                        playBean.id=str[0];
+                        playBean.id = str[0];
                         mDb.save(playBean);
                     } catch (Exception e) {
                         ToastUtils.showShortToast(activity, "部分重複歌曲未被添加");
@@ -201,11 +201,13 @@ public class RankList extends BaseFr implements RecyclerAdapter.OnItemClickListe
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        System.out.println(page * limit + "----------------------" + (position + 1));
+        System.out.println(page * limit + "----------------------" + (position + 1) );
         if (page * limit == (position + 1)) {
             page++;
             ReList();
         }
+        lists.setSelectionFromTop(position, view.getHeight() * 5);
+//        lists.setSelectionFromTop(position, 200);
     }
 
     @Override

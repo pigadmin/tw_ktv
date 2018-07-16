@@ -162,6 +162,7 @@ public class MusicSubFragment extends BaseFr {
                     mPage++;
                     getMusicServer(mSid,mPage,mLimit);
                 }
+                listView.setSelectionFromTop(position, view.getHeight() * 5);
             }
 
             @Override

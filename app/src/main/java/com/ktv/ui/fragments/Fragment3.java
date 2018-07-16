@@ -9,6 +9,7 @@ import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -116,6 +117,17 @@ public class Fragment3 extends BaseFr {
         listView.setAdapter(playAdater);
 
 
+        listView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                listView.setSelectionFromTop(position, view.getHeight() * 5);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
 
         mPlayImme.setNextFocusUpId(R.id.rdb3_top_menu_main);
 

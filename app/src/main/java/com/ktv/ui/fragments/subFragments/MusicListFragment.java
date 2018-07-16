@@ -157,7 +157,7 @@ public class MusicListFragment extends BaseFr {
                 if (mPage*mLimit==index){
                     mPage++;
                     getMusicServer(mSingerId,mPage,mLimit);
-                }
+                } listView.setSelectionFromTop(position, view.getHeight() * 5);
             }
 
             @Override
