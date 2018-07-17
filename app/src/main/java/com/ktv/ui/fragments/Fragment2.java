@@ -45,7 +45,7 @@ public class Fragment2 extends BaseFr {
 
     private RecyclerView mRecyclerView;
     private Fragment2Adapter playAdater;
-    private List<SongNumBean.SongLargeBean> mItemList=new ArrayList<>();
+    private List<SongNumBean.SongLargeBean> mItemList = new ArrayList<>();
 
     private WeakHashMap<String, String> weakHashMap = new WeakHashMap<>();
 
@@ -79,7 +79,7 @@ public class Fragment2 extends BaseFr {
                         break;
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+//                e.printStackTrace();
             }
         }
     };
@@ -89,7 +89,7 @@ public class Fragment2 extends BaseFr {
         view = inflater.inflate(R.layout.fragment2, container, false);
         mContext = getActivity();
 
-        ((MainActivity)getActivity()).cleanFocus(true);
+        ((MainActivity) getActivity()).cleanFocus(true);
 
         initView();
         initLiter();
@@ -127,9 +127,9 @@ public class Fragment2 extends BaseFr {
     @Override
     public void onResume() {
         super.onResume();
-        mPage=1;
+        mPage = 1;
         getMusicServer();
-        if (mRecyclerView!=null){
+        if (mRecyclerView != null) {
             mRecyclerView.requestFocus();
         }
     }
@@ -154,9 +154,9 @@ public class Fragment2 extends BaseFr {
         playAdater.setOnItemSelectedListener(new RecyclerAdapter.OnItemSelectedListener() {
             @Override
             public void onFocusChange(View view, int position) {
-                Logger.i(TAG,"position...."+position);
-                int index = position+1;
-                if (mPage*mLimit==index){
+                Logger.i(TAG, "position...." + position);
+                int index = position + 1;
+                if (mPage * mLimit == index) {
                     mPage++;
                     getMusicServer();
                 }
@@ -200,8 +200,8 @@ public class Fragment2 extends BaseFr {
     private void getMusicServer() {
         weakHashMap.put("mac", App.mac);
         weakHashMap.put("STBtype", "2");
-        weakHashMap.put("page", mPage+"");//第几页    不填默认1
-        weakHashMap.put("limit", mLimit+"");//页码量   不填默认10，最大限度100
+        weakHashMap.put("page", mPage + "");//第几页    不填默认1
+        weakHashMap.put("limit", mLimit + "");//页码量   不填默认10，最大限度100
         String url = App.getRqstUrl(App.headurl + "song/getSongType", weakHashMap);
 
         Logger.i(TAG, "url.." + url);

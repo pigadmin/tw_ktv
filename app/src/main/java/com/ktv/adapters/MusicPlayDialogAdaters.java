@@ -99,7 +99,7 @@ public class MusicPlayDialogAdaters extends BaseAdapter {
         if (playlist != null && !playlist.isEmpty()) {
             for (MusicPlayBean music : playlist) {
                 Logger.d("eeeeeeeeeeeeeeee", music.name + "-----" + music.id + "-------" + str[0]);
-                if (playBean.id.equals(music.id)) {
+                if (str[0].equals(music.id)) {
                     pointText.setText(R.string.yd);
                     break;
                 }
