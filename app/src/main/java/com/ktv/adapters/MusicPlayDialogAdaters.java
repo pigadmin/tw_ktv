@@ -93,19 +93,16 @@ public class MusicPlayDialogAdaters extends BaseAdapter {
             playType.setVisibility(View.VISIBLE);
             playType.setText(playBean.label);
         }
-        System.out.println("..............................");
 
         String[] str = (playBean.id).split("\\.0");
         if (playlist != null && !playlist.isEmpty()) {
             for (MusicPlayBean music : playlist) {
-                Logger.d("eeeeeeeeeeeeeeee", music.name + "-----" + music.id + "-------" + str[0]);
                 if (str[0].equals(music.id)) {
                     pointText.setText(R.string.yd);
                     break;
                 }
             }
         }
-
 
         //播放
         play.setOnClickListener(new View.OnClickListener() {
