@@ -97,12 +97,6 @@ public class MusicListFragment extends BaseFr {
         return view;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        playAdater.notifyDataSetChanged();
-    }
-
     /**
      * Bundle传值
      */
