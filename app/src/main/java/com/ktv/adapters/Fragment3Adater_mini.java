@@ -10,8 +10,6 @@ import android.widget.TextView;
 import com.ktv.R;
 import com.ktv.app.App;
 import com.ktv.bean.MusicPlayBean;
-import com.ktv.tools.AlertDialogHelper;
-import com.ktv.tools.BtmDialog;
 import com.ktv.tools.Logger;
 import com.ktv.tools.ToastUtils;
 
@@ -53,15 +51,7 @@ public class Fragment3Adater_mini extends BAdapter<MusicPlayBean> {
             final TextView addPlay = get(convertView, R.id.addPlay);//删除
             addPlay.setNextFocusUpId(R.id.rdb3_top_menu_dialog);
 
-            if (position == 0) {
-                play.setBackgroundResource(R.mipmap.tou_ming);
-                addPlay.setVisibility(View.INVISIBLE);
-                pointText.setText("播放中");
-            } else {
-                play.setVisibility(View.VISIBLE);
-                addPlay.setVisibility(View.VISIBLE);
-                pointText.setText(R.string.yd);
-            }
+            pointText.setText(position == 0?"播放中":"已點");
 
             final MusicPlayBean playBean = getItem(position);
 
@@ -90,8 +80,7 @@ public class Fragment3Adater_mini extends BAdapter<MusicPlayBean> {
                     if (position==0){
                         return;
                     } else if (position==1){
-                        final BtmDialog dialog = new BtmDialog(mContext, "溫馨提醒", "此歌曲即將播放,無法置頂!");
-                        AlertDialogHelper.BtmDialogDerive2(dialog, false, true, null);
+                        ToastUtils.showShortToast(mContext,"此歌曲即將播放,無法置頂");
                         return;
                     }
 
@@ -115,6 +104,13 @@ public class Fragment3Adater_mini extends BAdapter<MusicPlayBean> {
             addPlay.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View v) {
+                    if (position==0){
+                        return;
+                    } else if (position==1){
+                        ToastUtils.showShortToast(mContext,"此歌曲即將播放,無法删除");
+                        return;
+                    }
+
                     try {
                         ToastUtils.showShortToast(mContext, "删除成功");
                         mDb.delete(playBean);//先删除DB数据
