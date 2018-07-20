@@ -1,7 +1,9 @@
 package com.ktv.ui.fragments;
 
 
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
@@ -97,7 +99,14 @@ public class Fragment6 extends BaseFr {
         mSetup1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                try {
+                    Intent intent = new Intent();
+                    intent.setComponent(new ComponentName("com.hpplay.happyplay.aw",
+                            "com.hpplay.happyplay.aw.WelcomeActivity"));
+                    startActivity(intent);
+                } catch (Exception e){
+                    Logger.i(TAG,"e.."+e.getMessage());
+                }
             }
         });
 
